@@ -1,0 +1,106 @@
+---
+title: "Dark Matter Detection: Beyond the Standard WIMP Paradigm"
+date: "2025-01-22"
+description: "A survey of post-WIMP dark matter candidates and next-generation detection strategies, covering ultralight axions, primordial black holes, and direct detection sensitivities."
+tags: ["dark-matter", "cosmology", "particle-physics", "detection"]
+category: "astrophysics"
+slug: "dark-matter-beyond-wimp"
+---
+
+## The WIMP Miracle and Its Discontents
+
+For decades, Weakly Interacting Massive Particles (WIMPs) dominated dark matter phenomenology. The theoretical motivation was compelling: if a new particle with weak-scale mass $m_\chi \sim 100 \, \text{GeV}$ and weak interaction cross-section $\sigma \sim G_F^2 m_\chi^2$ existed, its relic abundance from thermal freeze-out reproduces the observed dark matter density:
+
+$$
+\Omega_\chi h^2 \approx \frac{0.1 \, \text{pb}}{\langle \sigma v \rangle}
+$$
+
+This numerical coincidence — that the weak-force scale gives the right abundance — is the "WIMP miracle." Yet three decades of direct, indirect, and collider searches have returned null results, pushing WIMP cross-sections into increasingly squeezed parameter spaces.
+
+Current LUX-ZEPLIN limits constrain spin-independent WIMP-nucleon cross-sections to:
+
+$$
+\sigma_{SI} < 6 \times 10^{-48} \, \text{cm}^2 \quad (m_\chi = 30 \, \text{GeV}, \, 90\% \, \text{CL})
+$$
+
+This approaches the irreducible *neutrino floor* from coherent elastic neutrino-nucleus scattering (CENS), below which conventional detectors cannot discriminate dark matter from solar neutrino backgrounds.
+
+## Axion Dark Matter
+
+Axions emerge from the Peccei-Quinn solution to the strong CP problem. The QCD axion mass is constrained by the decay constant $f_a$:
+
+$$
+m_a \approx 5.7 \; \mu\text{eV} \left( \frac{10^{12} \, \text{GeV}}{f_a} \right)
+$$
+
+Ultralight axions with $m_a \sim 10^{-22} \, \text{eV}$ — fuzzy dark matter — suppress small-scale structure through quantum pressure, with a de Broglie wavelength on kiloparsec scales:
+
+$$
+\lambda_{dB} = \frac{h}{m_a v} \approx 1 \, \text{kpc} \left( \frac{10^{-22} \, \text{eV}}{m_a} \right) \left( \frac{10^{-3} c}{v} \right)
+$$
+
+### Detection via Resonant Cavities
+
+The ADMX experiment searches for axion conversion to photons in a tunable microwave cavity under a strong magnetic field. The power deposited by axion-photon coupling is:
+
+$$
+P = g_{a\gamma\gamma}^2 \frac{\rho_a}{m_a} B_0^2 V C Q_L \frac{\omega_c}{m_a}
+$$
+
+where $g_{a\gamma\gamma}$ is the axion-photon coupling, $B_0 \approx 7.6 \, \text{T}$ is the field strength, $V$ is the cavity volume, $C$ is a mode-dependent form factor, and $Q_L$ is the loaded quality factor.
+
+## Primordial Black Holes
+
+Primordial black holes (PBHs) formed in the early universe from the collapse of overdense regions can constitute dark matter without new particle physics. Their mass function is constrained by:
+
+| Mass Range | Constraint Source | $f_{PBH}$ Upper Bound |
+|---|---|---|
+| $10^{15}$–$10^{17}$ g | Hawking evaporation → $\gamma$-ray background | $<0.01$ |
+| $10^{20}$–$10^{26}$ g | Microlensing (EROS, MACHO) | $<0.1$ |
+| $10^{33}$–$10^{35}$ g | Gravitational wave mergers (LIGO) | $<0.8$ |
+
+A window remains open around asteroid-mass PBHs ($10^{17}$–$10^{21}$ g), where $f_{PBH} = 1$ is not yet excluded.
+
+## Gravitational Wave Constraints
+
+The stochastic gravitational wave background from PBH binary mergers scales as:
+
+$$
+\Omega_{GW}(f) \propto f^{2/3} \left( \frac{f_{PBH} \rho_{DM}}{M_{PBH}} \right)^2
+$$
+
+LISA's projected sensitivity will probe the mass function down to $M_{PBH} \sim 10^{-4} M_\odot$ through this background.
+
+## Next-Generation Detection Strategy
+
+```python
+import numpy as np
+from scipy.integrate import quad
+
+def neutrino_floor_cross_section(m_chi_GeV: float) -> float:
+    """
+    Compute the solar neutrino floor for spin-independent 
+    WIMP-nucleon cross sections (Xe target).
+    
+    Returns cross section in cm^2.
+    """
+    # Simplified parametric approximation (Billard et al. 2014)
+    if m_chi_GeV < 6.0:
+        # Below kinematic threshold
+        return np.inf
+    
+    # pp neutrino contribution dominates below ~6 GeV
+    log_mass = np.log10(m_chi_GeV)
+    log_sigma = -48.0 - 1.5 * max(0, 1.5 - log_mass)
+    return 10 ** log_sigma
+
+# Compute floor across mass range
+masses = np.logspace(0, 4, 200)  # 1 GeV to 10 TeV
+floor = np.array([neutrino_floor_cross_section(m) for m in masses])
+```
+
+The path beyond the neutrino floor requires directional detection — exploiting the annual modulation in the incoming dark matter flux direction — or quantum sensors capable of sub-eV energy thresholds.
+
+## Summary
+
+The post-WIMP landscape offers rich phenomenology: axions probed by quantum-limited microwave cavities, fuzzy dark matter constrained by Lyman-$\alpha$ forest observations, and PBHs accessible through gravitational lensing and stochastic GW backgrounds. No single experiment spans this full range; a multi-pronged programme is essential.

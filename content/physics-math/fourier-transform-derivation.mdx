@@ -1,0 +1,138 @@
+---
+title: "The Fourier Transform: A Derivation from First Principles"
+date: "2025-02-14"
+description: "Starting from the Fourier series on a finite interval, we derive the Continuous Fourier Transform via a limiting argument, establish the Plancherel theorem, and prove the inversion formula rigorously."
+tags: ["fourier-analysis", "functional-analysis", "harmonic-analysis", "derivation"]
+category: "physics-math"
+slug: "fourier-transform-derivation"
+---
+
+## Fourier Series on a Finite Interval
+
+Let $f \in L^2([-L, L])$. By the completeness of the orthonormal basis $\left\{ \frac{1}{\sqrt{2L}} e^{i n\pi x/L} \right\}_{n \in \mathbb{Z}}$, we can write:
+
+$$
+f(x) = \sum_{n=-\infty}^{\infty} c_n \, e^{i n \pi x / L}
+$$
+
+where the Fourier coefficients are:
+
+$$
+c_n = \frac{1}{2L} \int_{-L}^{L} f(x) \, e^{-i n \pi x / L} \, dx
+$$
+
+Define the frequency variable $\xi_n = \frac{n}{2L}$ and spacing $\Delta\xi = \frac{1}{2L}$. Then:
+
+$$
+f(x) = \sum_{n=-\infty}^{\infty} \hat{f}(\xi_n) \, e^{2\pi i \xi_n x} \, \Delta\xi
+$$
+
+where $\hat{f}(\xi_n) = \int_{-L}^{L} f(x) e^{-2\pi i \xi_n x} \, dx$.
+
+## The Limiting Argument ($L \to \infty$)
+
+As $L \to \infty$, the spacing $\Delta\xi \to 0$ and the sum converges to a Riemann integral:
+
+$$
+f(x) = \int_{-\infty}^{\infty} \hat{f}(\xi) \, e^{2\pi i \xi x} \, d\xi
+$$
+
+where the **Fourier Transform** is defined as:
+
+$$
+\boxed{\hat{f}(\xi) = \mathcal{F}\{f\}(\xi) = \int_{-\infty}^{\infty} f(x) \, e^{-2\pi i \xi x} \, dx}
+$$
+
+This argument is heuristic. The rigorous foundation requires working in $L^1(\mathbb{R}) \cap L^2(\mathbb{R})$ first, then extending to all of $L^2(\mathbb{R})$ via density.
+
+## Plancherel's Theorem
+
+For $f, g \in L^2(\mathbb{R})$, the Fourier transform is an isometric isomorphism:
+
+$$
+\langle f, g \rangle_{L^2} = \langle \hat{f}, \hat{g} \rangle_{L^2}
+$$
+
+Setting $f = g$, this gives **Parseval's identity**:
+
+$$
+\int_{-\infty}^{\infty} |f(x)|^2 \, dx = \int_{-\infty}^{\infty} |\hat{f}(\xi)|^2 \, d\xi
+$$
+
+**Proof sketch.** For $f, g \in L^1 \cap L^2$:
+
+$$
+\int \hat{f}(\xi) \overline{\hat{g}(\xi)} \, d\xi = \int \hat{f}(\xi) \int g(x) e^{2\pi i \xi x} \, dx \, d\xi
+$$
+
+Fubini's theorem (justified by $L^1$ integrability) allows interchange of integration:
+
+$$
+= \int g(x) \int \hat{f}(\xi) e^{2\pi i \xi x} \, d\xi \, dx = \int g(x) f(x) \, dx
+$$
+
+The extension to all of $L^2$ follows from the density of $L^1 \cap L^2$ in $L^2$. $\square$
+
+## The Inversion Formula
+
+**Theorem.** If $f \in L^1(\mathbb{R})$ and $\hat{f} \in L^1(\mathbb{R})$, then for a.e. $x$:
+
+$$
+f(x) = \int_{-\infty}^{\infty} \hat{f}(\xi) \, e^{2\pi i \xi x} \, d\xi
+$$
+
+**Proof.** Define the approximate identity $\phi_\epsilon(x) = e^{-\pi \epsilon^2 x^2}$ (a Gaussian). Its Fourier transform is $\hat{\phi}_\epsilon(\xi) = \epsilon^{-1} e^{-\pi \xi^2 / \epsilon^2}$. Consider:
+
+$$
+\int \hat{f}(\xi) \, e^{2\pi i \xi x} \, e^{-\pi \epsilon^2 \xi^2} \, d\xi = \int f(t) \, \phi_\epsilon(x-t) \, dt
+$$
+
+The right side is the convolution $f * \phi_\epsilon$, which converges to $f(x)$ at every Lebesgue point as $\epsilon \to 0^+$. Passing the limit under the integral on the left (by dominated convergence, using $\hat{f} \in L^1$) completes the proof. $\square$
+
+## Key Properties
+
+| Property | Statement |
+|---|---|
+| Linearity | $\mathcal{F}\{\alpha f + \beta g\} = \alpha \hat{f} + \beta \hat{g}$ |
+| Translation | $\mathcal{F}\{f(x-a)\}(\xi) = e^{-2\pi i a \xi} \hat{f}(\xi)$ |
+| Modulation | $\mathcal{F}\{e^{2\pi i \xi_0 x} f(x)\}(\xi) = \hat{f}(\xi - \xi_0)$ |
+| Scaling | $\mathcal{F}\{f(ax)\}(\xi) = \frac{1}{\lvert a \rvert}\hat{f}\!\left(\frac{\xi}{a}\right)$ |
+| Convolution | $\mathcal{F}\{f * g\} = \hat{f} \cdot \hat{g}$ |
+| Differentiation | $\mathcal{F}\{f'\}(\xi) = 2\pi i \xi \hat{f}(\xi)$ |
+
+## Numerical Computation: DFT Correspondence
+
+The Discrete Fourier Transform approximates the continuous transform on a uniform grid:
+
+```python
+import numpy as np
+
+def continuous_ft_approx(
+    f_vals: np.ndarray,
+    x_vals: np.ndarray,
+    xi_vals: np.ndarray,
+) -> np.ndarray:
+    """
+    Naive O(N^2) approximation of the continuous FT.
+    For demonstration only — use np.fft.fft in practice.
+    """
+    dx = x_vals[1] - x_vals[0]
+    F = np.array([
+        np.sum(f_vals * np.exp(-2j * np.pi * xi * x_vals)) * dx
+        for xi in xi_vals
+    ])
+    return F
+
+# The FFT computes:  F[k] = sum_{n=0}^{N-1} f[n] * exp(-2pi*i*k*n/N)
+# With physical frequency resolution:  delta_xi = 1 / (N * dx)
+
+N = 1024
+dx = 1e-3  # 1 mm spatial sampling
+xi = np.fft.fftfreq(N, d=dx)  # Frequency axis in cycles/m
+```
+
+The relationship between DFT and continuous FT becomes exact in the limit $N \to \infty$, $\Delta x \to 0$ with $N \Delta x$ fixed.
+
+## Summary
+
+The Fourier Transform arises naturally from the Fourier series as the period $2L \to \infty$. Rigorously, it is an isometric isomorphism on $L^2(\mathbb{R})$ (Plancherel), and the inversion formula holds for every Lebesgue point when both $f$ and $\hat{f}$ are integrable. These properties — linearity, the convolution theorem, and the differentiation rule — make it the central tool of linear analysis.

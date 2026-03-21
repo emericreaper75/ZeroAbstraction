@@ -1,0 +1,136 @@
+---
+title: "Designing FIR Filters: The Parks-McClellan Algorithm"
+date: "2025-03-10"
+description: "A rigorous treatment of optimal equiripple FIR filter design using the Remez exchange algorithm, with derivations and implementation notes."
+tags: ["dsp", "filter-design", "signal-processing", "algorithms"]
+category: "electronics"
+slug: "fir-filter-parks-mcclellan"
+---
+
+## Introduction
+
+Finite Impulse Response (FIR) filters are a cornerstone of digital signal processing. Their linear phase property — achievable by design — makes them indispensable in applications where phase distortion is intolerable: audio processing, image reconstruction, and communications receivers.
+
+This note derives the Parks-McClellan algorithm from the Chebyshev equiripple approximation problem and shows how the Remez exchange algorithm solves it.
+
+## The Approximation Problem
+
+Given a desired frequency response $H_d(e^{j\omega})$ and a frequency weighting function $W(\omega)$, find the FIR filter $H(e^{j\omega})$ of order $N$ that minimises the weighted Chebyshev error:
+
+$$
+E = \max_{\omega \in F} \left| W(\omega) \left[ H_d(e^{j\omega}) - H(e^{j\omega}) \right] \right|
+$$
+
+where $F$ is the union of passbands and stopbands (transition bands are unconstrained).
+
+For a Type I linear-phase FIR filter with symmetry $h[n] = h[N-n]$, the frequency response reduces to:
+
+$$
+H(e^{j\omega}) = e^{-j\omega N/2} \sum_{k=0}^{M} a[k] \cos(k\omega), \quad M = N/2
+$$
+
+where the $a[k]$ coefficients are free parameters.
+
+## Chebyshev's Theorem and the Equiripple Property
+
+The minimax problem is equivalent to finding the best polynomial approximation in the Chebyshev sense. By the **Chebyshev alternation theorem**, the optimal solution exists, is unique, and is characterised by at least $M + 2$ alternating extrema of the error function where:
+
+$$
+W(\omega_i)\left[H_d(e^{j\omega_i}) - H(e^{j\omega_i})\right] = (-1)^i \delta, \quad i = 1, \ldots, M+2
+$$
+
+This is the *equiripple* condition: the maximum error is attained at $M+2$ frequencies with alternating signs.
+
+## The Remez Exchange Algorithm
+
+The Remez algorithm iteratively updates the set of extremal frequencies:
+
+```python
+import numpy as np
+from scipy.signal import remez
+
+def design_lowpass_fir(
+    N: int,
+    cutoff: float,
+    transition_width: float,
+    fs: float = 1.0,
+) -> np.ndarray:
+    """
+    Design a Type I equiripple lowpass FIR filter.
+    
+    Args:
+        N: Filter order (must be even for Type I)
+        cutoff: Passband edge frequency (normalised, 0 < cutoff < 0.5)
+        transition_width: Width of transition band
+        fs: Sample rate (Hz)
+    
+    Returns:
+        h: Filter coefficients (length N+1)
+    """
+    passband_edge = cutoff
+    stopband_edge = cutoff + transition_width
+    
+    # Desire: 1 in passband, 0 in stopband
+    # Weights: equal ripple (1:1 ratio)
+    h = remez(
+        N + 1,
+        [0, passband_edge, stopband_edge, 0.5],
+        [1, 0],
+        weight=[1, 1],
+        fs=fs,
+    )
+    return h
+
+# Design 64th-order lowpass filter
+h = design_lowpass_fir(N=64, cutoff=0.25, transition_width=0.05)
+print(f"Filter length: {len(h)}")
+print(f"Passband ripple: {compute_passband_ripple(h):.4f} dB")
+```
+
+### Algorithm Steps
+
+1. **Initialise** $M+2$ candidate extremal frequencies uniformly in passband and stopband.
+2. **Compute** the optimal error level $\delta$ by solving the linear system:
+
+$$
+\begin{pmatrix}
+\cos(0) & \cos(\omega_1) & \cdots & \cos(M\omega_1) & (-1)^1/W(\omega_1) \\
+\vdots & & \ddots & & \vdots \\
+\cos(0) & \cos(\omega_{M+2}) & \cdots & \cos(M\omega_{M+2}) & (-1)^{M+2}/W(\omega_{M+2})
+\end{pmatrix}
+\begin{pmatrix} a[0] \\ \vdots \\ a[M] \\ \delta \end{pmatrix}
+= \begin{pmatrix} H_d(\omega_1) \\ \vdots \\ H_d(\omega_{M+2}) \end{pmatrix}
+$$
+
+3. **Search** for new extremal frequencies where the error achieves its maximum magnitude.
+4. **Repeat** until the set of extremal frequencies converges.
+
+The algorithm guarantees convergence to the global optimum because each exchange step reduces the Chebyshev error monotonically.
+
+## Frequency Response Analysis
+
+The transition band width $\Delta f$ and ripple $\delta$ satisfy the Harris approximation:
+
+$$
+N \approx \frac{-10 \log_{10}(\delta_p \delta_s) - 13}{14.6 \, \Delta f}
+$$
+
+For a design with $\delta_p = 0.01$ (passband ripple $\approx 0.09$ dB) and $\delta_s = 0.001$ (stopband attenuation $60$ dB), with transition width $\Delta f = 0.05$:
+
+$$
+N \approx \frac{-10 \log_{10}(10^{-5}) - 13}{14.6 \times 0.05} = \frac{50 - 13}{0.73} \approx 51
+$$
+
+## Implementation Notes
+
+When implementing in fixed-point arithmetic, coefficient quantisation shifts the equiripple frequencies and degrades both passband and stopband performance. With $B$-bit coefficients, the minimum achievable stopband attenuation is approximately:
+
+$$
+A_{\min} = 6.02 \cdot (B - 1) \, \text{dB}
+$$
+
+For 16-bit coefficients, this floor is $90$ dB — sufficient for most audio applications.
+
+## Summary
+
+The Parks-McClellan algorithm solves the minimax FIR approximation problem via the Remez exchange algorithm. Starting from Chebyshev's alternation theorem, it guarantees an equiripple optimal solution where the weighted error oscillates with constant magnitude across $M+2$ extremal points.
