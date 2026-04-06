@@ -1,0 +1,147 @@
+---
+title: "MSc Thesis: Adaptive Signal Processing for GNSS Anti-Jamming Systems"
+date: "2023-12-01"
+description: "Summary of MSc thesis on adaptive signal processing techniques for GNSS receiver anti-jamming. Covers CRPA antenna arrays, STAP beamforming, and MVDR null-steering."
+tags: ["thesis", "gnss", "signal-processing", "anti-jamming", "adaptive-filters", "beamforming", "academic"]
+category: "research-logs"
+slug: "003-msc-thesis-gnss-anti-jamming"
+---
+
+## Thesis Abstract
+
+Global Navigation Satellite System (GNSS) receivers are vulnerable to intentional and unintentional radio frequency interference. The received satellite signal power at the Earth's surface is approximately $-130\,\text{dBm}$ for GPS L1 C/A, while commercially available jammers can produce effective radiated power sufficient to create jammer-to-signal ratios (JSR) exceeding $+60\,\text{dB}$ at the receiver antenna. This thesis investigates adaptive antenna array techniques for GNSS anti-jamming, focusing on Controlled Reception Pattern Antenna (CRPA) systems with $N = 4$ to $8$ elements. We develop and compare six adaptive beamforming algorithms — including the Minimum Variance Distortionless Response (MVDR) beamformer, Generalised Sidelobe Canceller (GSC), and Space-Time Adaptive Processing (STAP) — under single and multiple narrowband jammers, wideband chirp interference, and dynamic jamming scenarios. The proposed algorithms are validated through simulation and hardware testing on a USRP B210 software-defined radio platform. Results demonstrate that a 7-element CRPA array with STAP processing achieves $\geq 40\,\text{dB}$ jammer suppression while maintaining satellite signal acquisition for all visible GPS SVs.
+
+## Problem Statement
+
+The received signal at an $N$-element antenna array is modelled as:
+
+$$
+\mathbf{x}(t) = \mathbf{s}(t) + \mathbf{j}(t) + \mathbf{n}(t),
+$$
+
+where $\mathbf{s}(t) \in \mathbb{C}^N$ is the satellite signal component (arriving from direction $\theta_s$), $\mathbf{j}(t) \in \mathbb{C}^N$ is the jammer contribution (from direction $\theta_j$), and $\mathbf{n}(t) \sim \mathcal{CN}(\mathbf{0}, \sigma_n^2 \mathbf{I})$ is additive white Gaussian noise.
+
+The signal power budget at each antenna element is:
+
+| Component | Power | Notes |
+|---|---|---|
+| GPS L1 C/A signal | $-130\,\text{dBm}$ | $50\,\text{dB}$ below thermal noise floor |
+| Thermal noise (BW = 2 MHz) | $-111\,\text{dBm}$ | $kTB$ at $290\,\text{K}$ |
+| Narrowband jammer (1 km) | $-70\,\text{dBm}$ | 1 W EIRP, typical consumer jammer |
+| Required C/N₀ for acquisition | $>30\,\text{dB-Hz}$ | Standard GPS receiver threshold |
+
+The goal is to find a complex weight vector $\mathbf{w} \in \mathbb{C}^N$ such that the array output $y(t) = \mathbf{w}^H \mathbf{x}(t)$ maximises the signal-to-interference-plus-noise ratio (SINR):
+
+$$
+\text{SINR} = \frac{\mathbf{w}^H \mathbf{R}_{ss} \mathbf{w}}{\mathbf{w}^H (\mathbf{R}_{jj} + \sigma_n^2 \mathbf{I}) \mathbf{w}},
+$$
+
+where $\mathbf{R}_{ss} = E[\mathbf{s}(t)\mathbf{s}^H(t)]$ and $\mathbf{R}_{jj} = E[\mathbf{j}(t)\mathbf{j}^H(t)]$ are the signal and interference covariance matrices.
+
+## CRPA Antenna Array Model
+
+A Controlled Reception Pattern Antenna (CRPA) consists of $N$ antenna elements arranged in a known geometry (typically circular or planar). For a uniform linear array (ULA) with inter-element spacing $d$, the steering vector for a plane wave arriving at angle $\theta$ from broadside is:
+
+$$
+\mathbf{a}(\theta) = \begin{pmatrix} 1 \\ e^{j k d \sin\theta} \\ e^{j 2 k d \sin\theta} \\ \vdots \\ e^{j (N-1) k d \sin\theta} \end{pmatrix},
+$$
+
+where $k = 2\pi / \lambda$ is the wavenumber at the carrier frequency ($\lambda = 19.03\,\text{cm}$ for GPS L1 at $1575.42\,\text{MHz}$) and $d = \lambda/2 = 9.52\,\text{cm}$ is the standard half-wavelength element spacing.
+
+The array output is:
+
+$$
+y(t) = \mathbf{w}^H \mathbf{x}(t) = \mathbf{w}^H \left[ \mathbf{a}(\theta_s) s(t) + \sum_{m=1}^{M} \mathbf{a}(\theta_{j,m}) j_m(t) + \mathbf{n}(t) \right],
+$$
+
+where $M$ is the number of jammers. The array can null up to $N-1$ independent interference sources while maintaining gain towards the satellite direction.
+
+## MVDR Beamformer
+
+The Minimum Variance Distortionless Response (MVDR) beamformer minimises the output power subject to the constraint of unity gain in the look direction:
+
+$$
+\min_{\mathbf{w}} \; \mathbf{w}^H \mathbf{R}_{xx} \mathbf{w} \quad \text{subject to} \quad \mathbf{w}^H \mathbf{a}(\theta_0) = 1,
+$$
+
+where $\mathbf{R}_{xx} = E[\mathbf{x}(t)\mathbf{x}^H(t)]$ is the total received data covariance matrix and $\theta_0$ is the desired look direction.
+
+The closed-form solution via the method of Lagrange multipliers is:
+
+$$
+\mathbf{w}_{\text{MVDR}} = \frac{\mathbf{R}_{xx}^{-1} \mathbf{a}(\theta_0)}{\mathbf{a}^H(\theta_0) \mathbf{R}_{xx}^{-1} \mathbf{a}(\theta_0)}.
+$$
+
+The resulting SINR is:
+
+$$
+\text{SINR}_{\text{MVDR}} = \sigma_s^2 \, \mathbf{a}^H(\theta_0) \mathbf{R}_{ii}^{-1} \mathbf{a}(\theta_0),
+$$
+
+where $\mathbf{R}_{ii} = \mathbf{R}_{jj} + \sigma_n^2 \mathbf{I}$ is the interference-plus-noise covariance.
+
+> **Info.** The MVDR beamformer requires an accurate estimate of the data covariance matrix $\mathbf{R}_{xx}$. The sample covariance matrix $\hat{\mathbf{R}}_{xx} = \frac{1}{K}\sum_{k=1}^{K} \mathbf{x}(t_k)\mathbf{x}^H(t_k)$ requires at least $K \geq 2N$ independent snapshots for stable matrix inversion (Reed, Mallett, Brennan rule). For an 8-element array, this means $K \geq 16$ snapshots, which at $2\,\text{MHz}$ bandwidth corresponds to $8\,\mu\text{s}$ of data — well within the coherence time of typical jamming scenarios.
+
+## Space-Time Adaptive Processing (STAP)
+
+STAP extends spatial-only beamforming to the joint spatial-temporal domain by stacking $K$ time-delayed copies of the $N$-element array snapshot. The space-time snapshot vector is:
+
+$$
+\tilde{\mathbf{x}}(t) = \begin{pmatrix} \mathbf{x}(t) \\ \mathbf{x}(t - T_s) \\ \vdots \\ \mathbf{x}(t - (K-1)T_s) \end{pmatrix} \in \mathbb{C}^{NK},
+$$
+
+where $T_s$ is the sampling period. The space-time steering vector is the Kronecker product:
+
+$$
+\tilde{\mathbf{v}}(\theta, f) = \mathbf{a}(\theta) \otimes \mathbf{b}(f),
+$$
+
+where $\mathbf{b}(f) = [1, e^{j2\pi f T_s}, \ldots, e^{j2\pi f(K-1)T_s}]^T$ is the temporal steering vector at Doppler frequency $f$.
+
+The STAP weight vector is derived analogously to MVDR in the enlarged $NK$-dimensional space:
+
+$$
+\tilde{\mathbf{w}}_{\text{STAP}} = \frac{\tilde{\mathbf{R}}^{-1} \tilde{\mathbf{v}}(\theta_0, f_0)}{\tilde{\mathbf{v}}^H(\theta_0, f_0) \tilde{\mathbf{R}}^{-1} \tilde{\mathbf{v}}(\theta_0, f_0)}.
+$$
+
+The computational complexity is $O(N^2 K^2)$ per weight update. For $N = 7$ elements and $K = 8$ taps, the space-time data vector has dimension $56$, and the covariance matrix is $56 \times 56$ — still tractable in real time at GPS L1 bandwidth.
+
+STAP provides two key advantages over spatial-only processing: (1) it can suppress wideband (frequency-swept) jammers that spatial nulling alone cannot fully cancel, and (2) it preserves the temporal correlation structure of the GPS C/A code, improving post-correlation SNR.
+
+## Simulation Results
+
+All simulations use a 7-element circular CRPA array with $d = \lambda/2$ spacing. The GPS satellite is at $\theta_s = 45°$ elevation, $0°$ azimuth. Results show SINR improvement over a single omnidirectional antenna.
+
+| Scenario | $N$ Elements | Jammer Type | Jammer AoA | SINR Gain (dB) | Algorithm |
+|---|---|---|---|---|---|
+| Single narrowband CW | 7 | CW, $+40\,\text{dB}$ JSR | $30°$ | $38.2$ | MVDR |
+| Two narrowband CW | 7 | CW, $+40\,\text{dB}$ each | $30°$, $-60°$ | $35.7$ | MVDR |
+| Single wideband chirp | 7 | FM chirp, 1 MHz BW, $+50\,\text{dB}$ JSR | $30°$ | $41.3$ | STAP ($K=8$) |
+| Dynamic (moving jammer) | 7 | CW, $+45\,\text{dB}$, $10°/\text{s}$ angular rate | variable | $32.8$ | RLS-GSC |
+| Three narrowband CW | 8 | CW, $+35\,\text{dB}$ each | $20°$, $-40°$, $80°$ | $29.5$ | MVDR |
+
+The STAP algorithm achieves $41.3\,\text{dB}$ jammer suppression against a wideband chirp — $6\,\text{dB}$ better than spatial-only MVDR ($35.1\,\text{dB}$) for the same scenario, confirming the benefit of joint space-time processing for wideband interference.
+
+## Thesis Contributions
+
+- **Novel adaptive step-size LMS algorithm** that reduces convergence time by $45\%$ compared to standard LMS by adapting the step size $\mu$ based on the instantaneous gradient norm: $\mu(n) = \mu_0 / (1 + \alpha \|\nabla J(n)\|^2)$
+- **Extension of MVDR to multi-constellation GNSS** (GPS + Galileo + BeiDou), requiring simultaneous constraints on multiple look directions with a shared antenna array
+- **Hardware validation on USRP B210** software-defined radio platform, demonstrating real-time MVDR beamforming at $2\,\text{MHz}$ sampling rate with $N = 4$ patch antennas
+- **Systematic comparison of 6 adaptive algorithms** (LMS, NLMS, RLS, MVDR, GSC, STAP) under dynamic jamming with angular rate up to $20°/\text{s}$
+- **Sensitivity analysis** showing that $\pm 5°$ steering vector mismatch degrades MVDR SINR by $<2\,\text{dB}$ for up to 3 simultaneous jammers
+
+## Defense Information
+
+> **Success.** Thesis submitted to the Department of Electronics & Communications Engineering, December 2023. Oral defense scheduled for January 15, 2024. External examiner: Prof. R. Morales, Institute of Navigation. The thesis received a grade of Distinction.
+
+## References
+
+[1] S. Haykin, *Adaptive Filter Theory*, 5th ed. Upper Saddle River, NJ: Pearson, 2014.
+
+[2] H. L. Van Trees, *Optimum Array Processing: Part IV of Detection, Estimation, and Modulation Theory*. New York: Wiley-Interscience, 2002.
+
+[3] J. Ward, "Space-time adaptive processing for airborne radar," Lincoln Lab., MIT, Tech. Rep. 1015, 1994.
+
+[4] R. A. Iltis, "Joint estimation of PN code delay and multipath using the Extended Kalman Filter," *IEEE Trans. Commun.*, vol. 38, no. 10, pp. 1677–1685, 1990.
+
+[5] A. J. Van Dierendonck, P. Fenton, and T. Ford, "Theory and performance of narrow correlator spacing in a GPS receiver," *Navigation*, vol. 39, no. 3, pp. 265–283, 1992.

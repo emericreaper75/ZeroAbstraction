@@ -6,8 +6,7 @@ import rehypeKatex from 'rehype-katex';
 import rehypeSlug from 'rehype-slug';
 import rehypePrettyCode from 'rehype-pretty-code';
 import {
-  getAllPostSlugs,
-  getPostBySlug,
+  getAllPosts,
   VALID_CATEGORIES,
 } from '@/lib/posts';
 import { extractTOC, slugify } from '@/lib/toc';
@@ -16,16 +15,26 @@ import ArticleLayout from '@/components/ArticleLayout';
 import CopyButton from '@/components/CopyButton';
 import { generateArticleJsonLd, generateBreadcrumbJsonLd } from '@/lib/jsonld';
 
-type Props = { params: { category: string; slug: string } };
+type Props = { params: { slug: string } };
+
+/**
+ * Finds a post by slug across ALL categories.
+ * This enables the /blog/[slug] route to work as a unified entry point.
+ */
+function findPostBySlug(slug: string) {
+  const allPosts = getAllPosts();
+  return allPosts.find((p) => p.slug === slug) ?? null;
+}
 
 export function generateStaticParams() {
-  return getAllPostSlugs();
+  const allPosts = getAllPosts();
+  return allPosts.map((post) => ({ slug: post.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const post = getPostBySlug(params.category, params.slug);
+  const post = findPostBySlug(params.slug);
   if (!post) return {};
-  return generatePostMetadata(post, params.category);
+  return generatePostMetadata(post, post.category);
 }
 
 function makeHeading(level: number) {
@@ -63,26 +72,15 @@ const mdxComponents = {
   },
 };
 
-const categoryLabels: Record<string, string> = {
-  electronics: 'Electronics & Communications',
-  astrophysics: 'Astrophysics',
-  'physics-math': 'Physics & Mathematics',
-  'research-logs': 'Research Logs',
-};
-
-export default async function ArticlePage({ params }: Props) {
-  if (!VALID_CATEGORIES.includes(params.category as (typeof VALID_CATEGORIES)[number])) {
-    notFound();
-  }
-
-  const post = getPostBySlug(params.category, params.slug);
+export default async function BlogArticlePage({ params }: Props) {
+  const post = findPostBySlug(params.slug);
   if (!post) notFound();
 
   const toc = extractTOC(post.content);
-  const articleJsonLd = generateArticleJsonLd(post, params.category);
+  const articleJsonLd = generateArticleJsonLd(post, post.category);
   const breadcrumbJsonLd = generateBreadcrumbJsonLd([
     { name: 'Home', href: '/' },
-    { name: categoryLabels[params.category] ?? params.category, href: `/${params.category}` },
+    { name: 'Blog', href: '/blog' },
     { name: post.title },
   ]);
 

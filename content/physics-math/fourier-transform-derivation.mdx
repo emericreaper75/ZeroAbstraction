@@ -1,138 +1,211 @@
 ---
 title: "The Fourier Transform: A Derivation from First Principles"
-date: "2025-02-14"
+date: "2025-03-01"
 description: "Starting from the Fourier series on a finite interval, we derive the Continuous Fourier Transform via a limiting argument, establish the Plancherel theorem, and prove the inversion formula rigorously."
-tags: ["fourier-analysis", "functional-analysis", "harmonic-analysis", "derivation"]
+tags: ["fourier-analysis", "functional-analysis", "harmonic-analysis", "mathematics", "publication"]
 category: "physics-math"
 slug: "fourier-transform-derivation"
 ---
 
-## Fourier Series on a Finite Interval
+## Starting Point: Fourier Series on $[-L, L]$
 
-Let $f \in L^2([-L, L])$. By the completeness of the orthonormal basis $\left\{ \frac{1}{\sqrt{2L}} e^{i n\pi x/L} \right\}_{n \in \mathbb{Z}}$, we can write:
-
-$$
-f(x) = \sum_{n=-\infty}^{\infty} c_n \, e^{i n \pi x / L}
-$$
-
-where the Fourier coefficients are:
+Let $f \in L^2([-L,L])$. The family of exponentials $\left\{ \frac{1}{\sqrt{2L}} e^{i n \pi x / L} \right\}_{n \in \mathbb{Z}}$ forms a complete orthonormal basis in $L^2([-L,L])$. Orthonormality follows from the integral identity
 
 $$
-c_n = \frac{1}{2L} \int_{-L}^{L} f(x) \, e^{-i n \pi x / L} \, dx
+\frac{1}{2L} \int_{-L}^{L} e^{i(m-n)\pi x / L} \, dx = \delta_{mn},
 $$
 
-Define the frequency variable $\xi_n = \frac{n}{2L}$ and spacing $\Delta\xi = \frac{1}{2L}$. Then:
+where $\delta_{mn}$ is the Kronecker delta. By completeness, *every* square-integrable function on $[-L,L]$ admits the representation
 
 $$
-f(x) = \sum_{n=-\infty}^{\infty} \hat{f}(\xi_n) \, e^{2\pi i \xi_n x} \, \Delta\xi
+f(x) = \sum_{n=-\infty}^{\infty} c_n \, e^{i n \pi x / L},
 $$
 
-where $\hat{f}(\xi_n) = \int_{-L}^{L} f(x) e^{-2\pi i \xi_n x} \, dx$.
-
-## The Limiting Argument ($L \to \infty$)
-
-As $L \to \infty$, the spacing $\Delta\xi \to 0$ and the sum converges to a Riemann integral:
+with Fourier coefficients
 
 $$
-f(x) = \int_{-\infty}^{\infty} \hat{f}(\xi) \, e^{2\pi i \xi x} \, d\xi
+c_n = \frac{1}{2L} \int_{-L}^{L} f(x) \, e^{-i n \pi x / L} \, dx.
 $$
 
-where the **Fourier Transform** is defined as:
+Convergence holds in the $L^2$ norm: $\left\| f - \sum_{|n| \le N} c_n e^{in\pi x/L} \right\|_{L^2} \to 0$ as $N \to \infty$. For pointwise convergence at a point $x_0$ one requires additional regularity — Dini's condition or bounded variation in a neighbourhood of $x_0$ suffices.
+
+## Taking the Limit $L \to \infty$
+
+Introduce the discrete frequency variable $\xi_n = \frac{n}{2L}$ and frequency spacing $\Delta\xi = \frac{1}{2L}$. Substituting into the Fourier series gives
+
+$$
+f(x) = \sum_{n=-\infty}^{\infty} \left[ \int_{-L}^{L} f(t) \, e^{-2\pi i \xi_n t} \, dt \right] e^{2\pi i \xi_n x} \, \Delta\xi.
+$$
+
+As $L \to \infty$, the spacing $\Delta\xi \to 0$ and the discrete frequencies fill out the real line. Under appropriate regularity on $f$, the Riemann sum converges to an integral:
+
+$$
+f(x) = \int_{-\infty}^{\infty} \hat{f}(\xi) \, e^{2\pi i \xi x} \, d\xi,
+$$
+
+where we define the **Fourier Transform**:
 
 $$
 \boxed{\hat{f}(\xi) = \mathcal{F}\{f\}(\xi) = \int_{-\infty}^{\infty} f(x) \, e^{-2\pi i \xi x} \, dx}
 $$
 
-This argument is heuristic. The rigorous foundation requires working in $L^1(\mathbb{R}) \cap L^2(\mathbb{R})$ first, then extending to all of $L^2(\mathbb{R})$ via density.
-
-## Plancherel's Theorem
-
-For $f, g \in L^2(\mathbb{R})$, the Fourier transform is an isometric isomorphism:
+and the **Inverse Fourier Transform**:
 
 $$
-\langle f, g \rangle_{L^2} = \langle \hat{f}, \hat{g} \rangle_{L^2}
+f(x) = \mathcal{F}^{-1}\{\hat{f}\}(x) = \int_{-\infty}^{\infty} \hat{f}(\xi) \, e^{2\pi i \xi x} \, d\xi.
 $$
 
-Setting $f = g$, this gives **Parseval's identity**:
+> **Warning.** The above limiting argument is heuristic. The passage from sum to integral requires justification via dominated convergence or uniform convergence conditions. A rigorous treatment requires working in the Schwartz space $\mathcal{S}(\mathbb{R})$ of rapidly decreasing functions, where the Fourier transform is a topological isomorphism, before extending to $L^1$ and $L^2$ by density and continuity arguments.
+
+## Rigorous Treatment in $L^1(\mathbb{R})$
+
+For $f \in L^1(\mathbb{R})$, the defining integral converges absolutely:
 
 $$
-\int_{-\infty}^{\infty} |f(x)|^2 \, dx = \int_{-\infty}^{\infty} |\hat{f}(\xi)|^2 \, d\xi
+|\hat{f}(\xi)| \le \int_{-\infty}^{\infty} |f(x)| \, dx = \|f\|_{L^1} < \infty.
 $$
 
-**Proof sketch.** For $f, g \in L^1 \cap L^2$:
+Thus $\hat{f}$ is bounded and continuous. Furthermore, the **Riemann-Lebesgue Lemma** asserts that $\hat{f}(\xi) \to 0$ as $|\xi| \to \infty$.
+
+**Proof of the Riemann-Lebesgue Lemma.** For step functions the result follows by direct computation of finite sums of sinusoids, each of which vanishes as $|\xi| \to \infty$. Since step functions are dense in $L^1(\mathbb{R})$ and the map $f \mapsto \hat{f}$ is a contraction ($\|\hat{f}\|_\infty \le \|f\|_{L^1}$), the result extends to all of $L^1$ by a standard approximation argument. $\square$
+
+However, $L^1$ is insufficient for the inversion formula. The transform $\hat{f}$ of an $L^1$ function need not itself be in $L^1$, so the inversion integral may not converge. The canonical example is the characteristic function $f = \mathbf{1}_{[-1,1]}$, whose transform is the sinc function $\hat{f}(\xi) = \frac{\sin(2\pi\xi)}{\pi\xi}$, which is not absolutely integrable.
+
+## Extension to $L^2$: The Plancherel Theorem
+
+**Theorem (Plancherel).** There exists a unique unitary operator $\mathcal{F}: L^2(\mathbb{R}) \to L^2(\mathbb{R})$ that agrees with the $L^1$ Fourier transform on $L^1 \cap L^2$. In particular, for all $f \in L^2(\mathbb{R})$:
 
 $$
-\int \hat{f}(\xi) \overline{\hat{g}(\xi)} \, d\xi = \int \hat{f}(\xi) \int g(x) e^{2\pi i \xi x} \, dx \, d\xi
+\|\hat{f}\|_{L^2} = \|f\|_{L^2}.
 $$
 
-Fubini's theorem (justified by $L^1$ integrability) allows interchange of integration:
+**Proof sketch.** For $f \in L^1 \cap L^2$, Parseval's identity holds by Fubini's theorem (as shown below). Since $L^1 \cap L^2$ is dense in $L^2$, and $\mathcal{F}$ is an isometry on this dense subspace, it extends uniquely to a bounded linear operator on $L^2$ by the B.L.T. theorem (bounded linear transformation). By Fatou's lemma, the isometry property is preserved in the limit.
+
+For $f, g \in L^1 \cap L^2$:
 
 $$
-= \int g(x) \int \hat{f}(\xi) e^{2\pi i \xi x} \, d\xi \, dx = \int g(x) f(x) \, dx
+\int \hat{f}(\xi) \overline{\hat{g}(\xi)} \, d\xi = \int \hat{f}(\xi) \int g(x) e^{2\pi i \xi x} \, dx \, d\xi.
 $$
 
-The extension to all of $L^2$ follows from the density of $L^1 \cap L^2$ in $L^2$. $\square$
+Fubini's theorem (applicable because $f \in L^1$) allows interchange of integration:
+
+$$
+= \int g(x) \int \hat{f}(\xi) e^{2\pi i \xi x} \, d\xi \, dx = \int g(x) \overline{f(x)} \, dx = \langle f, g \rangle_{L^2}.
+$$
+
+**Polarisation identity.** As a consequence, the Fourier transform preserves the full inner product structure, not just norms:
+
+$$
+\langle \hat{f}, \hat{g} \rangle_{L^2} = \langle f, g \rangle_{L^2} \quad \forall f, g \in L^2(\mathbb{R}).
+$$
 
 ## The Inversion Formula
 
-**Theorem.** If $f \in L^1(\mathbb{R})$ and $\hat{f} \in L^1(\mathbb{R})$, then for a.e. $x$:
+**Theorem (Pointwise inversion).** If $f \in L^1(\mathbb{R})$ and $\hat{f} \in L^1(\mathbb{R})$, then for almost every $x \in \mathbb{R}$:
 
 $$
-f(x) = \int_{-\infty}^{\infty} \hat{f}(\xi) \, e^{2\pi i \xi x} \, d\xi
+f(x) = \int_{-\infty}^{\infty} \hat{f}(\xi) \, e^{2\pi i \xi x} \, d\xi.
 $$
 
-**Proof.** Define the approximate identity $\phi_\epsilon(x) = e^{-\pi \epsilon^2 x^2}$ (a Gaussian). Its Fourier transform is $\hat{\phi}_\epsilon(\xi) = \epsilon^{-1} e^{-\pi \xi^2 / \epsilon^2}$. Consider:
+The proof uses an approximate identity argument. Define $\phi_\epsilon(x) = e^{-\pi \epsilon^2 x^2}$. Its Fourier transform is $\hat{\phi}_\epsilon(\xi) = \epsilon^{-1} e^{-\pi \xi^2/\epsilon^2}$. The regularised integral
 
 $$
-\int \hat{f}(\xi) \, e^{2\pi i \xi x} \, e^{-\pi \epsilon^2 \xi^2} \, d\xi = \int f(t) \, \phi_\epsilon(x-t) \, dt
+\int \hat{f}(\xi) e^{2\pi i \xi x} e^{-\pi \epsilon^2 \xi^2} \, d\xi = (f * \phi_\epsilon)(x)
 $$
 
-The right side is the convolution $f * \phi_\epsilon$, which converges to $f(x)$ at every Lebesgue point as $\epsilon \to 0^+$. Passing the limit under the integral on the left (by dominated convergence, using $\hat{f} \in L^1$) completes the proof. $\square$
+converges to $f(x)$ at every Lebesgue point as $\epsilon \to 0^+$. Passing the limit under the left integral by dominated convergence (justified since $\hat{f} \in L^1$) establishes the result.
 
-## Key Properties
+**$L^2$ inversion.** For $f \in L^2(\mathbb{R})$, the inversion holds in the $L^2$ sense:
 
-| Property | Statement |
+$$
+f = \lim_{R \to \infty} \int_{-R}^{R} \hat{f}(\xi) e^{2\pi i \xi x} \, d\xi,
+$$
+
+where the limit is taken in $L^2$ norm. This follows directly from $\mathcal{F}$ being unitary: $\mathcal{F}^{-1} = \mathcal{F}^*$ (the adjoint), and for this convention $\mathcal{F}^*\{g\}(x) = \int g(\xi) e^{2\pi i \xi x} d\xi$.
+
+## Key Properties Table
+
+| Property | Formula |
 |---|---|
 | Linearity | $\mathcal{F}\{\alpha f + \beta g\} = \alpha \hat{f} + \beta \hat{g}$ |
 | Translation | $\mathcal{F}\{f(x-a)\}(\xi) = e^{-2\pi i a \xi} \hat{f}(\xi)$ |
 | Modulation | $\mathcal{F}\{e^{2\pi i \xi_0 x} f(x)\}(\xi) = \hat{f}(\xi - \xi_0)$ |
-| Scaling | $\mathcal{F}\{f(ax)\}(\xi) = \frac{1}{\lvert a \rvert}\hat{f}\!\left(\frac{\xi}{a}\right)$ |
+| Dilation | $\mathcal{F}\{f(ax)\}(\xi) = \frac{1}{|a|}\hat{f}\!\left(\frac{\xi}{a}\right)$ |
+| Differentiation | $\mathcal{F}\{f'\}(\xi) = 2\pi i \xi \, \hat{f}(\xi)$ |
 | Convolution | $\mathcal{F}\{f * g\} = \hat{f} \cdot \hat{g}$ |
-| Differentiation | $\mathcal{F}\{f'\}(\xi) = 2\pi i \xi \hat{f}(\xi)$ |
 
-## Numerical Computation: DFT Correspondence
+Each property is derived from direct substitution into the definition. The convolution theorem, for example, converts the integral operator $(f*g)(x) = \int f(x-y)g(y)dy$ into pointwise multiplication in the frequency domain — the fundamental reason why the Fourier transform simplifies linear time-invariant systems.
 
-The Discrete Fourier Transform approximates the continuous transform on a uniform grid:
+## Application: Solving the Heat Equation
+
+The one-dimensional heat equation with thermal diffusivity $\kappa > 0$ reads
+
+$$
+\frac{\partial u}{\partial t} = \kappa \frac{\partial^2 u}{\partial x^2}, \quad u(x,0) = u_0(x), \quad x \in \mathbb{R}, \; t > 0.
+$$
+
+Applying the Fourier transform in $x$ and using the differentiation property:
+
+$$
+\frac{\partial \hat{u}}{\partial t} = \kappa (2\pi i \xi)^2 \hat{u} = -4\pi^2 \kappa \xi^2 \hat{u}.
+$$
+
+This is an ODE in $t$ with solution
+
+$$
+\hat{u}(\xi, t) = \hat{u}_0(\xi) \, e^{-4\pi^2 \kappa \xi^2 t}.
+$$
+
+By the convolution theorem, $u(x,t) = u_0 * G_t$, where $G_t$ is the **heat kernel** (Gaussian):
+
+$$
+\boxed{G_t(x) = \frac{1}{\sqrt{4\pi \kappa t}} \exp\!\left(-\frac{x^2}{4\kappa t}\right).}
+$$
+
+This is the fundamental solution: the temperature profile at time $t$ is obtained by convolving the initial condition with a spreading Gaussian whose variance $\sigma^2 = 2\kappa t$ grows linearly with time. The Fourier transform reduces the PDE to an algebraic multiplication in frequency space — the paradigmatic application of transform methods to linear PDEs.
 
 ```python
 import numpy as np
+import matplotlib.pyplot as plt
 
-def continuous_ft_approx(
-    f_vals: np.ndarray,
-    x_vals: np.ndarray,
-    xi_vals: np.ndarray,
-) -> np.ndarray:
+def heat_kernel(x: np.ndarray, t: float, kappa: float) -> np.ndarray:
     """
-    Naive O(N^2) approximation of the continuous FT.
-    For demonstration only — use np.fft.fft in practice.
+    Evaluate the 1D heat kernel G_t(x).
+    
+    Args:
+        x:     Spatial coordinates [m]
+        t:     Time [s], must be > 0
+        kappa: Thermal diffusivity [m^2/s]
+    
+    Returns:
+        G_t(x): Heat kernel values
     """
-    dx = x_vals[1] - x_vals[0]
-    F = np.array([
-        np.sum(f_vals * np.exp(-2j * np.pi * xi * x_vals)) * dx
-        for xi in xi_vals
-    ])
-    return F
+    return np.exp(-x**2 / (4 * kappa * t)) / np.sqrt(4 * np.pi * kappa * t)
 
-# The FFT computes:  F[k] = sum_{n=0}^{N-1} f[n] * exp(-2pi*i*k*n/N)
-# With physical frequency resolution:  delta_xi = 1 / (N * dx)
+# Solve heat equation for a delta-function initial condition
+x = np.linspace(-5, 5, 1000)
+kappa = 0.01  # m^2/s (e.g. copper: 1.17e-4)
+times = [0.1, 0.5, 1.0, 2.0]  # seconds
 
-N = 1024
-dx = 1e-3  # 1 mm spatial sampling
-xi = np.fft.fftfreq(N, d=dx)  # Frequency axis in cycles/m
+for t in times:
+    plt.plot(x, heat_kernel(x, t, kappa), label=f"t = {t} s")
+
+plt.xlabel("x [m]")
+plt.ylabel("G_t(x) [1/m]")
+plt.title("Heat kernel evolution")
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.show()
 ```
 
-The relationship between DFT and continuous FT becomes exact in the limit $N \to \infty$, $\Delta x \to 0$ with $N \Delta x$ fixed.
+## References
 
-## Summary
+[1] E. M. Stein and R. Shakarchi, *Fourier Analysis: An Introduction*, Princeton Lectures in Analysis, vol. 1. Princeton, NJ: Princeton University Press, 2003.
 
-The Fourier Transform arises naturally from the Fourier series as the period $2L \to \infty$. Rigorously, it is an isometric isomorphism on $L^2(\mathbb{R})$ (Plancherel), and the inversion formula holds for every Lebesgue point when both $f$ and $\hat{f}$ are integrable. These properties — linearity, the convolution theorem, and the differentiation rule — make it the central tool of linear analysis.
+[2] W. Rudin, *Real and Complex Analysis*, 3rd ed. New York: McGraw-Hill, 1987.
+
+[3] T. W. Körner, *Fourier Analysis*. Cambridge: Cambridge University Press, 1988.
+
+[4] M. Reed and B. Simon, *Methods of Modern Mathematical Physics, Volume II: Fourier Analysis, Self-Adjointness*. San Diego: Academic Press, 1975.
+
+[5] L. Grafakos, *Classical Fourier Analysis*, 3rd ed. New York: Springer, 2014.

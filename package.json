@@ -9,10 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@radix-ui/react-slot": "^1.2.4",
+    "@tailwindcss/line-clamp": "^0.4.4",
     "@tailwindcss/typography": "^0.5.19",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "gray-matter": "^4.0.3",
     "katex": "^0.16.39",
+    "lucide-react": "^1.7.0",
     "next": "14.2.35",
     "next-mdx-remote": "^6.0.0",
     "react": "^18",
@@ -23,7 +28,9 @@
     "rehype-pretty-code": "^0.14.3",
     "rehype-slug": "^6.0.0",
     "remark-math": "^6.0.0",
-    "shiki": "^4.0.2"
+    "shiki": "^4.0.2",
+    "tailwind-merge": "^3.5.0",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@types/mdx": "^2.0.13",

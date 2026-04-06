@@ -2,7 +2,12 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { getPostsByCategory, VALID_CATEGORIES } from '@/lib/posts';
 import { generateCategoryMetadata } from '@/lib/metadata';
-import ArticleCard from '@/components/ArticleCard';
+import ArticleCard from '@/components/ArticleCard'; // Keeping original article card per instructions
+import PageHeader from '@/components/page-header';
+import ElectronicsBg from '@/components/backgrounds/electronics-bg';
+import AstrophysicsBg from '@/components/backgrounds/astrophysics-bg';
+import PhysicsBg from '@/components/backgrounds/physics-bg';
+import ResearchBg from '@/components/backgrounds/research-bg';
 
 type Props = { params: { category: string } };
 
@@ -18,11 +23,43 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return generateCategoryMetadata(params.category, posts.length);
 }
 
-const categoryLabels: Record<string, string> = {
-  electronics: 'Electronics & Communications',
-  astrophysics: 'Astrophysics',
-  'physics-math': 'Physics & Mathematics',
-  'research-logs': 'Research Logs',
+const getCategoryConfig = (category: string) => {
+  switch (category) {
+    case 'electronics':
+      return {
+        label: "CATEGORY",
+        title: "Electronics & Communications",
+        subtitle: "Signal processing, circuits, RF systems, embedded design, and communications theory.",
+        accentColor: "cyan" as const,
+        BgComponent: ElectronicsBg,
+      };
+    case 'astrophysics':
+      return {
+        label: "CATEGORY",
+        title: <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-indigo-400">Astrophysics</span>,
+        subtitle: "Cosmology, stellar physics, gravitational waves, dark matter, and observational methods.",
+        accentColor: "violet" as const,
+        BgComponent: AstrophysicsBg,
+      };
+    case 'physics-math':
+      return {
+        label: "CATEGORY",
+        title: <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">Physics & Mathematics</span>,
+        subtitle: "Quantum mechanics, electrodynamics, analysis, differential geometry, and mathematical physics.",
+        accentColor: "emerald" as const,
+        BgComponent: PhysicsBg,
+      };
+    case 'research-logs':
+      return {
+        label: "CATEGORY",
+        title: "Research Logs",
+        subtitle: "Experimental notes, field campaigns, sensor data analysis, and ongoing investigation threads.",
+        accentColor: "amber" as const,
+        BgComponent: ResearchBg,
+      };
+    default:
+      return null;
+  }
 };
 
 export default function CategoryPage({ params }: Props) {
@@ -31,32 +68,42 @@ export default function CategoryPage({ params }: Props) {
   }
 
   const posts = getPostsByCategory(params.category);
-  const label = categoryLabels[params.category] ?? params.category;
+  const config = getCategoryConfig(params.category);
+
+  if (!config) {
+    return notFound();
+  }
+
+  const { label, title, subtitle, accentColor, BgComponent } = config;
 
   return (
-    <div className="px-6 py-16">
-      <div className="mx-auto max-w-screen-xl">
-        <header className="mb-12 max-w-prose">
-          <p className="mb-2 font-mono text-xs uppercase tracking-widest text-neutral-600">
-            Category
-          </p>
-          <h1 className="font-serif text-3xl font-semibold text-neutral-100 sm:text-4xl">
-            {label}
-          </h1>
-          <p className="mt-2 text-sm text-neutral-500">
-            {posts.length} {posts.length === 1 ? 'article' : 'articles'}
-          </p>
-        </header>
+    <div className="relative min-h-screen overflow-hidden">
+      <BgComponent />
+      
+      {/* Top gradient overlay */}
+      <div className="absolute top-0 left-0 w-full h-[120px] bg-gradient-to-b from-[#050810] to-transparent z-0 pointer-events-none" />
 
-        {posts.length > 0 ? (
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {posts.map((post) => (
-              <ArticleCard key={post.slug} post={post} showCategory={false} />
-            ))}
-          </div>
-        ) : (
-          <p className="text-sm text-neutral-500">No articles in this category yet.</p>
-        )}
+      <div className="relative z-10 px-6 py-16">
+        <div className="mx-auto max-w-screen-xl">
+          <PageHeader 
+            label={label}
+            title={title}
+            subtitle={subtitle}
+            accentColor={accentColor}
+            count={posts.length}
+            countLabel="articles"
+          />
+
+          {posts.length > 0 ? (
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {posts.map((post) => (
+                <ArticleCard key={post.slug} post={post} showCategory={false} />
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-neutral-500">No articles in this category yet.</p>
+          )}
+        </div>
       </div>
     </div>
   );

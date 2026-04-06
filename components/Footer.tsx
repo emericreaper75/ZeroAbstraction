@@ -2,6 +2,17 @@
 
 import Link from 'next/link';
 import { useDistractionFree } from '@/components/DistractionFreeProvider';
+import { Separator } from '@/components/ui/separator';
+
+const footerLinks = [
+  { href: '/blog', label: 'Blog' },
+  { href: '/electronics', label: 'Electronics' },
+  { href: '/astrophysics', label: 'Astrophysics' },
+  { href: '/physics-math', label: 'Physics & Math' },
+  { href: '/research-logs', label: 'Research Logs' },
+  { href: '/projects', label: 'Projects' },
+  { href: '/timeline', label: 'Timeline' },
+];
 
 export default function Footer() {
   const { isDistractionFree } = useDistractionFree();
@@ -9,13 +20,14 @@ export default function Footer() {
   if (isDistractionFree) return null;
 
   return (
-    <footer className="border-t border-neutral-800 bg-neutral-950">
+    <footer className="border-t border-neutral-800 bg-neutral-950" role="contentinfo">
       <div className="mx-auto max-w-screen-xl px-6 py-10">
         <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
           <div>
             <Link
               href="/"
               className="font-serif text-base font-semibold text-neutral-300 hover:text-sky-400 transition-colors"
+              aria-label="Zero Abstraction — Home"
             >
               Zero<span className="text-sky-500">Abstraction</span>
             </Link>
@@ -23,15 +35,8 @@ export default function Footer() {
               Notes without hand-waving.
             </p>
           </div>
-          <nav className="flex flex-wrap gap-x-5 gap-y-2">
-            {[
-              { href: '/electronics', label: 'Electronics' },
-              { href: '/astrophysics', label: 'Astrophysics' },
-              { href: '/physics-math', label: 'Physics & Math' },
-              { href: '/research-logs', label: 'Research Logs' },
-              { href: '/projects', label: 'Projects' },
-              { href: '/timeline', label: 'Timeline' },
-            ].map((link) => (
+          <nav className="flex flex-wrap gap-x-5 gap-y-2" aria-label="Footer navigation">
+            {footerLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -42,11 +47,14 @@ export default function Footer() {
             ))}
           </nav>
         </div>
-        <div className="mt-8 flex items-center justify-between border-t border-neutral-800 pt-6">
+
+        <Separator className="mt-8 bg-neutral-800" />
+
+        <div className="mt-6 flex items-center justify-between">
           <p className="text-xs text-neutral-600">
             © {new Date().getFullYear()} Zero Abstraction. All rights reserved.
           </p>
-          <p className="text-xs text-neutral-700 font-mono">v0.1.0</p>
+          <p className="text-xs text-neutral-700 font-mono">v0.2.0</p>
         </div>
       </div>
     </footer>

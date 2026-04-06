@@ -1,40 +1,92 @@
 import { TimelineEntry } from '@/lib/timeline';
 import { formatDate } from '@/lib/utils';
 
-const categoryColors: Record<string, string> = {
-  electronics: 'bg-amber-500',
-  astrophysics: 'bg-violet-500',
-  'physics-math': 'bg-sky-500',
-  research: 'bg-emerald-500',
-  academic: 'bg-rose-500',
+type CategoryConfig = {
+  bg: string;
+  ring: string;
+  borderHover: string;
+  glow: string;
+};
+
+const categoryConfigs: Record<string, CategoryConfig> = {
+  electronics: { 
+    bg: 'bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.6)]', 
+    ring: 'ring-cyan-950/30', 
+    borderHover: 'hover:border-cyan-400/50 group-hover:border-l-2 hover:border-l-cyan-400', 
+    glow: 'hover:shadow-[0_0_25px_rgba(34,211,238,0.15)]' 
+  },
+  astrophysics: { 
+    bg: 'bg-violet-400 shadow-[0_0_8px_rgba(139,92,246,0.6)]', 
+    ring: 'ring-violet-950/30', 
+    borderHover: 'hover:border-violet-400/50 group-hover:border-l-2 hover:border-l-violet-400', 
+    glow: 'hover:shadow-[0_0_25px_rgba(168,85,247,0.15)]' 
+  },
+  'physics-math': { 
+    bg: 'bg-emerald-400 shadow-[0_0_8px_rgba(74,222,128,0.6)]', 
+    ring: 'ring-emerald-950/30', 
+    borderHover: 'hover:border-emerald-400/50 group-hover:border-l-2 hover:border-l-emerald-400', 
+    glow: 'hover:shadow-[0_0_25px_rgba(74,222,128,0.15)]' 
+  },
+  physics: { 
+    bg: 'bg-emerald-400 shadow-[0_0_8px_rgba(74,222,128,0.6)]', 
+    ring: 'ring-emerald-950/30', 
+    borderHover: 'hover:border-emerald-400/50 group-hover:border-l-2 hover:border-l-emerald-400', 
+    glow: 'hover:shadow-[0_0_25px_rgba(74,222,128,0.15)]' 
+  },
+  math: { 
+    bg: 'bg-emerald-400 shadow-[0_0_8px_rgba(74,222,128,0.6)]', 
+    ring: 'ring-emerald-950/30', 
+    borderHover: 'hover:border-emerald-400/50 group-hover:border-l-2 hover:border-l-emerald-400', 
+    glow: 'hover:shadow-[0_0_25px_rgba(74,222,128,0.15)]' 
+  },
+  research: { 
+    bg: 'bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]', 
+    ring: 'ring-amber-950/30', 
+    borderHover: 'hover:border-amber-400/50 group-hover:border-l-2 hover:border-l-amber-400', 
+    glow: 'hover:shadow-[0_0_25px_rgba(251,191,36,0.15)]' 
+  },
+  academic: { 
+    bg: 'bg-zinc-400 text-zinc-400', 
+    ring: 'ring-zinc-950/30', 
+    borderHover: 'hover:border-zinc-400/50 group-hover:border-l-2 hover:border-l-zinc-400', 
+    glow: 'hover:shadow-[0_0_25px_rgba(161,161,170,0.15)]' 
+  },
+};
+
+const defaultConfig: CategoryConfig = {
+  bg: 'bg-zinc-500 text-zinc-500', 
+  ring: 'ring-neutral-950/30', 
+  borderHover: 'hover:border-neutral-500/50 group-hover:border-l-2 hover:border-l-neutral-500', 
+  glow: 'hover:shadow-[0_0_25px_rgba(115,115,115,0.15)]' 
 };
 
 type Props = { entry: TimelineEntry; isLast?: boolean };
 
 export default function TimelineItem({ entry, isLast = false }: Props) {
-  const dotColor = categoryColors[entry.category] ?? 'bg-neutral-500';
+  const cn = categoryConfigs[entry.category] ?? defaultConfig;
 
   return (
-    <div className="relative flex gap-6 pb-10">
+    <div className="relative flex gap-6 pb-12 group">
       {/* Vertical line */}
       {!isLast && (
-        <div className="absolute left-[11px] top-6 h-full w-px bg-neutral-800" />
+        <div className="absolute left-[11px] top-6 h-full w-px bg-neutral-800/80 group-hover:bg-neutral-700 transition-colors duration-300" />
       )}
 
       {/* Dot */}
-      <div className={`relative mt-1 h-5 w-5 shrink-0 rounded-full ${dotColor} ring-4 ring-neutral-950`} />
+      <div className={`relative mt-1 h-5 w-5 shrink-0 rounded-full ${cn.bg} ring-4 ${cn.ring} transition-all duration-300`} />
 
       {/* Content */}
-      <div className="min-w-0 flex-1 rounded-lg border border-neutral-800 bg-neutral-900/50 p-5 transition-colors hover:border-neutral-700">
-        <time className="font-mono text-xs text-neutral-600">{formatDate(entry.date)}</time>
-        <h3 className="mt-1 font-serif text-base font-semibold text-neutral-100">{entry.title}</h3>
-        <p className="mt-2 text-sm leading-relaxed text-neutral-400">{entry.description}</p>
+      <div className={`min-w-0 flex-1 rounded-xl border border-neutral-800 bg-neutral-900/40 p-6 transition-all duration-300 ${cn.borderHover} ${cn.glow}`}>
+        <time className="font-mono text-[11px] tracking-wider uppercase text-neutral-500">{formatDate(entry.date)}</time>
+        <h3 className="mt-2 font-serif text-lg font-semibold text-neutral-100 group-hover:text-white transition-colors">{entry.title}</h3>
+        <p className="mt-3 text-sm leading-relaxed text-neutral-400 group-hover:text-neutral-300 transition-colors">{entry.description}</p>
+        
         {entry.tags && (
-          <div className="mt-3 flex flex-wrap gap-1.5">
+          <div className="mt-4 flex flex-wrap gap-2">
             {entry.tags.map((tag) => (
               <span
                 key={tag}
-                className="rounded-full border border-neutral-700 px-2 py-0.5 font-mono text-[11px] text-neutral-500"
+                className="rounded-md border border-neutral-800/80 bg-neutral-900/50 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-neutral-400"
               >
                 {tag}
               </span>

@@ -1,0 +1,265 @@
+---
+title: "Quantum Circuit Simulator"
+date: "2024-09-05"
+description: "A state-vector quantum circuit simulator supporting up to 20 qubits with gate decomposition, noise models, and Bloch sphere visualisation. GPU-accelerated with CUDA/CuPy for 12x speedup."
+tags: ["Python", "NumPy", "SciPy", "Plotly", "CUDA", "CuPy", "quantum-computing"]
+category: "physics-math"
+slug: "quantum-circuit-simulator"
+---
+
+## Overview
+
+This project implements a full state-vector quantum circuit simulator in Python with an optional GPU-accelerated backend via CuPy/CUDA. State-vector simulation provides exact results — no stochastic sampling, no approximations — at the cost of exponential memory in the number of qubits.
+
+**Key capabilities:**
+
+- Arbitrary single-qubit and two-qubit gate application via tensor product structure
+- Solovay-Kitaev gate decomposition for universal quantum computation
+- Depolarising, amplitude damping, and thermal relaxation noise channels
+- Bloch sphere visualisation of single-qubit states using Plotly
+- GPU acceleration: $12\times$ speedup on 18-qubit circuits vs. NumPy baseline
+
+> **Note.** State-vector simulation is exact but memory-intensive. The state vector for $n$ qubits requires $2^n$ complex128 values. At 20 qubits this is 16 MB; at 30 qubits it exceeds 16 GB.
+
+## State Vector Formalism
+
+An $n$-qubit quantum state is a unit vector in the Hilbert space $\mathcal{H} = (\mathbb{C}^2)^{\otimes n} \cong \mathbb{C}^{2^n}$:
+
+$$
+|\psi\rangle = \sum_{k=0}^{2^n - 1} \alpha_k |k\rangle, \quad \sum_{k=0}^{2^n - 1} |\alpha_k|^2 = 1,
+$$
+
+where $|k\rangle$ is the computational basis state corresponding to the binary representation of $k$.
+
+### Gate Application
+
+A single-qubit gate $U$ applied to qubit $k$ in an $n$-qubit register acts as the tensor product:
+
+$$
+U_k = I^{\otimes(k-1)} \otimes U \otimes I^{\otimes(n-k)},
+$$
+
+which is a $2^n \times 2^n$ unitary matrix. In practice, we never form this matrix explicitly. Instead, we reshape the state vector into a rank-$n$ tensor and contract $U$ along axis $k$.
+
+### Standard Gate Matrices
+
+The Hadamard gate:
+
+$$
+H = \frac{1}{\sqrt{2}} \begin{pmatrix} 1 & 1 \\ 1 & -1 \end{pmatrix}
+$$
+
+The Pauli matrices:
+
+$$
+X = \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}, \quad
+Y = \begin{pmatrix} 0 & -i \\ i & 0 \end{pmatrix}, \quad
+Z = \begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix}
+$$
+
+The two-qubit CNOT (controlled-NOT) gate in the computational basis $\{|00\rangle, |01\rangle, |10\rangle, |11\rangle\}$:
+
+$$
+\text{CNOT} = \begin{pmatrix} 1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 1 & 0 \end{pmatrix}
+$$
+
+### Measurement
+
+Measurement in the computational basis follows the Born rule. The probability of measuring outcome $j$ is
+
+$$
+P(j) = |\langle j | \psi \rangle|^2 = |\alpha_j|^2.
+$$
+
+After measurement yielding outcome $j$, the state collapses to $|j\rangle$.
+
+## Gate Decomposition Engine
+
+Any single-qubit unitary $U \in \text{SU}(2)$ can be decomposed into a sequence of gates from the universal set $\{H, T, \text{CNOT}\}$ using the **Solovay-Kitaev theorem**: for any $\epsilon > 0$, there exists a gate sequence of length $O(\log^c(1/\epsilon))$ (where $c \approx 3.97$) that approximates $U$ to within operator norm $\epsilon$.
+
+The decomposition proceeds recursively:
+
+1. Find the closest element $U_0$ in the base approximation set (precomputed to depth $\ell_0$)
+2. Compute the residual $V = U U_0^\dagger$, which is close to the identity
+3. Factor $V$ as a group commutator $V \approx W Z W^\dagger Z^\dagger$ using the balanced group commutator decomposition
+4. Recursively decompose $W$ and $Z$
+
+```python
+import numpy as np
+from typing import List, Tuple
+
+def solovay_kitaev(
+    target: np.ndarray,      # 2x2 unitary matrix
+    base_gates: List[Tuple[str, np.ndarray]],  # precomputed gate set
+    depth: int = 5           # recursion depth
+) -> List[str]:
+    """
+    Approximate a single-qubit unitary using the Solovay-Kitaev algorithm.
+    
+    Returns:
+        List of gate names forming the decomposition.
+    """
+    if depth == 0:
+        # Base case: find nearest gate in precomputed library
+        best_name, best_dist = "", np.inf
+        for name, gate in base_gates:
+            dist = np.linalg.norm(target - gate, ord=2)
+            if dist < best_dist:
+                best_dist = dist
+                best_name = name
+        return [best_name]
+    
+    # Recursive step
+    u_approx_seq = solovay_kitaev(target, base_gates, depth - 1)
+    u_approx = sequence_to_matrix(u_approx_seq, base_gates)
+    
+    # Residual
+    residual = target @ u_approx.conj().T
+    
+    # Balanced group commutator decomposition
+    w, z = balanced_commutator_decompose(residual)
+    
+    w_seq = solovay_kitaev(w, base_gates, depth - 1)
+    z_seq = solovay_kitaev(z, base_gates, depth - 1)
+    
+    # V ≈ W Z W† Z† → full sequence
+    w_dag = [f"{g}†" for g in reversed(w_seq)]
+    z_dag = [f"{g}†" for g in reversed(z_seq)]
+    
+    return w_seq + z_seq + w_dag + z_dag + u_approx_seq
+```
+
+Circuit depth is further optimised by applying gate commutation rules: gates acting on disjoint qubits commute and can be parallelised, reducing circuit depth while maintaining unitarity.
+
+## GPU Backend with CUDA/CuPy
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                   Quantum Circuit Simulator                     │
+├──────────────────────────┬──────────────────────────────────────┤
+│         CPU              │            GPU (CUDA)               │
+│  ┌──────────────────┐    │  ┌────────────────────────────────┐ │
+│  │ Circuit Parser    │    │  │ State Vector (CuPy complex128)│ │
+│  │ Gate Scheduler    │───▶│  │ 2^n elements                  │ │
+│  │ Result Collector  │    │  │                                │ │
+│  └──────────────────┘    │  │ Gate application kernel:       │ │
+│                          │  │ Tensor contraction via reshape │ │
+│  Memory requirements:    │  │ + matmul + reshape             │ │
+│  18 qubits:    4 MB      │  └────────────────────────────────┘ │
+│  25 qubits:  512 MB      │                                     │
+│  30 qubits:   16 GB      │                                     │
+└──────────────────────────┴──────────────────────────────────────┘
+```
+
+The core gate application kernel reshapes the $2^n$-dimensional state vector into a $2^{n-1} \times 2$ matrix (splitting along the target qubit axis), applies the $2 \times 2$ gate matrix via batch matrix multiplication, and reshapes back:
+
+```python
+import cupy as cp
+
+def apply_single_qubit_gate_gpu(
+    state: cp.ndarray,    # shape (2**n,), complex128
+    gate: cp.ndarray,     # shape (2, 2), complex128
+    target: int,          # target qubit index (0-indexed)
+    n_qubits: int
+) -> cp.ndarray:
+    """
+    Apply a single-qubit gate to the state vector on GPU.
+    """
+    # Reshape into rank-n tensor
+    shape = [2] * n_qubits
+    psi = state.reshape(shape)
+    
+    # Move target axis to last position
+    axes = list(range(n_qubits))
+    axes.remove(target)
+    axes.append(target)
+    psi = cp.transpose(psi, axes)
+    
+    # Apply gate: contract over last axis
+    psi = cp.tensordot(psi, gate, axes=([-1], [1]))
+    
+    # Restore original axis order
+    inv_axes = [0] * n_qubits
+    for i, ax in enumerate(axes):
+        inv_axes[ax] = i
+    psi = cp.transpose(psi, inv_axes)
+    
+    return psi.reshape(-1)
+```
+
+## Noise Models
+
+Real quantum hardware is noisy. We support three standard noise channels, each described by Kraus operators $\{K_i\}$ satisfying $\sum_i K_i^\dagger K_i = I$.
+
+### Depolarising Channel
+
+With probability $p$, the state is replaced by the maximally mixed state:
+
+$$
+\mathcal{E}(\rho) = (1-p)\rho + \frac{p}{3}(X\rho X + Y\rho Y + Z\rho Z).
+$$
+
+### Amplitude Damping
+
+Models energy relaxation ($T_1$ processes). Kraus operators:
+
+$$
+K_0 = \begin{pmatrix} 1 & 0 \\ 0 & \sqrt{1-\gamma} \end{pmatrix}, \quad
+K_1 = \begin{pmatrix} 0 & \sqrt{\gamma} \\ 0 & 0 \end{pmatrix},
+$$
+
+where $\gamma = 1 - e^{-t/T_1}$ is the damping parameter for gate duration $t$.
+
+### Thermal Relaxation
+
+Combines $T_1$ (energy relaxation) and $T_2$ (dephasing) processes. The thermal relaxation channel requires $T_2 \le 2T_1$ (physical constraint). For a gate of duration $t$:
+
+$$
+p_{\text{reset}} = 1 - e^{-t/T_1}, \quad
+p_z = \frac{1}{2}\left(1 - e^{-t/T_2}\right) - \frac{1}{2}p_{\text{reset}}.
+$$
+
+The density matrix transformation is applied by converting the state vector to a density matrix $\rho = |\psi\rangle\langle\psi|$, applying the Kraus operators, and extracting a new state vector via eigendecomposition (for mixed-state tracking, the full density matrix is retained).
+
+## Performance Benchmarks
+
+All benchmarks use random circuits of depth 20 with alternating layers of single-qubit (Hadamard + rotation) and two-qubit (CNOT) gates. Measured on Intel i7-12700K + NVIDIA RTX 3080 (10 GB VRAM). Times are averaged over 10 runs.
+
+| Qubits | NumPy (ms) | CuPy (ms) | Speedup |
+|---|---|---|---|
+| 10 | $2.1$ | $1.8$ | $1.2\times$ |
+| 12 | $8.4$ | $3.2$ | $2.6\times$ |
+| 14 | $34$ | $7.1$ | $4.8\times$ |
+| 16 | $140$ | $18$ | $7.8\times$ |
+| 18 | $810$ | $65$ | $12.5\times$ |
+
+Below 12 qubits, GPU overhead (kernel launch latency, host-device transfers) negates the parallelism benefit. The crossover point is around $n = 11$–$12$ qubits.
+
+## Bloch Sphere Visualisation
+
+A single-qubit pure state $|\psi\rangle = \cos(\theta/2)|0\rangle + e^{i\phi}\sin(\theta/2)|1\rangle$ maps to the Bloch sphere via the Bloch vector:
+
+$$
+\vec{r} = (\sin\theta\cos\phi, \; \sin\theta\sin\phi, \; \cos\theta).
+$$
+
+The north pole ($\vec{r} = \hat{z}$) represents $|0\rangle$; the south pole represents $|1\rangle$. Gates correspond to rotations: $X$ is a $\pi$-rotation about the $x$-axis, $H$ is a $\pi$-rotation about the axis $(\hat{x} + \hat{z})/\sqrt{2}$, and $T = R_z(\pi/4)$ is a $\pi/4$ rotation about $z$.
+
+The visualisation renders a unit sphere in Plotly's `Scatter3d` mode, with the state vector plotted as an arrow from the origin to $\vec{r}$. Gate trajectories are animated as arcs on the sphere surface.
+
+## Known Limitations
+
+- **Memory wall:** At $\sim 28$ qubits on a 16 GB GPU, the state vector alone consumes all available VRAM. Beyond this, out-of-core or distributed simulation is required.
+- **No tensor network backend:** Tensor network methods (MPS, PEPS) enable approximate simulation of much larger circuits for low-entanglement states. This is planned for v2.0.
+- **Single-qubit noise only:** The current noise model applies channels independently to each qubit. Correlated noise (crosstalk) and two-qubit gate errors are not yet implemented.
+- **No error correction:** Logical qubit simulation with stabiliser codes is out of scope for the current version.
+
+## References
+
+[1] M. A. Nielsen and I. L. Chuang, *Quantum Computation and Quantum Information*, 10th Anniversary Edition. Cambridge: Cambridge University Press, 2010.
+
+[2] J. Preskill, "Quantum Computing in the NISQ era and beyond," *Quantum*, vol. 2, p. 79, 2018.
+
+[3] C. M. Dawson and M. A. Nielsen, "The Solovay-Kitaev Algorithm," *Quantum Info. Comput.*, vol. 6, no. 1, pp. 81–95, 2006.
+
+[4] S. Aaronson and D. Gottesman, "Improved simulation of stabilizer circuits," *Phys. Rev. A*, vol. 70, p. 052328, 2004.
