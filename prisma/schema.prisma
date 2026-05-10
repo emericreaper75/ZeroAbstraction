@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ContentCategory {
+  ELECTRONICS
+  ASTROPHYSICS
+  PHYSICS_MATH
+  RESEARCH_LOGS
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String?
+  name         String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Project {
+  id           String   @id @default(cuid())
+  title        String
+  slug         String   @unique
+  description  String
+  content      String?
+  tags         String[]
+  thumbnail    String?
+  thumbnailAlt String?
+  githubUrl    String?
+  liveUrl      String?
+  featured     Boolean  @default(false)
+  published    Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model ContentPost {
+  id           String          @id @default(cuid())
+  title        String
+  slug         String          @unique
+  description  String
+  content      String?
+  category     ContentCategory
+  tags         String[]
+  thumbnail    String?
+  thumbnailAlt String?
+  featured     Boolean         @default(false)
+  published    Boolean         @default(true)
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String?
+  message   String
+  createdAt DateTime @default(now())
+}
