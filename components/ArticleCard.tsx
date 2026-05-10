@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Post } from '@/lib/posts';
 import CategoryBadge from './CategoryBadge';
 import { formatDate } from '@/lib/utils';
+import Image from 'next/image';
 
 type Props = {
   post: Post;
@@ -13,6 +14,19 @@ export default function ArticleCard({ post, showCategory = true }: Props) {
     <article className="group relative flex flex-col rounded-lg border border-neutral-800 bg-neutral-900/50 p-6 transition-all hover:border-neutral-700 hover:bg-neutral-900">
       <div className="mb-3 flex flex-wrap items-center gap-2">
         {showCategory && <CategoryBadge category={post.category} />}
+        {post.thumbnail && (
+          <Link
+            href={`/${post.category}/${post.slug}`}
+            className="relative mb-4 block aspect-[16/9] overflow-hidden rounded-md border border-neutral-800"
+          >
+            <Image
+              src={post.thumbnail}
+              alt={post.thumbnailAlt || post.title}
+              fill
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+          </Link>
+        )}
         {post.tags.slice(0, 2).map((tag) => (
           <span
             key={tag}

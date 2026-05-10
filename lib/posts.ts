@@ -10,6 +10,10 @@ export type PostFrontmatter = {
   tags: string[];
   category: string;
   slug: string;
+  thumbnail?: string;
+  thumbnailAlt?: string;
+  featured?: boolean;
+  published?: boolean;
 };
 
 export type Post = PostFrontmatter & {
@@ -47,6 +51,10 @@ function parsePost(filePath: string): Post {
     slug: data.slug ?? path.basename(filePath, '.mdx'),
     readingTime: stats.text,
     content,
+    thumbnail: data.thumbnail,
+    thumbnailAlt: data.thumbnailAlt,
+    featured: data.featured ?? false,
+    published: data.published ?? true,
   };
 }
 
