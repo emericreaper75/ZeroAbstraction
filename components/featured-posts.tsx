@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { formatDate } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { ArrowRight, Clock } from 'lucide-react';
-import type { Post } from '@/lib/posts';
+import type { PublicPostCard } from '@/lib/public/post-card';
 
 const categoryVariants: Record<string, 'electronics' | 'astrophysics' | 'physics' | 'research'> = {
   electronics: 'electronics',
@@ -20,7 +20,7 @@ const categoryLabels: Record<string, string> = {
 };
 
 type FeaturedPostsProps = {
-  posts: Post[];
+  posts: PublicPostCard[];
 };
 
 export default function FeaturedPosts({ posts }: FeaturedPostsProps) {
@@ -51,7 +51,7 @@ export default function FeaturedPosts({ posts }: FeaturedPostsProps) {
           {posts.map((post, index) => (
             <Link
               key={post.slug}
-              href={`/${post.category}/${post.slug}`}
+              href={`/${post.routeCategory}/${post.slug}`}
               className={`group relative flex flex-col rounded-xl border border-zinc-800 bg-zinc-900/40 transition-all duration-300 hover:border-zinc-700 hover:bg-zinc-900/70 overflow-hidden ${
                 index === 0 ? 'md:col-span-2 md:row-span-2' : ''
               }`}
@@ -61,8 +61,8 @@ export default function FeaturedPosts({ posts }: FeaturedPostsProps) {
 
               <div className={`flex flex-col ${index === 0 ? 'p-8' : 'p-6'} flex-grow`}>
                 <div className="mb-4 flex items-center gap-2">
-                  <Badge variant={categoryVariants[post.category] ?? 'default'}>
-                    {categoryLabels[post.category] ?? post.category}
+                  <Badge variant={categoryVariants[post.routeCategory] ?? 'default'}>
+                    {categoryLabels[post.routeCategory] ?? post.routeCategory}
                   </Badge>
                   <span className="flex items-center gap-1 text-xs text-zinc-600 font-mono">
                     <Clock className="w-3 h-3" aria-hidden="true" />

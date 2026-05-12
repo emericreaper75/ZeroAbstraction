@@ -14,13 +14,37 @@ enum ContentCategory {
   RESEARCH_LOGS
 }
 
+enum UserRole {
+  ADMIN
+  EDITOR
+  AUTHOR
+}
+
+enum RevisionEntityType {
+  POST
+  PROJECT
+}
+
+enum RevisionReason {
+  UPDATE
+  AUTOSAVE
+  PUBLISH
+  UNPUBLISH
+  ROLLBACK
+  BULK_OPERATION
+}
+
 model User {
   id           String   @id @default(cuid())
   email        String   @unique
   passwordHash String?
   name         String?
+  role         UserRole @default(AUTHOR)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+
+  createdRevisions ContentRevision[] @relation("ContentRevisionCreatedBy")
+  uploadedMedia    MediaAsset[]      @relation("MediaAssetUploadedBy")
 }
 
 model Project {
@@ -36,6 +60,7 @@ model Project {
   liveUrl      String?
   featured     Boolean  @default(false)
   published    Boolean  @default(true)
+  version      Int      @default(1)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
@@ -46,14 +71,44 @@ model ContentPost {
   slug         String          @unique
   description  String
   content      String?
+  // Indexed fields for faster queries and search
+  headings     Json?
+  readingTime  Int?
+  wordCount    Int?
   category     ContentCategory
   tags         String[]
   thumbnail    String?
   thumbnailAlt String?
   featured     Boolean         @default(false)
   published    Boolean         @default(true)
+  version      Int             @default(1)
   createdAt    DateTime        @default(now())
   updatedAt    DateTime        @updatedAt
+}
+
+model ContentRevision {
+  id               String             @id @default(cuid())
+  entityType       RevisionEntityType
+  entityId         String
+  entityVersion    Int
+  reason           RevisionReason
+  /**
+   * Full snapshot of the entity BEFORE the change.
+   * Kept as Json so we can evolve fields without migrations.
+   */
+  snapshot         Json
+  /**
+   * Client-supplied idempotency key to prevent duplicate revisions/saves
+   * when autosave retries or networks flap.
+   */
+  clientMutationId String?
+  createdById      String?
+  createdBy        User?              @relation("ContentRevisionCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt        DateTime           @default(now())
+
+  @@index([entityType, entityId, createdAt(sort: Desc)])
+  @@index([entityType, entityId, entityVersion])
+  @@unique([entityType, entityId, clientMutationId])
 }
 
 model ContactMessage {
@@ -63,4 +118,24 @@ model ContactMessage {
   subject   String?
   message   String
   createdAt DateTime @default(now())
+}
+
+model MediaAsset {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  url       String
+  name      String?
+  type      String?
+  size      Int?
+  width     Int?
+  height    Int?
+  metadata  Json?
+
+  uploadedById String?
+  uploadedBy   User?   @relation("MediaAssetUploadedBy", fields: [uploadedById], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([createdAt])
 }

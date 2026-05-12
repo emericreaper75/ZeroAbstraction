@@ -166,7 +166,6 @@ export default function Hero() {
       ctx.beginPath();
       ctx.strokeStyle = 'rgba(34, 211, 238, 0.9)';
       ctx.lineWidth = 2;
-      let lastY = 0;
       let glowDotX = 0;
       let glowDotY = 0;
       const dotTargetX = (width / 2 + (time * 50) % width) % width; // Scanning dot

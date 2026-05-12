@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+@import "@uploadthing/react/styles.css";
 
 @tailwind base;
 @tailwind components;
@@ -32,10 +33,11 @@
     --accent-astrophysics: #a855f7;
     --accent-physics: #4ade80;
     --accent-research: #fbbf24;
+
     --bg-base: #050810;
     --bg-surface: #06090f;
 
-    /* Chart colors for shadcn charts */
+    /* Chart colors */
     --chart-1: 195 80% 55%;
     --chart-2: 270 70% 60%;
     --chart-3: 142 70% 55%;
@@ -63,147 +65,204 @@
     --border: 220 16% 85%;
     --input: 220 16% 85%;
     --ring: 200 80% 45%;
+
     --bg-base: #f0f2f5;
     --bg-surface: #ffffff;
   }
-}
 
-@layer base {
+  html,
+  body {
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+  }
+
   * {
     @apply border-border;
     box-sizing: border-box;
-    padding: 0;
     margin: 0;
-  }
-
-  html {
-    scroll-behavior: smooth;
+    padding: 0;
   }
 
   body {
     @apply bg-background text-foreground;
-    background-color: var(--bg-base, hsl(var(--background)));
-    font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+
+    background-color: var(--bg-base);
+    font-family:
+      var(--font-inter),
+      system-ui,
+      -apple-system,
+      sans-serif;
+
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
     position: relative;
   }
 
   html.light body {
     background-color: var(--bg-base);
-    color: #18181b; /* zinc-900 */
+    color: #18181b;
   }
 
-  /* Focus visible ring for WCAG 2.1 AA keyboard navigation */
+  /* WCAG focus visibility */
   *:focus-visible {
     @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
   }
 }
 
+/* Background grid overlay */
 body::before {
   content: "";
+
   position: fixed;
   inset: 0;
+
   z-index: -1;
+
   background-image: url("/images/math-grid.jpg");
   background-repeat: repeat;
   background-size: 500px;
+
   opacity: 0.03;
+
   pointer-events: none;
+
   filter: grayscale(100%) invert(100%);
 }
 
-/* KaTeX display math centering */
+/* KaTeX */
 .katex-display {
   overflow-x: auto;
   overflow-y: hidden;
   padding: 1.5rem 0;
 }
 
-/* Hide KaTeX MathML elements to prevent visual duplication while keeping accessibility markup */
 .katex-mathml {
   display: none;
 }
 
-/* Code block scrollbar styling */
+/* Scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
+
 ::-webkit-scrollbar-track {
-  background: #27272a; /* zinc-800 */
+  background: #27272a;
 }
+
 ::-webkit-scrollbar-thumb {
-  background: #3f3f46; /* zinc-700 */
+  background: #3f3f46;
   border-radius: 3px;
 }
 
 pre::-webkit-scrollbar {
   height: 6px;
 }
+
 pre::-webkit-scrollbar-track {
   background: transparent;
 }
+
 pre::-webkit-scrollbar-thumb {
   background: hsl(220 16% 22%);
   border-radius: 3px;
 }
 
-/* Selection */
+/* Text Selection */
 ::selection {
-  background: rgba(34,211,238,0.25);
+  background: rgba(34, 211, 238, 0.25);
   color: inherit;
 }
 
-/* Shiki theme override for dark background */
+/* Shiki */
 .shiki {
   background: hsl(220 16% 10%) !important;
 }
 
-/* ZeroAbstraction Utilities */
+/* Utility Surfaces */
 .bg-base {
   background-color: var(--bg-base);
 }
+
 .bg-surface {
   background-color: var(--bg-surface);
 }
 
+/* Grid Background */
 .grid-bg {
   background-size: 48px 48px;
-  background-image: 
-    linear-gradient(to right, rgba(34,211,238,0.028) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(34,211,238,0.028) 1px, transparent 1px);
+
+  background-image:
+    linear-gradient(
+      to right,
+      rgba(34, 211, 238, 0.028) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(34, 211, 238, 0.028) 1px,
+      transparent 1px
+    );
 }
 
+/* Dot Background */
 .dot-bg {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-image:
+    radial-gradient(
+      rgba(255, 255, 255, 0.1) 1px,
+      transparent 1px
+    );
+
   background-size: 28px 28px;
 }
 
+/* Glow Utilities */
 .glow-cyan {
   box-shadow: 0 0 40px rgba(34, 211, 238, 0.15);
 }
+
 .glow-violet {
   box-shadow: 0 0 40px rgba(168, 85, 247, 0.15);
 }
+
 .glow-emerald {
   box-shadow: 0 0 40px rgba(74, 222, 128, 0.15);
 }
+
 .glow-amber {
   box-shadow: 0 0 40px rgba(251, 191, 36, 0.15);
 }
 
-.prose-za {
-  /* custom prose variables will be managed via tailwind.config.ts typography plugin but we can add specific overrides here */
-}
-
+/* Prose */
 .prose-za code {
   color: #22d3ee;
+
   background-color: rgba(34, 211, 238, 0.1);
+
   padding: 0.2em 0.4em;
+
   border-radius: 0.25rem;
 }
 
 .prose-za pre {
   background-color: #0d1117 !important;
+}
+
+/* Hide Scrollbars */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Glass Panel */
+.glass-panel {
+  @apply bg-black/20 backdrop-blur-md border border-cyan-500/10;
+
+  box-shadow:
+    0 0 40px rgba(0, 180, 255, 0.08);
 }

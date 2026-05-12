@@ -1,31 +1,12 @@
-import Link from "next/link";
 import AdminNav from "./admin-nav";
-
-const navItems = [
-  {
-    label: "Dashboard",
-    href: "/admin",
-  },
-  {
-    label: "Projects",
-    href: "/admin/projects",
-  },
-  {
-    label: "Posts",
-    href: "/admin/posts",
-  },
-  {
-    label: "Messages",
-    href: "/admin/messages",
-  },
-];
 
 export default function AdminSidebar() {
   return (
-    <aside className="w-64 border-r border-zinc-800 bg-zinc-900 p-6">
-      <div className="mb-12">
-        <h1 className="text-xl font-semibold leading-tight text-white">         
-             ZeroAbstraction
+    <aside className="flex w-[220px] shrink-0 flex-col border-r border-zinc-800 bg-zinc-900/95 p-5 backdrop-blur-md lg:w-64">
+      {/* Branding */}
+      <div className="mb-10">
+        <h1 className="text-2xl font-semibold leading-tight text-white">
+          ZeroAbstraction
         </h1>
 
         <p className="mt-1 text-sm text-zinc-400">
@@ -33,9 +14,13 @@ export default function AdminSidebar() {
         </p>
       </div>
 
-      <AdminNav />
+      {/* Navigation */}
+      <div className="flex-1">
+        <AdminNav />
+      </div>
 
-      <div className="mt-10 border-t border-zinc-800 pt-6">
+      {/* Footer */}
+      <div className="mt-8 border-t border-zinc-800 pt-6">
         <form
           action={async () => {
             "use server";
@@ -49,7 +34,7 @@ export default function AdminSidebar() {
         >
           <button
             type="submit"
-            className="w-full rounded-lg bg-zinc-800 px-3 py-2 text-sm text-zinc-200 transition hover:bg-zinc-700"
+            className="w-full rounded-xl bg-zinc-800 px-3 py-2 text-sm font-medium text-zinc-200 transition hover:bg-zinc-700"
           >
             Logout
           </button>

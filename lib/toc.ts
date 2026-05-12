@@ -4,6 +4,10 @@ export type TOCEntry = {
   level: 1 | 2 | 3;
 };
 
+export type TOCNode = TOCEntry & {
+  children: TOCNode[];
+};
+
 export function slugify(text: string): string {
   return text
     .toLowerCase()
@@ -25,4 +29,28 @@ export function extractTOC(content: string): TOCEntry[] {
   }
 
   return entries;
+}
+
+export function nestTOC(entries: TOCEntry[]): TOCNode[] {
+  const roots: TOCNode[] = [];
+  const stack: TOCNode[] = [];
+
+  for (const entry of entries) {
+    const node: TOCNode = { ...entry, children: [] };
+
+    while (stack.length > 0 && stack[stack.length - 1]!.level >= node.level) {
+      stack.pop();
+    }
+
+    const parent = stack[stack.length - 1];
+    if (parent) {
+      parent.children.push(node);
+    } else {
+      roots.push(node);
+    }
+
+    stack.push(node);
+  }
+
+  return roots;
 }

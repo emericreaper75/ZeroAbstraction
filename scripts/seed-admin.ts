@@ -6,28 +6,27 @@ async function main() {
   const email = "youremail@gmail.com";
   const password = "Quantum!Signal#Orbit2026";
 
-  const existingUser = await prisma.user.findUnique({
+  const passwordHash = await bcrypt.hash(password, 12);
+
+  await prisma.user.upsert({
     where: {
       email,
     },
-  });
 
-  if (existingUser) {
-    console.log("Admin user already exists.");
-    return;
-  }
+    update: {
+      passwordHash,
+      role: "EDITOR",
+    },
 
-  const passwordHash = await bcrypt.hash(password, 12);
-
-  await prisma.user.create({
-    data: {
+    create: {
       email,
       passwordHash,
       name: "Rec",
+      role: "EDITOR",
     },
   });
 
-  console.log("Admin user created successfully.");
+  console.log("Admin user synced successfully.");
 }
 
 main()

@@ -1,12 +1,22 @@
 import type { Metadata } from 'next';
-import { Inter, IBM_Plex_Serif, JetBrains_Mono, IBM_Plex_Mono } from 'next/font/google';
+import {
+  Inter,
+  IBM_Plex_Serif,
+  JetBrains_Mono,
+  IBM_Plex_Mono,
+} from 'next/font/google';
+
 import 'katex/dist/katex.min.css';
 import '../globals.css';
+
 import Navbar from '@/components/navbar';
 import Footer from '@/components/Footer';
+import { headers } from 'next/headers';
+
 import { DistractionFreeProvider } from '@/components/DistractionFreeProvider';
 import { generateSiteMetadata } from '@/lib/metadata';
 import { generateWebSiteJsonLd } from '@/lib/jsonld';
+import { is } from 'zod/v4/locales';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -37,12 +47,18 @@ const ibmPlexMono = IBM_Plex_Mono({
 
 export const metadata: Metadata = generateSiteMetadata();
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const websiteJsonLd = generateWebSiteJsonLd();
+
+  const pathname =
+  headers().get('x-pathname') || '';
+
+  const isHomePage =
+    pathname === '/';
 
   return (
     <html
@@ -52,9 +68,12 @@ export default function RootLayout({
       <head>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(websiteJsonLd),
+          }}
         />
       </head>
+
       <body className="min-h-screen bg-neutral-950 text-neutral-300 antialiased">
         {/* Skip navigation link for WCAG 2.1 AA */}
         <a
@@ -63,12 +82,20 @@ export default function RootLayout({
         >
           Skip to main content
         </a>
+
         <DistractionFreeProvider>
-          <Navbar />
-          <main id="main-content" className="min-h-[calc(100vh-64px-128px)]" role="main">
-            {children}
-          </main>
-          <Footer />
+          <div className="min-h-screen bg-neutral-950 text-neutral-300">
+            <Navbar />
+
+            <main
+              id="main-content"
+              role="main"
+            >
+              {children}
+            </main>
+
+            <Footer />
+          </div>
         </DistractionFreeProvider>
       </body>
     </html>

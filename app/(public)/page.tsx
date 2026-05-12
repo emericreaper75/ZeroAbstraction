@@ -1,6 +1,4 @@
-import { getAllPosts } from "@/lib/posts";
-
-import { getFeaturedProjects } from "@/lib/projects/get-featured-projects";
+import { getHomepageSections } from "@/lib/homepage/homepage-service";
 
 import Hero from "@/components/hero";
 import DomainCards from "@/components/domain-cards";
@@ -10,13 +8,9 @@ import PortfolioGrid from "@/components/portfolio-grid";
 import { generateWebSiteJsonLd } from "@/lib/jsonld";
 
 export default async function HomePage() {
-  const allPosts = getAllPosts();
-
-  const featuredPosts =
-    allPosts.slice(0, 3);
-
-  const featuredProjects =
-    await getFeaturedProjects();
+  const sections = await getHomepageSections();
+  const featuredPosts = sections.find((s) => s.type === "featuredPosts")?.posts ?? [];
+  const featuredProjects = sections.find((s) => s.type === "featuredProjects")?.projects ?? [];
 
   const websiteJsonLd =
     generateWebSiteJsonLd();

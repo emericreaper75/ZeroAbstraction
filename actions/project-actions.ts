@@ -5,6 +5,9 @@ import { redirect } from "next/navigation";
 
 import { prisma } from "@/lib/db/prisma";
 import { projectSchema } from "@/lib/validations/project";
+import { updateProjectWithRevision } from "@/lib/editorial/projects/project-service";
+import { requireRole } from "@/lib/authz/require-role";
+import { error } from "console";
 
 export async function createProject(
   prevState: {
@@ -12,6 +15,7 @@ export async function createProject(
   },
   formData: FormData
 ) {
+  await requireRole("EDITOR");
   const rawData = {
     title:
         formData.get("title")?.toString() ?? "",
@@ -92,7 +96,9 @@ export async function createProject(
 
   revalidatePath("/admin/projects");
 
-  redirect("/admin/projects");
+  return {
+    error: "",
+  };
 }
 
 export async function updateProject(
@@ -102,6 +108,7 @@ export async function updateProject(
   },
   formData: FormData
 ) {
+  await requireRole("EDITOR");
   const rawData = {
     title:
       formData.get("title")?.toString() ?? "",
@@ -163,18 +170,10 @@ export async function updateProject(
     published = false,
   } = validatedFields.data;
 
-  const slug = title
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, "-");
-
-  await prisma.project.update({
-    where: {
-      id,
-    },
+  const updated = await updateProjectWithRevision({
+    id,
     data: {
       title,
-      slug,
       description,
       content,
       tags,
@@ -182,18 +181,70 @@ export async function updateProject(
       liveUrl,
       featured,
       published,
+      reason: "UPDATE",
     },
   });
 
   revalidatePath("/admin/projects");
-  revalidatePath(`/projects/${slug}`);
+  revalidatePath(`/projects/${updated.slug}`);
 
-  redirect("/admin/projects");
+  return {
+    error: "",
+  };
+}
+
+export async function autosaveProjectDraft(input: {
+  id: string;
+  data: {
+    title: string;
+    description?: string;
+    content?: string;
+    tags?: string[];
+    githubUrl?: string;
+    liveUrl?: string;
+    featured?: boolean;
+    published?: boolean;
+  };
+  clientMutationId: string;
+}) {
+  await requireRole("EDITOR");
+  const validatedFields = projectSchema.safeParse({
+    ...input.data,
+    tags: input.data.tags ?? [],
+  });
+
+  if (!validatedFields.success) {
+    return {
+      ok: false as const,
+      error:
+        validatedFields.error.issues[0]?.message ||
+        "Invalid form data",
+    };
+  }
+
+  const updated = await updateProjectWithRevision({
+    id: input.id,
+    data: {
+      ...validatedFields.data,
+      reason: "AUTOSAVE",
+      clientMutationId: input.clientMutationId,
+    },
+  });
+
+  revalidatePath("/admin/projects");
+  revalidatePath(`/projects/${updated.slug}`);
+
+  return {
+    ok: true as const,
+    updatedAt: updated.updatedAt.toISOString(),
+    version: updated.version,
+  };
 }
 
 export async function deleteProject(
   formData: FormData
 ) {
+  await requireRole("EDITOR");
   const id = formData.get("id")?.toString();
 
   if (!id) {
@@ -212,6 +263,7 @@ export async function deleteProject(
 export async function toggleProjectPublish(
   formData: FormData
 ) {
+  await requireRole("EDITOR");
   const id = formData.get("id")?.toString();
 
   const published =

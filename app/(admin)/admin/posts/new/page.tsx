@@ -1,17 +1,17 @@
 import AdminPageHeader from "@/components/admin/admin-page-header";
-import ProjectForm from "@/components/admin/project-form";
+import ContentPostForm from "@/components/admin/content-post-form";
 
-import { createPost } from "@/actions/post-actions";
+import { createContentPost } from "@/actions/content-post-actions";
 
 export default function NewPostPage() {
   return (
     <div className="max-w-2xl">
       <AdminPageHeader
         title="New Post"
-        description="Create a new MDX blog post."
+        description="Create a new content post."
       />
 
-      <ProjectForm action={createPost} />
+      <ContentPostForm action={createContentPost} />
     </div>
   );
 }

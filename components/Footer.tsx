@@ -20,8 +20,11 @@ export default function Footer() {
   if (isDistractionFree) return null;
 
   return (
-    <footer className="border-t border-neutral-800 bg-neutral-950" role="contentinfo">
-      <div className="mx-auto max-w-screen-xl px-6 py-10">
+    <footer
+      className="mt-32 border-t border-neutral-800 bg-black/40 backdrop-blur-sm"
+      role="contentinfo"
+    >
+      <div className="mx-auto max-w-screen-xl px-6 py-16">
         <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
           <div>
             <Link
@@ -48,7 +51,7 @@ export default function Footer() {
           </nav>
         </div>
 
-        <Separator className="mt-8 bg-neutral-800" />
+        <Separator className="mt-10 bg-neutral-800/70" />
 
         <div className="mt-6 flex items-center justify-between">
           <p className="text-xs text-neutral-600">
