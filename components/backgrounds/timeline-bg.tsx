@@ -26,13 +26,7 @@ export default function TimelineBg() {
         }}
       />
 
-      {/* 3. Faint cyan glow along vertical center represents timeline axis */}
-      <div 
-        className="absolute left-[50%] top-0 h-full w-[1px]"
-        style={{
-          background: 'linear-gradient(180deg, transparent, rgba(34,211,238,0.15), transparent)'
-        }}
-      />
+
     </div>
   );
 }

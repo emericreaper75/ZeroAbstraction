@@ -1,5 +1,4 @@
-import Navbar from '@/components/navbar';
-import Footer from '@/components/Footer';
+import React from 'react';
 
 export default function SiteChromeLayout({
   children,
@@ -7,13 +6,8 @@ export default function SiteChromeLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
-      <Navbar />
-      <main id="main-content" className="min-h-[calc(100vh-64px-128px)]" role="main">
-        {children}
-      </main>
-      <Footer />
-    </>
+    <div className="min-h-[calc(100vh-64px-128px)]">
+      {children}
+    </div>
   );
 }
-

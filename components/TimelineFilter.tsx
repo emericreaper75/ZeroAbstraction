@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { timelineCategories, timelineEntries } from '@/lib/timeline';
 import TimelineItem from '@/components/TimelineItem';
+import { StaggerContainer, StaggerItem } from '@/components/animations/fade-in';
 
 export default function TimelineFilter() {
   const [active, setActive] = useState<string>('all');
@@ -29,18 +30,19 @@ export default function TimelineFilter() {
         ))}
       </div>
 
-      <div>
+      <StaggerContainer>
         {filtered.map((entry, i) => (
-          <TimelineItem
-            key={entry.id}
-            entry={entry}
-            isLast={i === filtered.length - 1}
-          />
+          <StaggerItem key={entry.id}>
+            <TimelineItem
+              entry={entry}
+              isLast={i === filtered.length - 1}
+            />
+          </StaggerItem>
         ))}
         {filtered.length === 0 && (
           <p className="text-sm text-neutral-500">No entries for this category.</p>
         )}
-      </div>
+      </StaggerContainer>
     </>
   );
 }

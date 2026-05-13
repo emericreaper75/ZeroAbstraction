@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { formatDate } from '@/lib/utils';
 import { Clock, ArrowRight, Search } from 'lucide-react';
 import { CATEGORY_LABELS } from '@/lib/editorial/categories';
+import { FadeIn, StaggerContainer, StaggerItem } from '@/components/animations/fade-in';
 
 export const metadata: Metadata = {
   title: 'Blog',
@@ -69,80 +70,83 @@ export default async function BlogIndexPage({
       {/* Header section */}
       <div className="border-b border-zinc-800/60 bg-gradient-to-b from-zinc-900/50 to-transparent">
         <div className="mx-auto max-w-screen-xl px-6 pb-12 pt-28">
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-cyan-400 mb-3">
-            All Articles
-          </p>
-          <h1 className="text-4xl font-serif font-bold text-white md:text-5xl mb-4">
-            Blog
-          </h1>
-          <p className="text-lg text-zinc-400 max-w-2xl font-light">
-            {filteredPosts.length} articles across electronics, astrophysics, physics, and mathematics.
-            No hand-waving. First principles only.
-          </p>
+          <FadeIn>
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-cyan-400 mb-3">
+              All Articles
+            </p>
+            <h1 className="text-4xl font-serif font-bold text-white md:text-5xl mb-4">
+              Blog
+            </h1>
+            <p className="text-lg text-zinc-400 max-w-2xl font-light">
+              {filteredPosts.length} articles across electronics, astrophysics, physics, and mathematics.
+              No hand-waving. First principles only.
+            </p>
 
-          {/* Category filter chips */}
-          <div className="mt-8 flex flex-wrap gap-2" role="navigation" aria-label="Category filters">
-            <Link
-              href="/blog"
-              className={`inline-flex items-center rounded-full border px-3 py-1.5 text-xs font-mono transition-all ${
-                !filterCategory
-                  ? 'border-cyan-500/50 bg-cyan-500/10 text-cyan-400'
-                  : 'border-zinc-800 text-zinc-500 hover:text-zinc-300 hover:border-zinc-600'
-              }`}
-            >
-              All
-            </Link>
-            {categories.map((cat) => (
+            {/* Category filter chips */}
+            <div className="mt-8 flex flex-wrap gap-2" role="navigation" aria-label="Category filters">
               <Link
-                key={cat}
-                href={`/blog?category=${cat}`}
+                href="/blog"
                 className={`inline-flex items-center rounded-full border px-3 py-1.5 text-xs font-mono transition-all ${
-                  filterCategory === cat
+                  !filterCategory
                     ? 'border-cyan-500/50 bg-cyan-500/10 text-cyan-400'
                     : 'border-zinc-800 text-zinc-500 hover:text-zinc-300 hover:border-zinc-600'
                 }`}
               >
-                {CATEGORY_LABELS[cat]}
+                All
               </Link>
-            ))}
-          </div>
+              {categories.map((cat) => (
+                <Link
+                  key={cat}
+                  href={`/blog?category=${cat}`}
+                  className={`inline-flex items-center rounded-full border px-3 py-1.5 text-xs font-mono transition-all ${
+                    filterCategory === cat
+                      ? 'border-cyan-500/50 bg-cyan-500/10 text-cyan-400'
+                      : 'border-zinc-800 text-zinc-500 hover:text-zinc-300 hover:border-zinc-600'
+                  }`}
+                >
+                  {CATEGORY_LABELS[cat]}
+                </Link>
+              ))}
+            </div>
+          </FadeIn>
         </div>
       </div>
 
       {/* Post grid */}
       <div className="mx-auto max-w-screen-xl px-6 py-12">
         {paginatedPosts.length > 0 ? (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <StaggerContainer className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {paginatedPosts.map((post) => (
-              <Link
-                key={`${post.routeCategory}-${post.slug}`}
-                href={`/${post.routeCategory}/${post.slug}`}
-                className="group relative flex flex-col rounded-xl border border-zinc-800 bg-zinc-900/40 p-6 transition-all duration-300 hover:border-zinc-700 hover:bg-zinc-900/70"
-              >
-                <div className="mb-4 flex items-center gap-2">
-                  <Badge variant={categoryVariants[post.routeCategory] ?? 'default'}>
-                    {CATEGORY_LABELS[post.routeCategory] ?? post.routeCategory}
-                  </Badge>
-                </div>
-                <h2 className="text-lg font-serif font-semibold text-zinc-100 mb-2 group-hover:text-cyan-400 transition-colors line-clamp-2">
-                  {post.title}
-                </h2>
-                <p className="text-sm text-zinc-500 leading-relaxed mb-4 flex-grow line-clamp-3">
-                  {post.description}
-                </p>
-                <div className="flex items-center justify-between text-xs text-zinc-600 font-mono">
-                  <time dateTime={post.date}>{formatDate(post.date)}</time>
-                  <span className="flex items-center gap-1">
-                    <Clock className="w-3 h-3" aria-hidden="true" />
-                    {post.readingTime}
-                  </span>
-                </div>
-                <div className="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <ArrowRight className="w-4 h-4 text-cyan-400" aria-hidden="true" />
-                </div>
-              </Link>
+              <StaggerItem key={`${post.routeCategory}-${post.slug}`} className="h-full">
+                <Link
+                  href={`/${post.routeCategory}/${post.slug}`}
+                  className="group h-full relative flex flex-col rounded-xl border border-zinc-800 bg-zinc-900/40 p-6 transition-all duration-300 hover:border-zinc-700 hover:bg-zinc-900/70"
+                >
+                  <div className="mb-4 flex items-center gap-2">
+                    <Badge variant={categoryVariants[post.routeCategory] ?? 'default'}>
+                      {CATEGORY_LABELS[post.routeCategory] ?? post.routeCategory}
+                    </Badge>
+                  </div>
+                  <h2 className="text-lg font-serif font-semibold text-zinc-100 mb-2 group-hover:text-cyan-400 transition-colors line-clamp-2">
+                    {post.title}
+                  </h2>
+                  <p className="text-sm text-zinc-500 leading-relaxed mb-4 flex-grow line-clamp-3">
+                    {post.description}
+                  </p>
+                  <div className="flex items-center justify-between text-xs text-zinc-600 font-mono">
+                    <time dateTime={post.date}>{formatDate(post.date)}</time>
+                    <span className="flex items-center gap-1">
+                      <Clock className="w-3 h-3" aria-hidden="true" />
+                      {post.readingTime}
+                    </span>
+                  </div>
+                  <div className="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <ArrowRight className="w-4 h-4 text-cyan-400" aria-hidden="true" />
+                  </div>
+                </Link>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
         ) : (
           <div className="text-center py-20">
             <Search className="w-12 h-12 text-zinc-700 mx-auto mb-4" aria-hidden="true" />

@@ -4,6 +4,7 @@ import { getProjects } from "@/lib/projects/get-projects";
 
 import ProjectsBg from "@/components/backgrounds/projects-bg";
 import PageHeader from "@/components/page-header";
+import { FadeIn, StaggerContainer, StaggerItem } from "@/components/animations/fade-in";
 
 export const revalidate = 300;
 
@@ -18,50 +19,55 @@ export default async function ProjectsPage() {
 
       <div className="relative z-10 px-6 py-16">
         <div className="mx-auto max-w-screen-xl">
-          <PageHeader
-            label="WORK"
-            title="Projects"
-            subtitle="Research tools, simulations, and engineering systems."
-            accentColor="rose"
-          />
+          <FadeIn>
+            <PageHeader
+              label="WORK"
+              title="Projects"
+              subtitle="Research tools, simulations, and engineering systems."
+              accentColor="rose"
+            />
+          </FadeIn>
 
           {projects.length === 0 ? (
-            <div className="mt-12 rounded-2xl border border-neutral-800 bg-neutral-900/40 p-8 text-neutral-400">
-              No published projects found.
-            </div>
+            <FadeIn delay={0.2}>
+              <div className="mt-12 rounded-2xl border border-neutral-800 bg-neutral-900/40 p-8 text-neutral-400">
+                No published projects found.
+              </div>
+            </FadeIn>
           ) : (
-            <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <StaggerContainer className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {projects.map((project) => (
-                <Link
-                  key={project.id}
-                  href={`/projects/${project.slug}`}
-                  className="rounded-2xl border border-neutral-800 bg-neutral-900/40 p-6 transition hover:border-neutral-700"
-                >
-                  <h2 className="text-2xl font-semibold text-white">
-                    {project.title}
-                  </h2>
+                <StaggerItem key={project.id} className="h-full">
+                  <Link
+                    href={`/projects/${project.slug}`}
+                    className="h-full block rounded-2xl border border-neutral-800 bg-neutral-900/40 p-6 transition hover:border-neutral-700"
+                  >
+                    <h2 className="text-2xl font-semibold text-white">
+                      {project.title}
+                    </h2>
 
-                  {project.description && (
-                    <p className="mt-4 text-neutral-400">
-                      {project.description}
-                    </p>
-                  )}
+                    {project.description && (
+                      <p className="mt-4 text-neutral-400">
+                        {project.description}
+                      </p>
+                    )}
 
-                  {project.tags.length > 0 && (
-                    <div className="mt-6 flex flex-wrap gap-2">
-                      {project.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="rounded-full border border-neutral-700 px-3 py-1 text-xs text-neutral-300"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </Link>
+                    {project.tags.length > 0 && (
+                      <div className="mt-6 flex flex-wrap gap-2">
+                        {project.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="rounded-full border border-neutral-700 px-3 py-1 text-xs text-neutral-300"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </Link>
+                </StaggerItem>
               ))}
-            </div>
+            </StaggerContainer>
           )}
         </div>
       </div>

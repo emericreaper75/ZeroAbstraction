@@ -12,7 +12,6 @@ import { formatDate, cn } from '@/lib/utils';
 import CategoryBadge from '@/components/CategoryBadge';
 import TableOfContents from '@/components/TableOfContents';
 import DistractionFreeToggle from '@/components/DistractionFreeToggle';
-import ReadingProgressBar from '@/components/ReadingProgressBar';
 
 type Props = {
   post: Post;
@@ -37,22 +36,27 @@ export default function ArticleLayout({
           : 'max-w-[1400px]'
       )}
     >
-      {!isDistractionFree && (
-        <ReadingProgressBar
-          targetId="article-content"
-          className="top-16"
-        />
-      )}
+
 
       <div
         className={cn(
-          'relative flex items-start justify-center gap-10 xl:gap-20 overflow-hidden',
+          'relative flex items-start justify-center gap-10 xl:gap-20 lg:flex-row flex-col-reverse',
           isDistractionFree &&
             'justify-center'
         )}
       >
+        {/* TOC Rail (Now on the left) */}
+        {!isDistractionFree &&
+          toc.length > 0 && (
+            <aside className="hidden lg:block sticky top-28 w-[220px] shrink-0 self-start">
+              <TableOfContents
+                entries={toc}
+              />
+            </aside>
+          )}
+
         {/* Main Content */}
-        <div className="min-w-0 flex-1 max-w-[820px]">
+        <div className="min-w-0 flex-1 max-w-[820px] w-full">
           {/* Hero */}
           <header className="glass-panel relative overflow-hidden rounded-2xl p-6 sm:p-8 lg:p-10">
             {/* Background */}
@@ -147,16 +151,6 @@ export default function ArticleLayout({
             </div>
           </article>
         </div>
-
-        {/* TOC Rail */}
-        {!isDistractionFree &&
-          toc.length > 0 && (
-            <aside className="sticky top-28 w-[220px] shrink-0">
-              <TableOfContents
-                entries={toc}
-              />
-            </aside>
-          )}
       </div>
     </div>
   );

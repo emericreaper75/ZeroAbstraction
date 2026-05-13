@@ -19,6 +19,7 @@ export const mdxComponents = {
   h2: makeHeading(2),
   h3: makeHeading(3),
   h4: makeHeading(4),
+  // Code block with copy button
   pre: ({ children, ...props }: React.HTMLAttributes<HTMLPreElement>) => {
     const codeEl = (children as React.ReactElement)?.props;
     const rawCode: string = typeof codeEl?.children === 'string' ? codeEl.children : '';
@@ -34,5 +35,28 @@ export const mdxComponents = {
       </div>
     );
   },
+  // Table styling
+  table: ({ children }: React.HTMLAttributes<HTMLTableElement>) => (
+    <div className="my-6 w-full overflow-x-auto rounded-lg border border-neutral-800 bg-neutral-900/30">
+      <table className="w-full border-collapse text-sm text-neutral-200">
+        {children}
+      </table>
+    </div>
+  ),
+  thead: ({ children }: React.HTMLAttributes<HTMLTableSectionElement>) => (
+    <thead className="bg-neutral-800/50">{children}</thead>
+  ),
+  tbody: ({ children }: React.HTMLAttributes<HTMLTableSectionElement>) => (
+    <tbody>{children}</tbody>
+  ),
+  tr: ({ children }: React.HTMLAttributes<HTMLTableRowElement>) => (
+    <tr className="border-b border-neutral-700 last:border-b-0 hover:bg-neutral-800/30">{children}</tr>
+  ),
+  th: ({ children }: React.HTMLAttributes<HTMLTableCellElement>) => (
+    <th className="px-4 py-2 text-left font-medium text-neutral-300">{children}</th>
+  ),
+  td: ({ children }: React.HTMLAttributes<HTMLTableCellElement>) => (
+    <td className="px-4 py-2 border-t border-neutral-700">{children}</td>
+  ),
 };
 

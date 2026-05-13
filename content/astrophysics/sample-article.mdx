@@ -1,0 +1,62 @@
+---
+title: "Dark Matter Halo Modeling: A Bayesian Approach"
+description: "Exploring the statistical techniques used to estimate the mass distribution of dark matter halos from weak gravitational lensing surveys."
+date: "2024-11-20"
+category: "astrophysics"
+tags: ["dark-matter", "lensing", "bayesian", "cosmology"]
+---
+
+# The Invisible Mass
+
+Dark matter comprises approximately 85% of the total matter in the universe, yet it interacts with ordinary matter primarily through gravity. Because we cannot observe it directly through electromagnetic radiation, we must infer its presence and distribution indirectly.
+
+One of the most powerful techniques for mapping dark matter is **weak gravitational lensing**. As light from distant background galaxies travels toward Earth, it passes through the gravitational fields of massive foreground objects, such as galaxy clusters and their associated dark matter halos. This gravitational field slightly bends the light, causing a coherent distortion in the observed shapes of the background galaxies.
+
+## NFW Density Profile
+
+The Navarro-Frenk-White (NFW) profile is a spatial mass distribution of dark matter halos that arises naturally in N-body cosmological simulations. The density $\rho$ as a function of radius $r$ from the center of the halo is given by:
+
+$$
+\rho(r) = \frac{\rho_0}{\frac{r}{R_s} \left( 1 + \frac{r}{R_s} \right)^2}
+$$
+
+Where:
+- $\rho_0$ is the central density parameter.
+- $R_s$ is the scale radius.
+
+By integrating this density profile along the line of sight, we can derive the expected surface mass density, which in turn predicts the shear signal we should observe in weak lensing surveys.
+
+### Parameter Estimation
+
+The goal is to estimate the parameters $\rho_0$ and $R_s$ (or equivalently, the halo mass $M_{200}$ and concentration $c$) from the noisy shear measurements. We employ a Markov Chain Monte Carlo (MCMC) approach to sample the posterior distribution:
+
+```python
+import emcee
+import numpy as np
+
+# Define log-likelihood and log-prior functions
+def log_likelihood(theta, r_data, shear_data, err_data):
+    M, c = theta
+    model_shear = compute_nfw_shear(r_data, M, c)
+    return -0.5 * np.sum(((shear_data - model_shear) / err_data)**2)
+
+def log_prior(theta):
+    M, c = theta
+    if 1e13 < M < 1e16 and 0.1 < c < 20.0:
+        return 0.0
+    return -np.inf
+
+def log_probability(theta, r, shear, err):
+    lp = log_prior(theta)
+    if not np.isfinite(lp):
+        return -np.inf
+    return lp + log_likelihood(theta, r, shear, err)
+
+# Initialize walkers and run MCMC
+ndim, nwalkers = 2, 50
+pos = [1e14, 5.0] + 1e-4 * np.random.randn(nwalkers, ndim)
+sampler = emcee.EnsembleSampler(nwalkers, ndim, log_probability, args=(r_data, shear_data, err_data))
+sampler.run_mcmc(pos, 5000, progress=True)
+```
+
+The resulting posterior distributions provide not only the most likely mass of the dark matter halo but also the rigorous uncertainty bounds necessary for cosmological constraints.

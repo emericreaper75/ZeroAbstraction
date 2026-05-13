@@ -1,10 +1,77 @@
 ---
-title: "hello "
-description: "simple hello"
-published: false
-date: "2026-05-11T08:02:00.863Z"
+title: "An Introduction to Bayesian Filtering"
+description: "A first-principles approach to state estimation, deriving the Kalman Filter from Bayes' rule using Gaussian assumptions."
+date: "2025-05-13"
+category: "physics-math"
+tags: ["bayesian", "estimation", "kalman-filter", "math"]
 ---
 
-# hello 
+# Introduction
 
-Write your content here.
+State estimation is a fundamental problem in engineering, robotics, and astrophysics. Whenever we have a system with hidden states that evolve over time, and we can only take noisy measurements of those states, we need a way to combine our understanding of the system's dynamics with our observations to estimate the true state.
+
+This is precisely what Bayesian filtering does. In this article, we will derive the fundamental equations of Bayesian filtering and show how they naturally lead to the Kalman Filter when we assume linear dynamics and Gaussian noise.
+
+## Bayes' Rule as an Update Mechanism
+
+At the core of all these methods is Bayes' rule. Given a prior belief about a state $x$ and an observation $z$, the posterior belief is:
+
+$$
+p(x \mid z) = \frac{p(z \mid x) p(x)}{p(z)}
+$$
+
+Where:
+- $p(x)$ is the **prior**: our belief before seeing the measurement.
+- $p(z \mid x)$ is the **likelihood**: the probability of the measurement given the state.
+- $p(x \mid z)$ is the **posterior**: our updated belief.
+
+### The Recursive Filter
+
+In a dynamic system, the state evolves over time $t$. We denote the state at time $t$ as $x_t$ and the measurement as $z_t$. The history of measurements is $Z_t = \{z_1, z_2, \dots, z_t\}$.
+
+The goal of a Bayesian filter is to compute $p(x_t \mid Z_t)$. This is done in two steps:
+
+1. **Prediction (Time Update):** We use the system dynamics to predict the state at time $t$ given the state at $t-1$.
+2. **Correction (Measurement Update):** We use the new measurement $z_t$ to correct our prediction.
+
+> [!NOTE]
+> The prediction step increases uncertainty, as we are projecting our knowledge forward in time without new information. The correction step decreases uncertainty by incorporating a new observation.
+
+## Implementation Example
+
+Here is a simple example of a 1D Kalman filter implementation in Python:
+
+```python
+import numpy as np
+
+class KalmanFilter1D:
+    def __init__(self, x0, P0, F, H, Q, R):
+        self.x = x0 # Initial state estimate
+        self.P = P0 # Initial estimate uncertainty
+        self.F = F  # State transition model
+        self.H = H  # Observation model
+        self.Q = Q  # Process noise covariance
+        self.R = R  # Measurement noise covariance
+
+    def predict(self):
+        # Project the state ahead
+        self.x = self.F * self.x
+        # Project the error covariance ahead
+        self.P = self.F * self.P * self.F + self.Q
+        return self.x
+
+    def update(self, z):
+        # Compute the Kalman Gain
+        S = self.H * self.P * self.H + self.R
+        K = self.P * self.H / S
+        
+        # Update estimate with measurement z
+        y = z - self.H * self.x
+        self.x = self.x + K * y
+        
+        # Update the error covariance
+        self.P = (1 - K * self.H) * self.P
+        return self.x
+```
+
+This elegant algorithm forms the basis for navigating everything from Apollo spacecraft to modern smartphones.

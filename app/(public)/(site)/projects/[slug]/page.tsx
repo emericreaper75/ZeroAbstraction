@@ -6,6 +6,9 @@ import { getRelatedProjects } from "@/lib/projects/get-related-projects";
 import RelatedProjects from "@/components/related/RelatedProjects";
 import Link from "next/link";
 import { ArrowUpRight, Code2 } from "lucide-react";
+import MDXContent from "@/components/mdx/MDXContent";
+import { extractTOC, nestTOC } from "@/lib/toc";
+import TableOfContents from "@/components/TableOfContents";
 import { generateProjectMetadata } from "@/lib/metadata";
 
 export const revalidate = 300;
@@ -40,6 +43,8 @@ export default async function ProjectPage({
   if (!project || !project.published) {
     notFound();
   }
+
+  const toc = project.content ? nestTOC(extractTOC(project.content)) : [];
 
   const relatedProjects = await getRelatedProjects({
     projectId: project.id,
@@ -116,11 +121,18 @@ export default async function ProjectPage({
 
       {/* Body */}
       <main className="mx-auto max-w-screen-xl px-6 py-14">
-        <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_320px]">
-          <article className="min-w-0">
-            <div className="prose prose-neutral prose-invert max-w-none">
+        <div className="flex flex-col lg:flex-row gap-12 items-start justify-center">
+          {/* TOC sidebar on the left */}
+          {toc.length > 0 && (
+            <aside className="sticky top-28 hidden lg:block w-[220px] shrink-0 self-start">
+              <TableOfContents entries={toc} />
+            </aside>
+          )}
+
+          <article className="min-w-0 flex-1 max-w-[820px]">
+            <div className="prose prose-neutral prose-invert max-w-none prose-headings:scroll-mt-28">
               {project.content ? (
-                <p>{project.content}</p>
+                <MDXContent source={project.content} />
               ) : (
                 <p className="text-neutral-500">
                   This project doesn’t have a long-form write-up yet.
@@ -130,8 +142,8 @@ export default async function ProjectPage({
           </article>
 
           {/* Side metadata panel (future-proof for gallery/metrics) */}
-          <aside className="hidden lg:block">
-            <div className="sticky top-24 rounded-2xl border border-neutral-800 bg-neutral-900/30 p-6">
+          <aside className="hidden xl:block w-[320px] shrink-0">
+            <div className="sticky top-28 rounded-2xl border border-neutral-800 bg-neutral-900/30 p-6">
               <p className="font-mono text-[11px] uppercase tracking-widest text-neutral-500">
                 Metadata
               </p>

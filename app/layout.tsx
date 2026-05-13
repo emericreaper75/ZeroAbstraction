@@ -1,6 +1,42 @@
-import "./globals.css";
+import type { Metadata } from 'next';
+import {
+  Inter,
+  IBM_Plex_Serif,
+  JetBrains_Mono,
+  IBM_Plex_Mono,
+} from 'next/font/google';
 
-export const metadata = {
+import 'katex/dist/katex.min.css';
+import './globals.css';
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+});
+
+const ibmPlexSerif = IBM_Plex_Serif({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-ibm-plex-serif',
+  display: 'swap',
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-jetbrains-mono',
+  display: 'swap',
+});
+
+const ibmPlexMono = IBM_Plex_Mono({
+  weight: ['400', '500', '600'],
+  subsets: ['latin'],
+  variable: '--font-mono',
+  display: 'swap',
+});
+
+export const metadata: Metadata = {
   title: "ZeroAbstraction",
   description: "Portfolio Platform",
 };
@@ -11,8 +47,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html
+      lang="en"
+      className={`dark ${inter.variable} ${ibmPlexSerif.variable} ${jetbrainsMono.variable} ${ibmPlexMono.variable}`}
+    >
+      <body className="min-h-screen bg-neutral-950 text-neutral-300 antialiased">
+        {children}
+      </body>
     </html>
   );
 }
