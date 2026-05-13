@@ -37,4 +37,10 @@ next-env.d.ts
 
 /lib/generated/prisma
 .env
+
+# scratch
+scratch/
 CLAUDE.local.md
+checklistfile.md
+design.md
+tree-to-be-implemented.md

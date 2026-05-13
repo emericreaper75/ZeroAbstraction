@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ZeroAbstraction
 
-## Getting Started
+ZeroAbstraction is a premium technical publishing platform, engineering portfolio, and research-oriented knowledge base built on a modern full-stack Next.js 14 App Router architecture.
 
-First, run the development server:
+Designed for "Cinematic Developer Minimalism," the platform bridges the gap between engineering rigor and accessible presentation through a research-first aesthetic.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## 🌌 Vision & Design Philosophy
+
+ZeroAbstraction exists to present technical knowledge with clarity and visual precision. The system prioritizes:
+
+- **Frontend Fidelity**: A premium reading experience with whitespace-first layouts and refined typography.
+- **Atmospheric Backgrounds**: Unique, immersive ambient layers for different categories (Astrophysics, Electronics, Physics, etc.).
+- **Immersive MDX**: Long-form technical content with LaTeX math support, syntax highlighting, and scroll-spy table of contents.
+- **Layered Architecture**: Strict separation of concerns (UI → Actions → Service → Data).
+
+---
+
+## ✨ Features
+
+- 📝 **Technical Blog**: Immersive reading experience with category-specific atmospheres.
+- 🏗 **Engineering Portfolio**: Database-backed project showcase with rich media support.
+- ⏳ **Research Timeline**: A chronological log of engineering and research milestones.
+- 🛡 **Editorial Admin**: Private dashboard for managing drafts, projects, and media.
+- 🔍 **Global Search**: PostgreSQL-backed backend search for articles and projects.
+- 🌓 **Atmospheric UI**: Cinematic dark mode with per-category background systems.
+- 🚀 **Performance Optimized**: Core Web Vitals focused, ISR/SSR caching, and local variable fonts (Geist).
+
+---
+
+## 🛠 Tech Stack
+
+- **Framework**: [Next.js 14](https://nextjs.org/) (App Router, TypeScript)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/) + CSS Variables
+- **Database**: [PostgreSQL](https://www.postgresql.org/) via [Prisma ORM](https://www.prisma.io/)
+- **Auth**: [Auth.js (NextAuth.js)](https://authjs.dev/)
+- **Content**: Hybrid MDX (Filesystem) + Database (Editorial Layer)
+- **Animations**: [Framer Motion](https://www.framer.com/motion/)
+- **Media**: [UploadThing](https://uploadthing.com/)
+- **Math**: `remark-math` + `rehype-katex`
+- **Code**: `rehype-pretty-code` (Shiki-based)
+
+---
+
+## 📂 Architecture
+
+```text
+app/                 # App Router (Public, Admin, API)
+components/          # UI Components & Feature Modules
+├── ui/              # Shared Primitives (Radix-based)
+├── backgrounds/     # Atmospheric Background Components
+└── admin/           # Dashboard-specific Components
+lib/                 # Core Logic (Service Layer)
+├── db/              # Prisma Client
+├── editorial/       # Post/Project Services
+├── mdx/             # MDX Processing Pipeline
+└── search/          # Search Logic
+content/             # MDX Technical Articles
+public/              # Static Assets & Fonts
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📜 License
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+[MIT](LICENSE) © [ZeroAbstraction](https://zero-abstraction.in)
