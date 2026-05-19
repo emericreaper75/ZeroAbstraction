@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&family=Metropolis:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap');
 @import "@uploadthing/react/styles.css";
 
 @tailwind base;
@@ -194,25 +196,19 @@ pre::-webkit-scrollbar-thumb {
   background-size: 48px 48px;
 
   background-image:
-    linear-gradient(
-      to right,
+    linear-gradient(to right,
       rgba(34, 211, 238, 0.028) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      to bottom,
+      transparent 1px),
+    linear-gradient(to bottom,
       rgba(34, 211, 238, 0.028) 1px,
-      transparent 1px
-    );
+      transparent 1px);
 }
 
 /* Dot Background */
 .dot-bg {
   background-image:
-    radial-gradient(
-      rgba(255, 255, 255, 0.1) 1px,
-      transparent 1px
-    );
+    radial-gradient(rgba(255, 255, 255, 0.1) 1px,
+      transparent 1px);
 
   background-size: 28px 28px;
 }
@@ -259,10 +255,91 @@ pre::-webkit-scrollbar-thumb {
   display: none;
 }
 
+
+
 /* Glass Panel */
 .glass-panel {
   @apply bg-black/20 backdrop-blur-md border border-cyan-500/10;
 
   box-shadow:
     0 0 40px rgba(0, 180, 255, 0.08);
+}
+
+/* ── Admin Dashboard Utility Classes ─────────────────── */
+
+/* Material Symbols Outlined default variation */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined', sans-serif;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Admin cinematic glow — ambient radial overlay */
+.cinematic-glow {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(30, 41, 59, 0.15) 0%, rgba(10, 10, 10, 0) 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Admin custom scrollbar (4px slim) */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #27272a;
+}
+
+/* Admin input glow on focus */
+.admin-input-glow:focus {
+  border-color: #c9c6c5 !important;
+  outline: none;
+  box-shadow: 0 0 15px rgba(30, 41, 59, 0.4);
+}
+
+/* Admin sidebar active link state */
+.sidebar-active {
+  background-color: #27272a;
+  color: #ffffff;
+}
+
+/* Admin dashed upload border (SVG-based) */
+.custom-dashed-border {
+  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='8' ry='8' stroke='%233f3f46' stroke-width='1' stroke-dasharray='6%2c 4' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+  border-radius: 8px;
+}
+
+/* Admin masonry grid */
+.masonry-grid {
+  column-count: 3;
+  column-gap: 1.5rem;
+}
+
+.masonry-item {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 1.5rem;
+  break-inside: avoid;
 }

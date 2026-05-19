@@ -25,7 +25,7 @@ export const VALID_CATEGORIES = [
   'electronics',
   'astrophysics',
   'physics-math',
-  'research-logs',
+  'communications',
 ] as const;
 
 export type Category = (typeof VALID_CATEGORIES)[number];

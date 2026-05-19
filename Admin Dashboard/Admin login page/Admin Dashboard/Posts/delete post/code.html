@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;700&amp;family=Metropolis:wght@400;700;800&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container": "#201f1f",
+                    "tertiary-fixed": "#d8e3fb",
+                    "surface-bright": "#3a3939",
+                    "on-background": "#e5e2e1",
+                    "on-primary-container": "#7b7979",
+                    "outline-variant": "#444748",
+                    "on-secondary-container": "#b8b8bc",
+                    "on-primary": "#313030",
+                    "tertiary-fixed-dim": "#bcc7de",
+                    "primary-container": "#0a0a0a",
+                    "primary": "#c9c6c5",
+                    "on-error": "#690005",
+                    "surface-container-lowest": "#0e0e0e",
+                    "surface": "#141313",
+                    "error": "#ffb4ab",
+                    "surface-container-highest": "#353434",
+                    "tertiary-container": "#010a1b",
+                    "error-container": "#93000a",
+                    "surface-tint": "#c9c6c5",
+                    "on-tertiary-container": "#6f7a8f",
+                    "background": "#141313",
+                    "on-secondary-fixed-variant": "#45474a",
+                    "surface-container-high": "#2b2a2a",
+                    "on-primary-fixed-variant": "#474646",
+                    "surface-container-low": "#1c1b1b",
+                    "secondary-container": "#48494c",
+                    "tertiary": "#bcc7de",
+                    "inverse-on-surface": "#313030",
+                    "primary-fixed-dim": "#c9c6c5",
+                    "on-tertiary-fixed": "#111c2d",
+                    "secondary-fixed-dim": "#c6c6ca",
+                    "secondary-fixed": "#e2e2e6",
+                    "outline": "#8e9192",
+                    "inverse-surface": "#e5e2e1",
+                    "inverse-primary": "#5f5e5e",
+                    "on-error-container": "#ffdad6",
+                    "on-surface": "#e5e2e1",
+                    "on-secondary": "#2f3034",
+                    "primary-fixed": "#e5e2e1",
+                    "on-tertiary": "#263143",
+                    "on-secondary-fixed": "#1a1c1f",
+                    "secondary": "#c6c6ca",
+                    "surface-dim": "#141313",
+                    "on-tertiary-fixed-variant": "#3c475a",
+                    "on-primary-fixed": "#1c1b1b",
+                    "on-surface-variant": "#c4c7c7",
+                    "surface-variant": "#353434"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Metropolis"],
+                    "display": ["Metropolis"],
+                    "body": ["Hanken Grotesk"],
+                    "label": ["JetBrains Mono"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { background-color: #0a0a0a; color: #e5e2e1; }
+        .sidebar-active { background-color: #1c1b1b; color: #c9c6c5; border-right: 2px solid #c9c6c5; }
+        .destructive-btn { background-color: #7f1d1d; } /* Deep Red-900 */
+        .destructive-btn:hover { background-color: #991b1b; }
+        .entry-animation { animation: entryScale 200ms ease-out forwards; }
+        @keyframes entryScale {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="font-body selection:bg-primary selection:text-primary-container overflow-hidden">
+<!-- Persistent Sidebar -->
+<aside class="fixed top-0 left-0 h-screen w-[240px] bg-background border-r border-outline-variant flex flex-col z-50">
+<!-- Brand Wordmark -->
+<div class="px-6 py-8">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="terminal">terminal</span>
+<h1 class="font-display text-xl font-bold tracking-tighter text-on-background">ZeroAbstraction</h1>
+</div>
+</div>
+<!-- Vertical Navigation Suite -->
+<nav class="flex-1 px-3 space-y-1">
+<a class="flex items-center gap-3 px-3 py-3 font-label text-xs uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<!-- Active State: Posts -->
+<a class="flex items-center gap-3 px-3 py-3 font-label text-xs uppercase tracking-widest sidebar-active transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="article" data-weight="fill" style="font-variation-settings: 'FILL' 1;">article</span>
+<span>Posts</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 font-label text-xs uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="analytics">analytics</span>
+<span>Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 font-label text-xs uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="group">group</span>
+<span>Users</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 font-label text-xs uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="settings">settings</span>
+<span>System</span>
+</a>
+</nav>
+<!-- Sidebar Footer Component (Optional but aligned with Brutalism) -->
+<div class="p-6 border-t border-outline-variant">
+<p class="font-label text-[10px] uppercase tracking-[0.2em] text-on-primary-container">v4.0.2 Stable</p>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="ml-[240px] h-screen flex flex-col">
+<!-- Internal Header -->
+<header class="px-12 pt-12 flex flex-col gap-2">
+<nav class="font-label text-xs tracking-widest text-on-secondary-container">
+                Admin <span class="mx-1 text-outline">/</span> Posts <span class="mx-1 text-outline">/</span> <span class="text-on-surface-variant">Delete</span>
+</nav>
+<h2 class="text-4xl font-bold tracking-tight text-on-surface-variant font-display">Delete Post</h2>
+</header>
+<!-- Content Area: Centered Modal-like Treatment -->
+<section class="flex-1 flex items-center justify-center p-8">
+<div class="entry-animation w-full max-w-[560px] bg-[#111111] border border-outline-variant p-12 flex flex-col items-center text-center">
+<!-- 1. Warning Icon -->
+<div class="mb-8">
+<span class="material-symbols-outlined text-[32px] text-on-surface-variant" data-icon="warning">warning</span>
+</div>
+<!-- 2. Heading -->
+<h3 class="text-2xl font-bold text-on-surface font-display mb-4">Are you sure?</h3>
+<!-- 3. Post Title -->
+<p class="text-lg italic text-primary font-body mb-6">
+                    "The Architecture of Latency: Rethinking Kernel Scheduling"
+                </p>
+<!-- 4. Warning Paragraph -->
+<p class="text-sm text-on-surface-variant leading-relaxed mb-10 max-w-[320px]">
+                    This action is permanent. The post and all associated revisions will be removed.
+                </p>
+<!-- 5. Actions -->
+<div class="w-full flex flex-col gap-3">
+<button class="destructive-btn w-full py-4 text-sm font-bold uppercase tracking-[0.15em] text-on-surface font-label transition-all duration-200 hover:brightness-110">
+                        Delete Post
+                    </button>
+<a class="w-full py-4 text-xs font-bold uppercase tracking-[0.2em] text-on-surface-variant font-label hover:text-on-surface transition-colors duration-200 text-center" href="#">
+                        Cancel
+                    </a>
+</div>
+</div>
+</section>
+<!-- Ambient Glow Background Decoration -->
+<div class="fixed bottom-0 right-0 w-[600px] h-[600px] opacity-20 pointer-events-none" style="background: radial-gradient(circle, rgba(30, 41, 59, 0.4) 0%, rgba(10, 10, 10, 0) 70%);"></div>
+</main>
+</body></html>

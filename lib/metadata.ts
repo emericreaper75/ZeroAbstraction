@@ -89,7 +89,7 @@ export function generateCategoryMetadata(category: string, count: number): Metad
     electronics: 'Electronics & Communications',
     astrophysics: 'Astrophysics',
     'physics-math': 'Physics & Mathematics',
-    'research-logs': 'Research Logs',
+    'communications': 'Communications',
   };
   const label = labels[category] || category;
   const description = `${count} articles on ${label} — rigorous technical writing without hand-waving.`;

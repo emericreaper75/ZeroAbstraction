@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Metropolis:wght@400;700;900&amp;family=Hanken+Grotesk:wght@300;400;600&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #0a0a0a;
+            color: #e5e2e1;
+            font-family: 'Hanken Grotesk', sans-serif;
+            margin: 0;
+            overflow: hidden;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .font-headline { font-family: 'Metropolis', sans-serif; }
+        .font-label { font-family: 'JetBrains Mono', monospace; }
+        
+        .upload-glow {
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.04) 0%, rgba(22, 22, 22, 0) 70%);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#c9c6c5",
+                        "inverse-primary": "#5f5e5e",
+                        "surface-container": "#201f1f",
+                        "on-tertiary-fixed-variant": "#3c475a",
+                        "secondary": "#c6c6ca",
+                        "primary-fixed": "#e5e2e1",
+                        "tertiary-fixed-dim": "#bcc7de",
+                        "surface-container-low": "#1c1b1b",
+                        "primary-container": "#0a0a0a",
+                        "on-error-container": "#ffdad6",
+                        "secondary-fixed-dim": "#c6c6ca",
+                        "error": "#ffb4ab",
+                        "tertiary": "#bcc7de",
+                        "on-secondary-fixed-variant": "#45474a",
+                        "outline-variant": "#444748",
+                        "on-primary-fixed": "#1c1b1b",
+                        "background": "#141313",
+                        "outline": "#8e9192",
+                        "on-error": "#690005",
+                        "surface": "#141313",
+                        "inverse-on-surface": "#313030",
+                        "tertiary-container": "#010a1b",
+                        "on-background": "#e5e2e1",
+                        "inverse-surface": "#e5e2e1",
+                        "surface-variant": "#353434",
+                        "on-tertiary-fixed": "#111c2d",
+                        "error-container": "#93000a",
+                        "secondary-fixed": "#e2e2e6",
+                        "on-primary-container": "#7b7979",
+                        "surface-container-highest": "#353434",
+                        "primary-fixed-dim": "#c9c6c5",
+                        "on-tertiary": "#263143",
+                        "surface-container-high": "#2b2a2a",
+                        "surface-bright": "#3a3939",
+                        "on-surface": "#e5e2e1",
+                        "on-secondary-container": "#b8b8bc",
+                        "secondary-container": "#48494c",
+                        "surface-container-lowest": "#0e0e0e",
+                        "tertiary-fixed": "#d8e3fb",
+                        "on-tertiary-container": "#6f7a8f",
+                        "on-secondary-fixed": "#1a1c1f",
+                        "on-primary": "#313030",
+                        "on-secondary": "#2f3034",
+                        "surface-dim": "#141313",
+                        "on-primary-fixed-variant": "#474646",
+                        "primary": "#c9c6c5",
+                        "on-surface-variant": "#c4c7c7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Metropolis"],
+                        "display": ["Metropolis"],
+                        "body": ["Hanken Grotesk"],
+                        "label": ["Jetbrains Mono"]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-primary-container text-on-surface">
+<!-- Sidebar Anchor -->
+<aside class="fixed left-0 top-0 h-screen w-[240px] bg-surface-container-low dark:bg-surface-container-low border-r border-outline-variant flex flex-col z-40 opacity-40 transition-opacity duration-300">
+<div class="p-6">
+<div class="text-headline-sm font-headline font-black tracking-widest text-on-surface dark:text-on-surface">ZeroAbstraction</div>
+<div class="font-label text-[10px] tracking-tight text-on-surface-variant mt-1">v2.4.0-stable</div>
+</div>
+<nav class="flex-1 mt-4">
+<div class="text-on-surface-variant hover:text-on-surface py-3 px-6 hover:bg-surface-container-high transition-all duration-200 ease-in-out cursor-pointer flex items-center gap-3 active:scale-[0.98]">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label text-sm tracking-tighter uppercase">Dashboard</span>
+</div>
+<div class="text-on-surface-variant hover:text-on-surface py-3 px-6 hover:bg-surface-container-high transition-all duration-200 ease-in-out cursor-pointer flex items-center gap-3 active:scale-[0.98]">
+<span class="material-symbols-outlined">article</span>
+<span class="font-label text-sm tracking-tighter uppercase">Posts</span>
+</div>
+<!-- Media Active Intent -->
+<div class="text-primary font-bold bg-surface-variant border-r-2 border-primary py-3 px-6 transition-all duration-200 ease-in-out cursor-pointer flex items-center gap-3 active:scale-[0.98]">
+<span class="material-symbols-outlined">perm_media</span>
+<span class="font-label text-sm tracking-tighter uppercase">Media</span>
+</div>
+<div class="text-on-surface-variant hover:text-on-surface py-3 px-6 hover:bg-surface-container-high transition-all duration-200 ease-in-out cursor-pointer flex items-center gap-3 active:scale-[0.98]">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label text-sm tracking-tighter uppercase">System Settings</span>
+</div>
+<div class="text-on-surface-variant hover:text-on-surface py-3 px-6 hover:bg-surface-container-high transition-all duration-200 ease-in-out cursor-pointer flex items-center gap-3 active:scale-[0.98]">
+<span class="material-symbols-outlined">verified_user</span>
+<span class="font-label text-sm tracking-tighter uppercase">Security</span>
+</div>
+</nav>
+<div class="p-6">
+<button class="w-full bg-primary text-on-primary font-label text-[10px] py-3 tracking-widest uppercase font-bold transition-all hover:bg-surface-tint active:scale-95">
+                New Deployment
+            </button>
+</div>
+</aside>
+<!-- Top App Bar Anchor -->
+<header class="flex justify-between items-center h-16 ml-[240px] px-8 w-[calc(100%-240px)] bg-background dark:bg-background border-b border-outline-variant fixed top-0 z-40 opacity-40 transition-opacity duration-300">
+<div class="flex items-center gap-8">
+<span class="text-headline-md font-headline font-bold text-on-surface dark:text-on-surface">Media Library</span>
+<div class="flex gap-6">
+<span class="font-label text-[10px] tracking-tight text-on-surface-variant cursor-pointer hover:text-primary transition-colors">Main</span>
+<span class="font-label text-[10px] tracking-tight text-on-surface-variant cursor-pointer hover:text-primary transition-colors">Archive</span>
+<span class="font-label text-[10px] tracking-tight text-on-surface-variant cursor-pointer hover:text-primary transition-colors">Logs</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+<input class="bg-surface-container-lowest border border-outline-variant text-sm py-1.5 pl-10 pr-4 w-64 focus:border-primary transition-all outline-none font-label" placeholder="Search system assets..." type="text"/>
+</div>
+<div class="flex gap-4 text-on-surface-variant">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary">notifications</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary">terminal</span>
+</div>
+<div class="w-8 h-8 rounded bg-zinc-800 border border-zinc-700 flex items-center justify-center overflow-hidden">
+<img alt="User Avatar" class="w-full h-full object-cover" data-alt="A highly detailed avatar icon for a system administrator, featuring abstract geometric shapes and a sophisticated color palette of deep charcoal and subtle tech-blue highlights. The lighting is cold and clinical, emphasizing a professional and focused atmosphere typical of a high-end technical environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXrIBUiIddW9iUOfltfVv--8p69q2EVT7JP3QlUPcTnZh3TXXkSGe3jRELIGAmX-n-QY3f_Zk0wJyht45cXa8eare18xH3GRYFbJ7On1pmR7FsRuTX0ei0qEJqj_1WNopah-_FBLSKmDLW3rSDa8x6PjeSGDbJOW0IFl0jEUuLYMm3kbLd_oU7x-tx0gdbdHUVIztsb_OsNq9mL2nVxMtwk5D73eTX85KvEeszDiWyRbmhNxZoBL5CFLvcpqGaDd6MM3bzAZVGGsWn"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-[240px] pt-16 h-screen overflow-hidden relative">
+<!-- Content Background (Dimmed Masonry Simulation) -->
+<div class="p-8 opacity-40 transition-opacity duration-300">
+<!-- Filter Row -->
+<div class="flex justify-between items-center mb-8">
+<div class="flex gap-2">
+<span class="bg-zinc-800 text-zinc-300 px-3 py-1 text-[10px] font-label uppercase border border-zinc-700">All Assets</span>
+<span class="bg-transparent text-zinc-500 px-3 py-1 text-[10px] font-label uppercase border border-zinc-800">Images</span>
+<span class="bg-transparent text-zinc-500 px-3 py-1 text-[10px] font-label uppercase border border-zinc-800">Videos</span>
+<span class="bg-transparent text-zinc-500 px-3 py-1 text-[10px] font-label uppercase border border-zinc-800">Models</span>
+</div>
+<div class="text-zinc-600 font-label text-[10px]">Displaying 4,821 elements</div>
+</div>
+<!-- Fake Masonry Grid -->
+<div class="columns-2 md:columns-3 lg:columns-4 gap-6 space-y-6">
+<div class="bg-zinc-900 border border-zinc-800 aspect-[4/5]">
+<img class="w-full h-full object-cover filter grayscale opacity-60" data-alt="A wide cinematic shot of a futuristic data center interior with rows of glowing server racks bathed in deep blue and charcoal lighting. The atmosphere is quiet and intense, with precise geometric lines creating a strong sense of technical brutality and advanced architecture. Minimalist and clean visual style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5snuNOGSF1aVX_h4GJWLnqyE9EzD2eKTBKissoIYhA9HAe765R6J4DvDKkCWCf64mfMxyfSCXUIhTnlzrixoxJC3KxbFNDAz1LW_FKSl95m_DTutucrbMKVpo3s_I3824OLOcqRY593XeyEhcAN0eLaKEALj2-m9snNQuHKVDbJBXQZ62-kEL3NQItNqP-xwFi2BSLGrVfmBSojQAgIid2jMRw4d8LwF8uCthLB8AKAyEyv9_LO-E5qAa026pBunLxt2fEOUk-iZn"/>
+</div>
+<div class="bg-zinc-900 border border-zinc-800 aspect-[1/1]">
+<img class="w-full h-full object-cover filter grayscale opacity-60" data-alt="Close-up of a high-resolution holographic interface displaying complex architectural schematics. The glow is a soft charcoal-blue against a deep black void, emphasizing precision and clarity. The visual style is hyper-minimalist and technical, conveying a sense of premium reliability and focused intensity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9YkNxNzDRTEeCdmzSwwtKaQdVSoRQByTgGdub6L7ocidmPeHLciEkjNnNuqEFSSKo5QxIGHvGPXUHORKX3fXH5thbg6d5VPyDZWz5hqHSu39e1UL0W2iLYciBH768G0DVGgJHkTLQHle31luFCXSFHC0L7eP6tspzSzJo2Lgzrl-bXR_8DhcNzOX_HosxP0eDtnt3pbrHCPaIwF3iWUG24n_7ddWtRjNXM1aXC7ZcZ5_7I4BeYqoRQ5CObJbLIfgXGHv0QpuZ7CmQ"/>
+</div>
+<div class="bg-zinc-900 border border-zinc-800 aspect-[3/4]"></div>
+<div class="bg-zinc-900 border border-zinc-800 aspect-[16/9]"></div>
+<div class="bg-zinc-900 border border-zinc-800 aspect-[2/3]"></div>
+<div class="bg-zinc-900 border border-zinc-800 aspect-[1/1]"></div>
+</div>
+</div>
+<!-- FULL SCREEN DARK OVERLAY & UPLOAD ZONE (ACTIVE STATE) -->
+<div class="absolute inset-0 bg-black/60 z-50 flex items-center justify-center p-12">
+<div class="w-full max-w-5xl h-[614px] border-2 border-zinc-400 bg-[#161616] upload-glow flex flex-col items-center justify-center relative group transition-all duration-300">
+<!-- Internal Pulse Effect -->
+<div class="absolute inset-0 border border-zinc-400 opacity-20 animate-pulse"></div>
+<div class="flex flex-col items-center gap-6">
+<div class="w-24 h-24 rounded-full flex items-center justify-center bg-zinc-800/50 border border-zinc-700">
+<span class="material-symbols-outlined text-zinc-300" style="font-size: 48px; font-variation-settings: 'FILL' 1;">upload_file</span>
+</div>
+<div class="text-center">
+<h2 class="text-2xl font-headline font-bold text-zinc-200 tracking-tight">Release to upload</h2>
+<p class="text-zinc-500 font-label text-[10px] mt-2 tracking-[0.2em] uppercase">Processing assets for ZeroAbstraction Cluster</p>
+</div>
+</div>
+<!-- Technical Metadata Labels -->
+<div class="absolute bottom-6 left-6 flex gap-4">
+<div class="flex flex-col gap-1">
+<span class="font-label text-[8px] text-zinc-600 uppercase">Target Directory</span>
+<span class="font-label text-[10px] text-zinc-400">/root/assets/media_v2/incoming</span>
+</div>
+<div class="h-8 w-px bg-zinc-800"></div>
+<div class="flex flex-col gap-1">
+<span class="font-label text-[8px] text-zinc-600 uppercase">System Status</span>
+<span class="font-label text-[10px] text-zinc-400 uppercase">Ready for Ingest</span>
+</div>
+</div>
+<div class="absolute top-6 right-6">
+<span class="font-label text-[10px] text-zinc-500 border border-zinc-800 px-3 py-1">DRAG_ACTIVE: TRUE</span>
+</div>
+</div>
+</div>
+</main>
+</body></html>

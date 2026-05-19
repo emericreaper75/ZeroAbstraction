@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;family=Hanken+Grotesk:wght@300;400;600&amp;family=Metropolis:wght@700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#e2e2e6",
+                        "surface-container": "#201f1f",
+                        "tertiary-container": "#010a1b",
+                        "surface-variant": "#353434",
+                        "on-tertiary": "#263143",
+                        "secondary-container": "#48494c",
+                        "secondary": "#c6c6ca",
+                        "on-surface-variant": "#c4c7c7",
+                        "tertiary-fixed-dim": "#bcc7de",
+                        "on-secondary-fixed": "#1a1c1f",
+                        "error-container": "#93000a",
+                        "background": "#141313",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-tertiary-fixed-variant": "#3c475a",
+                        "on-secondary-fixed-variant": "#45474a",
+                        "inverse-primary": "#5f5e5e",
+                        "primary-container": "#0a0a0a",
+                        "on-primary-container": "#7b7979",
+                        "surface-container-low": "#1c1b1b",
+                        "secondary-fixed-dim": "#c6c6ca",
+                        "error": "#ffb4ab",
+                        "primary-fixed": "#e5e2e1",
+                        "on-primary": "#313030",
+                        "tertiary": "#bcc7de",
+                        "outline": "#8e9192",
+                        "primary-fixed-dim": "#c9c6c5",
+                        "on-secondary": "#2f3034",
+                        "on-background": "#e5e2e1",
+                        "surface-container-highest": "#353434",
+                        "primary": "#c9c6c5",
+                        "inverse-surface": "#e5e2e1",
+                        "surface-tint": "#c9c6c5",
+                        "inverse-on-surface": "#313030",
+                        "on-surface": "#e5e2e1",
+                        "on-primary-fixed-variant": "#474646",
+                        "on-tertiary-fixed": "#111c2d",
+                        "surface-bright": "#3a3939",
+                        "on-error": "#690005",
+                        "surface-container-high": "#2b2a2a",
+                        "on-primary-fixed": "#1c1b1b",
+                        "surface-dim": "#141313",
+                        "surface": "#141313",
+                        "outline-variant": "#444748",
+                        "on-secondary-container": "#b8b8bc",
+                        "tertiary-fixed": "#d8e3fb",
+                        "on-error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Metropolis", "sans-serif"],
+                        "display": ["Metropolis", "sans-serif"],
+                        "body": ["Hanken Grotesk", "sans-serif"],
+                        "label": ["JetBrains Mono", "monospace"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #0a0a0a;
+            color: #e5e2e1;
+            font-family: 'Hanken Grotesk', sans-serif;
+            overflow: hidden;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .masonry-grid {
+            column-count: 4;
+            column-gap: 1.5rem;
+        }
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+<body class="flex min-h-screen">
+<!-- Shared SideNavBar -->
+<aside class="fixed left-0 top-0 h-screen w-[240px] flex flex-col h-full z-40 bg-surface-container-low dark:bg-surface-container-low border-r border-outline-variant">
+<div class="px-6 py-8">
+<h1 class="text-headline-sm font-headline font-black tracking-widest text-on-surface dark:text-on-surface">ZeroAbstraction</h1>
+<p class="font-label text-[10px] text-on-primary-container mt-1">v2.4.0-stable</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="text-on-surface-variant hover:text-on-surface py-3 px-6 flex items-center gap-3 font-label text-sm tracking-tighter uppercase hover:bg-surface-container-high transition-all duration-200 ease-in-out active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="dashboard">dashboard</span> Dashboard
+            </a>
+<a class="text-on-surface-variant hover:text-on-surface py-3 px-6 flex items-center gap-3 font-label text-sm tracking-tighter uppercase hover:bg-surface-container-high transition-all duration-200 ease-in-out active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="article">article</span> Posts
+            </a>
+<!-- Active State: Media -->
+<a class="text-primary font-bold bg-surface-variant border-r-2 border-primary py-3 px-6 flex items-center gap-3 font-label text-sm tracking-tighter uppercase active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="perm_media">perm_media</span> Media
+            </a>
+<a class="text-on-surface-variant hover:text-on-surface py-3 px-6 flex items-center gap-3 font-label text-sm tracking-tighter uppercase hover:bg-surface-container-high transition-all duration-200 ease-in-out active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="settings">settings</span> System Settings
+            </a>
+<a class="text-on-surface-variant hover:text-on-surface py-3 px-6 flex items-center gap-3 font-label text-sm tracking-tighter uppercase hover:bg-surface-container-high transition-all duration-200 ease-in-out active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="verified_user">verified_user</span> Security
+            </a>
+</nav>
+<div class="p-6 border-t border-outline-variant">
+<button class="w-full bg-secondary-fixed text-on-secondary-fixed py-2 rounded font-label text-xs tracking-tighter uppercase font-bold hover:bg-secondary-fixed-dim transition-colors">
+                New Deployment
+            </button>
+</div>
+</aside>
+<!-- Main View -->
+<main class="ml-[240px] flex-1 flex flex-col relative overflow-hidden">
+<!-- Shared TopAppBar -->
+<header class="flex justify-between items-center h-16 px-8 w-full bg-background dark:bg-background border-b border-outline-variant">
+<div class="flex items-center gap-4">
+<nav class="flex items-center gap-2 font-label text-[10px] tracking-tight uppercase text-on-surface-variant">
+<span>Admin</span>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-primary">Media</span>
+</nav>
+</div>
+<div class="flex items-center gap-8">
+<div class="flex gap-6">
+<a class="text-primary border-b border-primary pb-1 font-label text-[10px] tracking-tight uppercase" href="#">Main</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-label text-[10px] tracking-tight uppercase" href="#">Archive</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-label text-[10px] tracking-tight uppercase" href="#">Logs</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors" data-icon="notifications">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors" data-icon="terminal">terminal</button>
+<div class="w-8 h-8 rounded-full bg-surface-variant border border-outline-variant overflow-hidden">
+<img alt="User Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAB_Zu7Bo7hxPrPv6OsyrHlke3cy0Cv5mOQd43JyBeRmXkGxCarnBq6iM2g20zwZ3lBV3fxGZ4-dWaWwm3FsOEsPpQfJCQoZP7A9M-aDmSxhD4YEa_9-PvEkhc84TQCvhDDYQfdetTerBTD2zYw34AyGlKQNFj8lW4Aql1tEAA8rFHEA84Cnc5DyXm3885CKa93DHjR7FJcPlajZSk3Qp_9JjNYdXqlf3j3aruVBAykeuKUy3LiGoxnNaj5d0R0Db9frtBkoqe2VKBd"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Content Area -->
+<div class="flex-1 p-8 overflow-y-auto relative">
+<!-- Filter Row -->
+<div class="flex justify-between items-center mb-12">
+<div class="flex gap-4">
+<div class="flex items-center gap-2 px-3 py-1.5 bg-surface-container-low border border-outline-variant rounded">
+<span class="material-symbols-outlined text-sm text-on-surface-variant">filter_list</span>
+<span class="text-xs font-label uppercase text-on-surface-variant">All Types</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 bg-surface-container-low border border-outline-variant rounded">
+<span class="material-symbols-outlined text-sm text-on-surface-variant">sort</span>
+<span class="text-xs font-label uppercase text-on-surface-variant">Date Modified</span>
+</div>
+</div>
+<div class="relative">
+<input class="bg-surface-container-low border border-outline-variant rounded px-4 py-1.5 w-64 text-xs font-label uppercase focus:outline-none focus:border-primary transition-colors" placeholder="SEARCH REPOSITORY..." type="text"/>
+</div>
+</div>
+<!-- Dimmed Masonry Grid Background -->
+<div class="masonry-grid opacity-20 pointer-events-none">
+<div class="masonry-item bg-surface-container border border-outline-variant aspect-[3/4]">
+<img class="w-full h-full object-cover grayscale brightness-50" data-alt="A dark, high-contrast cinematic digital render of futuristic architecture under a charcoal-blue night sky. The scene features minimalist monolithic structures with hairline luminescent details. The overall mood is focused and premium, emphasizing negative space and sharp, technical precision." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAI8gxuuTcU9OVk7NUb5GZRK1_nTRri_hMjMQuk--zghvibKnJw_MhgpHp2t6KHt6m9qu1UFvjAY0VwJsCTeB_ZII4hW8vookzoIDFN3z8LLsA-EtWBB65FY9ImeefnFkdbhbZyaGQ1JijWdpNSxtatYvIk6_WD312mow2L_A-9Wb2N3WoBpWV7AYPF6ey9yC3xNnFwOJwZSQUqALzQsQKEaBR0RfuDjPAxndTDfCuqZsRVUIKf8Co8srIzSIcbyCc7pPWB5X95wiCO"/>
+</div>
+<div class="masonry-item bg-surface-container border border-outline-variant aspect-square">
+<img class="w-full h-full object-cover grayscale brightness-50" data-alt="Abstract minimalist background showcasing smooth gradients of deep black and charcoal blue. The visual style is reminiscent of luxury technical design, using soft atmospheric glows to suggest depth. Fine textures and high-end photographic grain add a layer of sophistication to the monochrome palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDW3MAdIX9v9yo9l3IMmLCi546TP03EmPGk1GuHvE94DkTtYCpufYZCtFeIvE00JBrkFicsov__CV-pRySzIxEQDwh9IPzP5C-XC5STHsKAs-bAImXiQFTMe0ThCbwu4C--iVO4SpRf7AHn7rGotwWunYJnx06H84UNhnhi9z0M_M1AlpTieSOKAT1APLRlOTB8lC8hF5GWUirArQnYk_2sRxRTcrh9aAu6fL7_WDq5idOgtd4ZcU97p01wOnk7iu4Vmx_-0qqNnb48"/>
+</div>
+<div class="masonry-item bg-surface-container border border-outline-variant aspect-[16/9]">
+<img class="w-full h-full object-cover grayscale brightness-50" data-alt="Close-up macro photography of sleek, anodized titanium mechanical components with complex, precise geometry. The lighting is low-key, highlighting edges with a cool blue luminescence against a pitch-black background. This image captures the essence of technical brutalism and high-performance engineering." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4XjyNkVykf9ETqGSXEaAit4Splj_AeGvL9nv8FQwGMx_bFdi-cnwjYb9Xi77rrCMT3l7OBpGXk3D4cN_jWI0ZsVAly33Kp9HjKlTfM21mpqroxDj2YRZeeIE4jKusrDsCsOGDI8j2wzU_1-Zs93GJe-IU5mEzS-vLTfEDCE94S7oGNFiV5uYL62syvoevrRR3qN48FqLTLEm8wik252BhQec2nAQs3vF2bfvL-Md72sVn13jqu4PyJFQQqim8XRC0enqkyFwMLc_U"/>
+</div>
+<div class="masonry-item bg-surface-container border border-outline-variant aspect-[4/5]">
+<img class="w-full h-full object-cover grayscale brightness-50" data-alt="A breathtaking view of global data networks represented as faint, glowing filaments of light across a dark planetary surface. The aesthetic is cinematic and minimalist, using a limited palette of charcoal blue and silver-white. The mood is one of global connectivity and advanced system administration." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlzYCUkAMkksXdhgBMqApSygEoq6ad8lUjFi6g9C51fjpOVHgUdj_aHmFogeTeYnUW45O445SWgn-WYpTQ1QFi28My147IpZuRX2rmvOKm4TBLajN6mTbdWQgSfctYQUWy6ANo9KFI0FpAFAcMSNuF0A4S2U9-549XLqcWZ47bVz_r_IJ2bpyNG7RU3Ol02cwn5Q3a5tnfmFiZyxjRPABub9ul3WWqaktl-EMSQOJspkLOJISK2mamf7acoZbBy5qNwdwAK7nN_E9v"/>
+</div>
+<div class="masonry-item bg-surface-container border border-outline-variant aspect-video"></div>
+<div class="masonry-item bg-surface-container border border-outline-variant aspect-square"></div>
+<div class="masonry-item bg-surface-container border border-outline-variant aspect-[3/4]"></div>
+<div class="masonry-item bg-surface-container border border-outline-variant aspect-[2/3]"></div>
+</div>
+<!-- Overlay & Upload Panel -->
+<div class="absolute inset-0 bg-black/60 flex items-center justify-center z-50">
+<div class="w-[520px] bg-[#111111] border border-zinc-700 rounded-lg overflow-hidden shadow-2xl">
+<!-- Panel Header -->
+<div class="flex justify-between items-center px-6 py-4 border-b border-zinc-800">
+<span class="text-[16px] font-semibold text-zinc-300">Uploading 3 files</span>
+<button class="text-[10px] font-label text-zinc-500 tracking-wider hover:text-zinc-300 transition-colors uppercase">Cancel All</button>
+</div>
+<!-- Uploading List -->
+<div class="flex flex-col">
+<!-- Row 1 -->
+<div class="h-[56px] px-6 flex items-center border-b border-zinc-800/50 hover:bg-zinc-900 transition-colors group">
+<span class="material-symbols-outlined text-zinc-500 mr-4" data-icon="description">description</span>
+<div class="flex-1 min-w-0 mr-4">
+<div class="flex justify-between items-center mb-1.5">
+<span class="text-xs text-zinc-300 truncate">technical_specs_v2.pdf</span>
+<span class="text-[10px] font-label text-zinc-500">2.4MB</span>
+</div>
+<div class="w-full h-[3px] bg-[#1a1a1a] rounded-full overflow-hidden relative">
+<div class="h-full bg-zinc-300" style="width: 65%;"></div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-[10px] font-label text-zinc-400">65%</span>
+<button class="material-symbols-outlined text-zinc-600 hover:text-zinc-300 transition-colors" data-icon="close">close</button>
+</div>
+</div>
+<!-- Row 2 -->
+<div class="h-[56px] px-6 flex items-center border-b border-zinc-800/50 hover:bg-zinc-900 transition-colors group">
+<span class="material-symbols-outlined text-zinc-500 mr-4" data-icon="image">image</span>
+<div class="flex-1 min-w-0 mr-4">
+<div class="flex justify-between items-center mb-1.5">
+<span class="text-xs text-zinc-300 truncate">hero_render_01.png</span>
+<span class="text-[10px] font-label text-zinc-500">12.8MB</span>
+</div>
+<div class="w-full h-[3px] bg-[#1a1a1a] rounded-full overflow-hidden relative">
+<div class="h-full bg-zinc-300" style="width: 32%;"></div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-[10px] font-label text-zinc-400">32%</span>
+<button class="material-symbols-outlined text-zinc-600 hover:text-zinc-300 transition-colors" data-icon="close">close</button>
+</div>
+</div>
+<!-- Row 3 (Done) -->
+<div class="h-[56px] px-6 flex items-center border-b border-zinc-800/50 hover:bg-zinc-900 transition-colors group">
+<span class="material-symbols-outlined text-zinc-500 mr-4" data-icon="video_library">video_library</span>
+<div class="flex-1 min-w-0 mr-4">
+<div class="flex justify-between items-center">
+<span class="text-xs text-zinc-300 truncate">promo_teaser.mp4</span>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px] text-zinc-500" data-icon="check_circle">check_circle</span>
+<span class="text-[10px] font-label text-zinc-500">Done</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4 ml-2">
+<span class="text-[10px] font-label text-zinc-400 opacity-0">100%</span>
+<button class="material-symbols-outlined text-zinc-600 hover:text-zinc-300 transition-colors" data-icon="close">close</button>
+</div>
+</div>
+</div>
+<!-- Panel Footer-like Glow -->
+<div class="h-1 bg-gradient-to-r from-transparent via-zinc-700/30 to-transparent"></div>
+</div>
+</div>
+<!-- Charcoal Blue Glow Effects (Atmospheric Layering) -->
+<div class="fixed bottom-[-100px] right-[-100px] w-[500px] h-[500px] rounded-full bg-slate-800/20 blur-[120px] pointer-events-none -z-10"></div>
+<div class="fixed top-[-100px] left-[200px] w-[300px] h-[300px] rounded-full bg-slate-800/10 blur-[100px] pointer-events-none -z-10"></div>
+</div>
+</main>
+</body></html>

@@ -1,12 +1,34 @@
 import { useEffect, useMemo, useState } from "react";
-
-import type { SearchResponse, SearchResultItem } from "@/lib/search/types";
+import Fuse from "fuse.js";
 import { useDebouncedValue } from "@/components/hooks/useDebouncedValue";
+
+export type SearchResultItem = {
+  id: string;
+  type: string;
+  title: string;
+  description: string;
+  href: string;
+  tags: string[];
+  score: number;
+  category: string;
+};
 
 type State =
   | { status: "idle"; items: SearchResultItem[]; error?: undefined }
   | { status: "loading"; items: SearchResultItem[]; error?: undefined }
   | { status: "error"; items: SearchResultItem[]; error: string };
+
+let searchIndex: any[] | null = null;
+let indexFetchPromise: Promise<any[]> | null = null;
+
+async function getSearchIndex() {
+  if (searchIndex) return searchIndex;
+  if (!indexFetchPromise) {
+    indexFetchPromise = fetch("/search-index.json").then(res => res.json());
+  }
+  searchIndex = await indexFetchPromise;
+  return searchIndex;
+}
 
 export function useInstantSearch(opts: {
   query: string;
@@ -21,50 +43,57 @@ export function useInstantSearch(opts: {
     items: [],
   });
 
-  const url = useMemo(() => {
-    const q = debouncedQuery.trim();
-    if (!q) return null;
-    const sp = new URLSearchParams({ q, limit: String(limit) });
-    return `/api/search?${sp.toString()}`;
-  }, [debouncedQuery, limit]);
-
   useEffect(() => {
-    if (!url) {
+    const q = debouncedQuery.trim();
+    if (!q) {
       setState({ status: "idle", items: [] });
       return;
     }
 
-    const controller = new AbortController();
-    setState((s) => ({ status: "loading", items: s.items }));
+    let isSubscribed = true;
 
-    (async () => {
+    async function performSearch() {
+      setState((s) => ({ status: "loading", items: s.items }));
       try {
-        const res = await fetch(url, {
-          method: "GET",
-          signal: controller.signal,
-          headers: { Accept: "application/json" },
-          cache: "no-store",
+        const index = await getSearchIndex();
+        if (!isSubscribed) return;
+
+        const fuse = new Fuse(index, {
+          keys: ["title", "description", "content", "tags"],
+          includeScore: true,
+          threshold: 0.4,
         });
 
-        if (!res.ok) {
-          const text = await res.text().catch(() => "");
-          throw new Error(text || `Search failed (${res.status})`);
-        }
+        const results = fuse.search(q, { limit });
+        
+        const mappedResults: SearchResultItem[] = results.map(r => ({
+          id: r.item.id,
+          type: r.item.category === "Project" ? "project" : "post",
+          title: r.item.title,
+          description: r.item.description,
+          href: r.item.url,
+          tags: r.item.tags,
+          score: r.score ?? 0,
+          category: r.item.category,
+        }));
 
-        const data = (await res.json()) as SearchResponse;
-        setState({ status: "idle", items: data.items });
+        setState({ status: "idle", items: mappedResults });
       } catch (err) {
-        if ((err as { name?: string }).name === "AbortError") return;
+        if (!isSubscribed) return;
         setState({
           status: "error",
           items: [],
-          error: err instanceof Error ? err.message : "Search failed",
+          error: "Search failed to load.",
         });
       }
-    })();
+    }
 
-    return () => controller.abort();
-  }, [url]);
+    performSearch();
+
+    return () => {
+      isSubscribed = false;
+    };
+  }, [debouncedQuery, limit]);
 
   return { ...state, debouncedQuery };
 }

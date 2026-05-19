@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Delete Project | ZeroAbstraction</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Metropolis:wght@400;700;800&amp;family=Hanken+Grotesk:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#010a1b",
+                        "on-error": "#690005",
+                        "surface-bright": "#3a3939",
+                        "on-secondary-container": "#b8b8bc",
+                        "on-primary-fixed": "#1c1b1b",
+                        "on-secondary-fixed": "#1a1c1f",
+                        "surface-container-highest": "#353434",
+                        "inverse-primary": "#5f5e5e",
+                        "inverse-on-surface": "#313030",
+                        "on-primary-fixed-variant": "#474646",
+                        "primary-fixed": "#e5e2e1",
+                        "outline-variant": "#444748",
+                        "surface-container-low": "#1c1b1b",
+                        "surface-container-high": "#2b2a2a",
+                        "on-surface-variant": "#c4c7c7",
+                        "on-secondary": "#2f3034",
+                        "on-background": "#e5e2e1",
+                        "surface": "#141313",
+                        "secondary-container": "#48494c",
+                        "surface-tint": "#c9c6c5",
+                        "on-primary": "#313030",
+                        "on-error-container": "#ffdad6",
+                        "secondary-fixed-dim": "#c6c6ca",
+                        "on-tertiary-container": "#6f7a8f",
+                        "surface-container-lowest": "#0e0e0e",
+                        "primary-fixed-dim": "#c9c6c5",
+                        "primary-container": "#0a0a0a",
+                        "tertiary-fixed-dim": "#bcc7de",
+                        "primary": "#c9c6c5",
+                        "outline": "#8e9192",
+                        "on-primary-container": "#7b7979",
+                        "surface-variant": "#353434",
+                        "surface-dim": "#141313",
+                        "secondary": "#c6c6ca",
+                        "on-secondary-fixed-variant": "#45474a",
+                        "secondary-fixed": "#e2e2e6",
+                        "on-surface": "#e5e2e1",
+                        "on-tertiary": "#263143",
+                        "error-container": "#93000a",
+                        "on-tertiary-fixed": "#111c2d",
+                        "tertiary-fixed": "#d8e3fb",
+                        "surface-container": "#201f1f",
+                        "inverse-surface": "#e5e2e1",
+                        "background": "#141313",
+                        "on-tertiary-fixed-variant": "#3c475a",
+                        "tertiary": "#bcc7de",
+                        "error": "#ffb4ab"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Metropolis"],
+                        "display": ["Metropolis"],
+                        "body": ["Hanken Grotesk"],
+                        "label": ["Jetbrains Mono"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #0a0a0a;
+            color: #e5e2e1;
+        }
+        .technical-border {
+            border: 1px solid #3f3f46; /* zinc-700 equivalent */
+        }
+        .zinc-300-text { color: #d4d4d8; }
+        .zinc-400-text { color: #a1a1aa; }
+        .zinc-500-text { color: #71717a; }
+        .zinc-700-border { border-color: #3f3f46; }
+        .zinc-800-bg { background-color: #27272a; }
+        .zinc-900-surface { background-color: #111111; }
+        .red-900-bg { background-color: #450a0a; }
+        .red-500-text { color: #ef4444; }
+    </style>
+</head>
+<body class="font-body selection:bg-primary selection:text-primary-container overflow-hidden">
+<!-- Persistent Sidebar Shell -->
+<aside class="fixed left-0 top-0 h-full w-64 zinc-900-surface border-r zinc-700-border flex flex-col z-50">
+<div class="px-6 py-8 flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="terminal">terminal</span>
+<span class="font-display text-xl font-bold tracking-tighter text-on-background">ZeroAbstraction</span>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 font-label text-xs uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="dashboard">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 font-label text-xs uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="article">article</span>
+                Posts
+            </a>
+<!-- Active State: Projects -->
+<a class="flex items-center gap-3 px-4 py-3 font-label text-xs uppercase tracking-widest bg-primary-container text-primary rounded-sm transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="folder_special">folder_special</span>
+                Projects
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 font-label text-xs uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="perm_media">perm_media</span>
+                Media
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 font-label text-xs uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="science">science</span>
+                Research
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 font-label text-xs uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="settings">settings</span>
+                Settings
+            </a>
+</nav>
+<div class="p-6">
+<div class="font-label text-[10px] uppercase tracking-widest text-zinc-500-text">
+                © 2024 ZeroAbstraction. Technical Brutalism.
+            </div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 min-h-screen flex flex-col p-12 relative overflow-y-auto">
+<!-- Header & Breadcrumbs -->
+<header class="mb-24">
+<nav class="mb-4">
+<span class="font-label text-xs tracking-wider text-zinc-500-text uppercase">Admin / Projects / Delete</span>
+</nav>
+<h1 class="font-headline text-4xl font-bold tracking-tight zinc-300-text">Delete Project</h1>
+</header>
+<!-- Centered Core Action Container -->
+<section class="flex-1 flex items-start justify-center pt-12">
+<!-- Atmospheric Glow Background Component -->
+<div class="absolute inset-0 pointer-events-none overflow-hidden">
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full" style="background: radial-gradient(circle, rgba(30, 41, 59, 0.15) 0%, rgba(10, 10, 10, 0) 70%);"></div>
+</div>
+<!-- Focus Deletion Card -->
+<div class="w-full max-w-[560px] zinc-900-surface zinc-700-border border p-12 relative z-10">
+<div class="flex flex-col items-center text-center">
+<!-- Warning Identity -->
+<div class="mb-6">
+<span class="material-symbols-outlined text-4xl zinc-400-text" data-icon="warning">warning</span>
+</div>
+<h2 class="font-headline text-2xl font-bold text-zinc-100 mb-2">Confirm Deletion</h2>
+<p class="font-body text-lg italic text-zinc-300 mb-4">Quantum_Compiler_V2</p>
+<!-- Metadata Row -->
+<div class="flex items-center gap-4 mb-8">
+<span class="font-label text-[10px] red-900-bg text-on-error px-2 py-0.5 tracking-widest uppercase">LIVE</span>
+<div class="flex items-center gap-1 font-label text-[10px] text-zinc-500-text tracking-tighter uppercase">
+<span class="material-symbols-outlined text-[12px]" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+                            Featured Item
+                        </div>
+</div>
+<!-- Warning Narrative -->
+<div class="max-w-sm mb-10">
+<p class="font-body text-sm leading-relaxed text-zinc-500-text">
+                            This will permanently delete the project record and all metadata. MDX content files will not be removed from the filesystem.
+                        </p>
+</div>
+<!-- Action Stack -->
+<div class="w-full space-y-4">
+<button class="w-full red-900-bg text-white font-label py-4 text-sm uppercase tracking-widest hover:brightness-125 transition-all duration-200 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="delete_forever">delete_forever</span>
+                            Delete Project
+                        </button>
+<button class="w-full bg-transparent border-none text-zinc-400-text font-label py-4 text-sm uppercase tracking-widest hover:text-on-surface hover:bg-zinc-800-bg transition-all duration-200">
+                            Cancel
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Technical Metadata Decoration -->
+<div class="absolute bottom-8 right-8 pointer-events-none opacity-20">
+<div class="font-label text-[10px] text-zinc-500-text text-right space-y-1">
+<p>SYSTEM_ID: ZA-DEL-9012</p>
+<p>AUTH_TOKEN_REQUIRED: TRUE</p>
+<p>ACTION_SCOPE: PERMANENT_FS_RETAIN</p>
+</div>
+</div>
+</main>
+</body></html>

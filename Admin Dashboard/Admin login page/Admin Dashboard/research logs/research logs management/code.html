@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ZeroAbstraction | Research Logs</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Metropolis:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-low": "#1c1b1b",
+                        "inverse-primary": "#5f5e5e",
+                        "outline-variant": "#444748",
+                        "on-primary": "#313030",
+                        "outline": "#8e9192",
+                        "on-secondary-fixed": "#1a1c1f",
+                        "on-tertiary-fixed-variant": "#3c475a",
+                        "on-secondary-fixed-variant": "#45474a",
+                        "surface-container": "#201f1f",
+                        "on-background": "#e5e2e1",
+                        "surface-variant": "#353434",
+                        "on-surface": "#e5e2e1",
+                        "on-tertiary-container": "#6f7a8f",
+                        "error": "#ffb4ab",
+                        "surface-bright": "#3a3939",
+                        "tertiary-fixed": "#d8e3fb",
+                        "secondary-container": "#48494c",
+                        "inverse-on-surface": "#313030",
+                        "primary-fixed": "#e5e2e1",
+                        "tertiary-container": "#010a1b",
+                        "surface": "#141313",
+                        "on-primary-container": "#7b7979",
+                        "error-container": "#93000a",
+                        "secondary-fixed-dim": "#c6c6ca",
+                        "surface-dim": "#141313",
+                        "surface-container-high": "#2b2a2a",
+                        "on-primary-fixed": "#1c1b1b",
+                        "secondary-fixed": "#e2e2e6",
+                        "inverse-surface": "#e5e2e1",
+                        "background": "#141313",
+                        "on-error": "#690005",
+                        "on-tertiary": "#263143",
+                        "on-secondary": "#2f3034",
+                        "tertiary-fixed-dim": "#bcc7de",
+                        "on-surface-variant": "#c4c7c7",
+                        "secondary": "#c6c6ca",
+                        "on-tertiary-fixed": "#111c2d",
+                        "tertiary": "#bcc7de",
+                        "on-secondary-container": "#b8b8bc",
+                        "on-error-container": "#ffdad6",
+                        "primary-container": "#0a0a0a",
+                        "primary-fixed-dim": "#c9c6c5",
+                        "surface-tint": "#c9c6c5",
+                        "surface-container-highest": "#353434",
+                        "primary": "#c9c6c5",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-primary-fixed-variant": "#474646"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Metropolis"],
+                        "display": ["Metropolis"],
+                        "body": ["Hanken Grotesk"],
+                        "label": ["JetBrains Mono"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #0a0a0a;
+            color: #e5e2e1;
+        }
+        .sidebar-active {
+            background-color: #27272a; /* zinc-800 */
+            color: #ffffff;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #27272a;
+        }
+    </style>
+</head>
+<body class="font-body selection:bg-primary selection:text-on-primary overflow-hidden h-screen flex">
+<!-- Fixed Left Sidebar -->
+<aside class="w-[240px] h-full bg-[#0d0d0d] border-r border-zinc-800 flex flex-col shrink-0 z-50">
+<!-- Brand Wordmark -->
+<div class="px-6 py-8">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="terminal">terminal</span>
+<span class="font-display text-xl font-bold tracking-tighter text-on-background">ZeroAbstraction</span>
+</div>
+</div>
+<!-- Vertical Nav Links -->
+<nav class="flex-1 px-4 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:text-primary transition-colors duration-200 group" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="dashboard">dashboard</span>
+<span class="font-label text-sm uppercase tracking-wider">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:text-primary transition-colors duration-200 group" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="article">article</span>
+<span class="font-label text-sm uppercase tracking-wider">Posts</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:text-primary transition-colors duration-200 group" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="layers">layers</span>
+<span class="font-label text-sm uppercase tracking-wider">Projects</span>
+</a>
+<!-- Active State -->
+<a class="flex items-center gap-3 px-3 py-2 sidebar-active rounded-lg group" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="terminal">terminal</span>
+<span class="font-label text-sm uppercase tracking-wider">Research Logs</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:text-primary transition-colors duration-200 group" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="image">image</span>
+<span class="font-label text-sm uppercase tracking-wider">Media</span>
+</a>
+</nav>
+<!-- Sidebar Footer/User Profile -->
+<div class="p-6 border-t border-zinc-800">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" data-icon="person">person</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs font-bold text-on-surface">Admin User</span>
+<span class="text-[10px] text-zinc-500 font-label">SYSLOG_ROOT</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col min-w-0 overflow-hidden relative">
+<!-- Header -->
+<header class="w-full pt-12 px-12 pb-8 flex justify-between items-end">
+<div>
+<nav class="mb-2">
+<span class="font-label text-xs tracking-widest text-zinc-500 uppercase">Admin / Research Logs</span>
+</nav>
+<h1 class="font-display text-[36px] font-bold leading-none text-on-surface tracking-tight">Research Logs</h1>
+</div>
+<button class="flex items-center gap-2 bg-zinc-200 hover:bg-white text-zinc-950 px-5 py-2.5 rounded-sm transition-all duration-200 font-label text-xs uppercase font-bold tracking-widest">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+                New Research Log
+            </button>
+</header>
+<!-- Controls Row -->
+<section class="px-12 mb-8 flex justify-between items-center gap-6">
+<!-- Search -->
+<div class="flex-1 max-w-md relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 text-sm" data-icon="search">search</span>
+<input class="w-full bg-[#111111] border border-zinc-700 text-zinc-300 text-xs px-10 py-2.5 focus:outline-none focus:border-zinc-300 focus:ring-1 focus:ring-zinc-300 transition-all font-body" placeholder="Search by entry, title, or status..." type="text"/>
+</div>
+<!-- Filters -->
+<div class="flex items-center gap-8">
+<!-- Dropdown -->
+<div class="relative group">
+<button class="flex items-center gap-2 text-zinc-400 hover:text-zinc-100 transition-colors text-xs font-label uppercase tracking-widest">
+                        Series: All
+                        <span class="material-symbols-outlined text-sm" data-icon="expand_more">expand_more</span>
+</button>
+</div>
+<!-- Status Tabs -->
+<nav class="flex gap-6 border-b border-zinc-800">
+<button class="pb-2 px-1 text-xs font-label uppercase tracking-widest text-zinc-100 border-b-2 border-zinc-100">All</button>
+<button class="pb-2 px-1 text-xs font-label uppercase tracking-widest text-zinc-500 hover:text-zinc-300 transition-colors border-b-2 border-transparent">Published</button>
+<button class="pb-2 px-1 text-xs font-label uppercase tracking-widest text-zinc-500 hover:text-zinc-300 transition-colors border-b-2 border-transparent">Draft</button>
+<button class="pb-2 px-1 text-xs font-label uppercase tracking-widest text-zinc-500 hover:text-zinc-300 transition-colors border-b-2 border-transparent">Archived</button>
+</nav>
+</div>
+</section>
+<!-- Data Table Section -->
+<section class="flex-1 px-12 overflow-y-auto custom-scrollbar">
+<div class="w-full border-t border-zinc-800">
+<table class="w-full text-left border-collapse">
+<thead class="sticky top-0 bg-[#0a0a0a] z-10">
+<tr class="border-b border-zinc-800">
+<th class="py-4 px-4 font-label text-[10px] uppercase tracking-widest text-zinc-500 w-[100px]">Entry #</th>
+<th class="py-4 px-4 font-label text-[10px] uppercase tracking-widest text-zinc-500">Log Title</th>
+<th class="py-4 px-4 font-label text-[10px] uppercase tracking-widest text-zinc-500">Series</th>
+<th class="py-4 px-4 font-label text-[10px] uppercase tracking-widest text-zinc-500">Status</th>
+<th class="py-4 px-4 font-label text-[10px] uppercase tracking-widest text-zinc-500">Published Date</th>
+<th class="py-4 px-4 font-label text-[10px] uppercase tracking-widest text-zinc-500 text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-zinc-800/50">
+<!-- Row 1 -->
+<tr class="bg-[#0f0f0f] hover:bg-zinc-800/40 transition-colors group">
+<td class="py-4 px-4 font-label text-xs text-zinc-400">Entry #042</td>
+<td class="py-4 px-4 font-display font-bold text-zinc-100">Quantum Drift in MEMS Oscillators</td>
+<td class="py-4 px-4">
+<span class="bg-zinc-800 text-[10px] font-label text-zinc-400 px-2 py-0.5 rounded uppercase tracking-tighter">mems</span>
+</td>
+<td class="py-4 px-4">
+<span class="bg-zinc-700 text-white text-[10px] font-label px-2 py-0.5 rounded uppercase">Published</span>
+</td>
+<td class="py-4 px-4 font-label text-xs text-zinc-500">2024.11.12</td>
+<td class="py-4 px-4 text-right">
+<div class="flex justify-end gap-3 text-zinc-500">
+<button class="hover:text-zinc-100 transition-colors"><span class="material-symbols-outlined text-sm" data-icon="edit">edit</span></button>
+<button class="hover:text-error transition-colors"><span class="material-symbols-outlined text-sm" data-icon="delete">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="bg-[#111111] hover:bg-zinc-800/40 transition-colors group">
+<td class="py-4 px-4 font-label text-xs text-zinc-400">Entry #041</td>
+<td class="py-4 px-4 font-display font-bold text-zinc-100">Multi-Constellation GNSS Error Correction</td>
+<td class="py-4 px-4">
+<span class="bg-zinc-800 text-[10px] font-label text-zinc-400 px-2 py-0.5 rounded uppercase tracking-tighter">gnss</span>
+</td>
+<td class="py-4 px-4">
+<span class="bg-amber-900/30 text-amber-500 text-[10px] font-label px-2 py-0.5 rounded uppercase border border-amber-900">Draft</span>
+</td>
+<td class="py-4 px-4 font-label text-xs text-zinc-500">----.--.--</td>
+<td class="py-4 px-4 text-right">
+<div class="flex justify-end gap-3 text-zinc-500">
+<button class="hover:text-zinc-100 transition-colors"><span class="material-symbols-outlined text-sm" data-icon="edit">edit</span></button>
+<button class="hover:text-error transition-colors"><span class="material-symbols-outlined text-sm" data-icon="delete">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="bg-[#0f0f0f] hover:bg-zinc-800/40 transition-colors group">
+<td class="py-4 px-4 font-label text-xs text-zinc-400">Entry #040</td>
+<td class="py-4 px-4 font-display font-bold text-zinc-100">Sensor Calibration in Extreme Cold Environments</td>
+<td class="py-4 px-4">
+<span class="bg-zinc-800 text-[10px] font-label text-zinc-400 px-2 py-0.5 rounded uppercase tracking-tighter">sensor-calibration</span>
+</td>
+<td class="py-4 px-4">
+<span class="bg-zinc-600/30 text-zinc-400 text-[10px] font-label px-2 py-0.5 rounded uppercase border border-zinc-600">Archived</span>
+</td>
+<td class="py-4 px-4 font-label text-xs text-zinc-500">2023.08.15</td>
+<td class="py-4 px-4 text-right">
+<div class="flex justify-end gap-3 text-zinc-500">
+<button class="hover:text-zinc-100 transition-colors"><span class="material-symbols-outlined text-sm" data-icon="edit">edit</span></button>
+<button class="hover:text-error transition-colors"><span class="material-symbols-outlined text-sm" data-icon="delete">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="bg-[#111111] hover:bg-zinc-800/40 transition-colors group">
+<td class="py-4 px-4 font-label text-xs text-zinc-400">Entry #039</td>
+<td class="py-4 px-4 font-display font-bold text-zinc-100">Stellar Parallax Measurement Deviations</td>
+<td class="py-4 px-4">
+<span class="bg-zinc-800 text-[10px] font-label text-zinc-400 px-2 py-0.5 rounded uppercase tracking-tighter">astrophysics</span>
+</td>
+<td class="py-4 px-4">
+<span class="bg-zinc-700 text-white text-[10px] font-label px-2 py-0.5 rounded uppercase">Published</span>
+</td>
+<td class="py-4 px-4 font-label text-xs text-zinc-500">2023.07.29</td>
+<td class="py-4 px-4 text-right">
+<div class="flex justify-end gap-3 text-zinc-500">
+<button class="hover:text-zinc-100 transition-colors"><span class="material-symbols-outlined text-sm" data-icon="edit">edit</span></button>
+<button class="hover:text-error transition-colors"><span class="material-symbols-outlined text-sm" data-icon="delete">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="bg-[#0f0f0f] hover:bg-zinc-800/40 transition-colors group">
+<td class="py-4 px-4 font-label text-xs text-zinc-400">Entry #038</td>
+<td class="py-4 px-4 font-display font-bold text-zinc-100">Hyper-Local Weather Pattern Modeling</td>
+<td class="py-4 px-4">
+<span class="bg-zinc-800 text-[10px] font-label text-zinc-400 px-2 py-0.5 rounded uppercase tracking-tighter">gnss</span>
+</td>
+<td class="py-4 px-4">
+<span class="bg-zinc-700 text-white text-[10px] font-label px-2 py-0.5 rounded uppercase">Published</span>
+</td>
+<td class="py-4 px-4 font-label text-xs text-zinc-500">2023.06.12</td>
+<td class="py-4 px-4 text-right">
+<div class="flex justify-end gap-3 text-zinc-500">
+<button class="hover:text-zinc-100 transition-colors"><span class="material-symbols-outlined text-sm" data-icon="edit">edit</span></button>
+<button class="hover:text-error transition-colors"><span class="material-symbols-outlined text-sm" data-icon="delete">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 6 -->
+<tr class="bg-[#111111] hover:bg-zinc-800/40 transition-colors group">
+<td class="py-4 px-4 font-label text-xs text-zinc-400">Entry #037</td>
+<td class="py-4 px-4 font-display font-bold text-zinc-100">Inertial Measurement Unit Thermal Noise</td>
+<td class="py-4 px-4">
+<span class="bg-zinc-800 text-[10px] font-label text-zinc-400 px-2 py-0.5 rounded uppercase tracking-tighter">mems</span>
+</td>
+<td class="py-4 px-4">
+<span class="bg-zinc-700 text-white text-[10px] font-label px-2 py-0.5 rounded uppercase">Published</span>
+</td>
+<td class="py-4 px-4 font-label text-xs text-zinc-500">2023.05.04</td>
+<td class="py-4 px-4 text-right">
+<div class="flex justify-end gap-3 text-zinc-500">
+<button class="hover:text-zinc-100 transition-colors"><span class="material-symbols-outlined text-sm" data-icon="edit">edit</span></button>
+<button class="hover:text-error transition-colors"><span class="material-symbols-outlined text-sm" data-icon="delete">delete</span></button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Pagination -->
+<footer class="px-12 py-8 flex justify-end">
+<div class="flex items-center gap-1">
+<button class="w-8 h-8 flex items-center justify-center text-zinc-600 hover:text-zinc-100 transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center font-label text-xs text-zinc-100 bg-zinc-800 rounded-sm">1</button>
+<button class="w-8 h-8 flex items-center justify-center font-label text-xs text-zinc-500 hover:text-zinc-100 transition-colors">2</button>
+<button class="w-8 h-8 flex items-center justify-center font-label text-xs text-zinc-500 hover:text-zinc-100 transition-colors">3</button>
+<span class="px-2 text-zinc-700 font-label text-xs">...</span>
+<button class="w-8 h-8 flex items-center justify-center font-label text-xs text-zinc-500 hover:text-zinc-100 transition-colors">12</button>
+<button class="w-8 h-8 flex items-center justify-center text-zinc-600 hover:text-zinc-100 transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</footer>
+<!-- Atmospheric Glow Background Elements -->
+<div class="absolute -bottom-24 -right-24 w-96 h-96 bg-slate-900/10 blur-[120px] pointer-events-none -z-10"></div>
+<div class="absolute top-1/4 -left-24 w-64 h-64 bg-zinc-900/20 blur-[100px] pointer-events-none -z-10"></div>
+</main>
+</body></html>

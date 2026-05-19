@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&amp;family=Hanken+Grotesk:wght@300;400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-container": "#0a0a0a",
+                    "on-secondary": "#2f3034",
+                    "on-secondary-container": "#b8b8bc",
+                    "error-container": "#93000a",
+                    "tertiary-fixed-dim": "#bcc7de",
+                    "surface-container-highest": "#353434",
+                    "primary": "#c9c6c5",
+                    "background": "#141313",
+                    "tertiary-container": "#010a1b",
+                    "secondary-fixed-dim": "#c6c6ca",
+                    "secondary-fixed": "#e2e2e6",
+                    "inverse-on-surface": "#313030",
+                    "on-primary-container": "#7b7979",
+                    "surface-variant": "#353434",
+                    "on-tertiary-container": "#6f7a8f",
+                    "on-tertiary": "#263143",
+                    "on-tertiary-fixed": "#111c2d",
+                    "tertiary": "#bcc7de",
+                    "surface-tint": "#c9c6c5",
+                    "on-primary": "#313030",
+                    "inverse-primary": "#5f5e5e",
+                    "error": "#ffb4ab",
+                    "primary-fixed-dim": "#c9c6c5",
+                    "primary-fixed": "#e5e2e1",
+                    "tertiary-fixed": "#d8e3fb",
+                    "outline": "#8e9192",
+                    "on-background": "#e5e2e1",
+                    "on-error": "#690005",
+                    "on-primary-fixed-variant": "#474646",
+                    "on-primary-fixed": "#1c1b1b",
+                    "on-error-container": "#ffdad6",
+                    "surface-container-lowest": "#0e0e0e",
+                    "surface-bright": "#3a3939",
+                    "on-secondary-fixed-variant": "#45474a",
+                    "surface-dim": "#141313",
+                    "surface-container-high": "#2b2a2a",
+                    "secondary": "#c6c6ca",
+                    "on-secondary-fixed": "#1a1c1f",
+                    "inverse-surface": "#e5e2e1",
+                    "on-surface": "#e5e2e1",
+                    "surface-container": "#201f1f",
+                    "on-surface-variant": "#c4c7c7",
+                    "surface": "#141313",
+                    "outline-variant": "#444748",
+                    "surface-container-low": "#1c1b1b",
+                    "on-tertiary-fixed-variant": "#3c475a",
+                    "secondary-container": "#48494c"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Metropolis", "sans-serif"],
+                    "display": ["Metropolis", "sans-serif"],
+                    "body": ["Hanken Grotesk", "sans-serif"],
+                    "label": ["JetBrains Mono", "monospace"]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body {
+            background-color: #0a0a0a;
+            color: #e5e2e1;
+        }
+    </style>
+</head>
+<body class="font-body selection:bg-primary selection:text-primary-container overflow-hidden">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-screen w-[240px] bg-surface-container-low border-r border-outline-variant flex flex-col z-40 transition-all duration-200 ease-in-out">
+<div class="p-8">
+<h1 class="text-headline-sm font-headline font-black tracking-widest text-on-surface uppercase">ZeroAbstraction</h1>
+<p class="font-label text-[10px] text-on-primary-container mt-1">v2.4.0-stable</p>
+</div>
+<nav class="flex-grow mt-4">
+<div class="flex flex-col">
+<a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all duration-200 ease-in-out py-3 px-6 flex items-center gap-3 font-label text-sm tracking-tighter uppercase" href="#">
+<span class="material-symbols-outlined text-lg">dashboard</span>
+                    Dashboard
+                </a>
+<a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all duration-200 ease-in-out py-3 px-6 flex items-center gap-3 font-label text-sm tracking-tighter uppercase" href="#">
+<span class="material-symbols-outlined text-lg">article</span>
+                    Posts
+                </a>
+<a class="text-primary font-bold bg-surface-variant border-r-2 border-primary py-3 px-6 flex items-center gap-3 font-label text-sm tracking-tighter uppercase transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-lg">perm_media</span>
+                    Media
+                </a>
+<a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all duration-200 ease-in-out py-3 px-6 flex items-center gap-3 font-label text-sm tracking-tighter uppercase" href="#">
+<span class="material-symbols-outlined text-lg">settings</span>
+                    System Settings
+                </a>
+<a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all duration-200 ease-in-out py-3 px-6 flex items-center gap-3 font-label text-sm tracking-tighter uppercase" href="#">
+<span class="material-symbols-outlined text-lg">verified_user</span>
+                    Security
+                </a>
+</div>
+</nav>
+<div class="p-6">
+<button class="w-full bg-primary text-on-primary font-label text-xs font-bold py-4 uppercase tracking-widest active:scale-[0.98] transition-transform duration-200">
+                New Deployment
+            </button>
+<div class="mt-8 flex items-center gap-3">
+<div class="w-8 h-8 bg-surface-variant flex items-center justify-center border border-outline-variant">
+<span class="material-symbols-outlined text-on-surface text-sm">person</span>
+</div>
+<div>
+<p class="text-[10px] font-label text-on-surface leading-none">System Administrator</p>
+<p class="text-[8px] font-label text-on-surface-variant uppercase mt-1">Status: Active</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- TopAppBar -->
+<header class="flex justify-between items-center h-16 ml-[240px] px-8 w-[calc(100%-240px)] bg-background border-b border-outline-variant fixed top-0 z-30">
+<div class="flex items-center gap-4">
+<nav class="flex gap-4 font-label text-[10px] tracking-tight uppercase">
+<span class="text-on-surface-variant">ADMIN</span>
+<span class="text-outline-variant">/</span>
+<a class="text-primary border-b border-primary pb-1" href="#">MEDIA</a>
+</nav>
+</div>
+<div class="flex items-center gap-8">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
+<input class="bg-surface-container-lowest border border-outline-variant py-2 pl-10 pr-4 text-[10px] font-label text-on-surface focus:outline-none focus:ring-1 focus:ring-primary w-64 transition-all" placeholder="SEARCH ASSETS..." type="text"/>
+</div>
+<div class="flex items-center gap-6 text-on-surface-variant">
+<button class="hover:text-primary transition-colors duration-200">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="hover:text-primary transition-colors duration-200">
+<span class="material-symbols-outlined">terminal</span>
+</button>
+<button class="px-4 py-2 border border-outline-variant font-label text-[10px] text-primary hover:bg-surface-container-high transition-all active:scale-[0.98]">
+                    Deploy System
+                </button>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="ml-[240px] mt-16 p-12 h-[calc(100vh-64px)] overflow-y-auto bg-[#0a0a0a]">
+<!-- Success Upload Zone -->
+<section class="mb-16">
+<div class="border border-zinc-600 bg-[#0d0d0d] p-12 flex flex-col items-center justify-center text-center relative overflow-hidden">
+<!-- Subtle background glow -->
+<div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(30,41,59,0.15),transparent_70%)]"></div>
+<div class="relative z-10">
+<span class="material-symbols-outlined text-[40px] text-zinc-400 mb-4" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<h2 class="text-lg font-bold text-on-surface mb-1">Upload complete</h2>
+<p class="text-zinc-500 font-label text-xs mb-6">3 files added to media library</p>
+<a class="font-label text-xs text-zinc-400 uppercase tracking-widest hover:text-primary transition-colors flex items-center gap-2 group" href="#">
+<span>Upload more</span>
+<span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+</div>
+</section>
+<!-- Media Grid -->
+<section>
+<div class="flex items-center justify-between mb-8">
+<h3 class="font-label text-xs uppercase tracking-[0.2em] text-on-surface-variant">Recently Added Assets</h3>
+<div class="flex gap-4">
+<button class="font-label text-[10px] text-on-surface-variant hover:text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">filter_list</span> FILTER
+                    </button>
+<button class="font-label text-[10px] text-on-surface-variant hover:text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">grid_view</span> GRID
+                    </button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+<!-- New Asset 1 -->
+<div class="group relative aspect-video bg-[#111111] border border-zinc-600 overflow-hidden cursor-pointer transition-all duration-200">
+<img class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300" data-alt="A high-contrast cinematic architectural photograph of a brutalist concrete structure at twilight. The scene is dominated by deep blacks and charcoal tones, with subtle blue-hour light catching the sharp, geometric edges of the building. The mood is minimalist, technical, and intensely focused, aligning with a premium digital design aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCl8GKg1WOWx-B0PbYjFppmflE83Be8nwscHsyd3PDcQmmwJ3ktphvHdfdubB3JECji1i1i01vw4aFHuXVoEp-HF4bGehTar008aaBSEz5PrW5KcFJ1QnrNksD17mwd0Ym8z30-F_bvs-OUtZ9Jm5qEiNjIBkpv2YOBkbG68s_EGCvinxUwVwVNEbjXyuZ13UFCF6bIQzEhRH465vsaDLwyf8pLytVHZoXHwxS7AURqpLMfSnWs8hgEI3OOYAu3tKtAl1bi6J2s_GVI"/>
+<!-- New Badge -->
+<div class="absolute top-3 left-3 opacity-100 group-hover:opacity-100 transition-opacity">
+<span class="bg-zinc-900/80 backdrop-blur-sm border border-zinc-700 px-2 py-1 font-label text-[9px] text-zinc-400 uppercase tracking-tighter">Newly added</span>
+</div>
+<!-- Overlay Controls -->
+<div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col justify-between p-4">
+<div class="flex justify-end gap-2">
+<button class="w-8 h-8 bg-zinc-800 flex items-center justify-center hover:bg-zinc-700 transition-colors">
+<span class="material-symbols-outlined text-sm text-zinc-300">content_copy</span>
+</button>
+<button class="w-8 h-8 bg-zinc-800 flex items-center justify-center hover:bg-error-container transition-colors">
+<span class="material-symbols-outlined text-sm text-zinc-300">delete</span>
+</button>
+</div>
+<div class="font-label">
+<p class="text-[10px] text-white truncate">ARCH_STATIC_001.JPG</p>
+<p class="text-[8px] text-zinc-400 uppercase mt-1">2.4 MB • 4000x2250</p>
+</div>
+</div>
+</div>
+<!-- New Asset 2 -->
+<div class="group relative aspect-video bg-[#111111] border border-zinc-600 overflow-hidden cursor-pointer transition-all duration-200">
+<img class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300" data-alt="A macro photograph of an abstract technical texture featuring iridescent dark liquid or metallic folds. The lighting is low-key with a subtle charcoal-blue glow illuminating the complex surfaces. The image communicates a sense of advanced engineering and digital sophistication through its high-detail, monochrome-adjacent palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtzA_5Z6z4OICNL-JLwY4oCbU_Nenv9eDXdkneBWvNxZeV5-daUtW68B87nspPoya63_4OPk3rTAShTK9zS48trdfvWRmsYTBxZTMSyKmlXarvwiFfKsttZS6hW5RKqM2tfLMZWoT_e0RamiwaoDjAiwEn2K6ER9XCSvk2itfz__tM0vIE071WIT4DzjqPCVl31nIoBLMxGtDXa42cTX-bGHjSSiga0TfAY8_RrABOJZLzMMDu-blLCrnzQABBTZ-m2P3_yU2USaWA"/>
+<div class="absolute top-3 left-3">
+<span class="bg-zinc-900/80 backdrop-blur-sm border border-zinc-700 px-2 py-1 font-label text-[9px] text-zinc-400 uppercase tracking-tighter">Newly added</span>
+</div>
+<div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col justify-between p-4">
+<div class="flex justify-end gap-2">
+<button class="w-8 h-8 bg-zinc-800 flex items-center justify-center hover:bg-zinc-700">
+<span class="material-symbols-outlined text-sm text-zinc-300">content_copy</span>
+</button>
+<button class="w-8 h-8 bg-zinc-800 flex items-center justify-center hover:bg-error-container">
+<span class="material-symbols-outlined text-sm text-zinc-300">delete</span>
+</button>
+</div>
+<div class="font-label">
+<p class="text-[10px] text-white truncate">GLOW_NODES_MASTER.PNG</p>
+<p class="text-[8px] text-zinc-400 uppercase mt-1">1.8 MB • 1920x1080</p>
+</div>
+</div>
+</div>
+<!-- New Asset 3 -->
+<div class="group relative aspect-video bg-[#111111] border border-zinc-600 overflow-hidden cursor-pointer transition-all duration-200">
+<img class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300" data-alt="A clean, minimalist high-tech circuit board detail in monochrome black and white. The components create a rhythmic, geometric pattern with sharp focus and shallow depth of field. Soft, diffused lighting emphasizes the industrial precision and brutalist digital aesthetic of the system architecture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDaCW1lXt2t-oMXAjc7IUllEEwvikcxlNrcnvB70-Jfcmv1zfq3lV0X48Bflxrk7FbpSqq-VQ0Ygv04WbXYDteA6ooWcyFjLAlhTqKS_HrkxqjfzZND_AOuSDbvOMM4H8L46xC5cwGnUlIdPdAA3jTHpo2kKAs2LpYwnt6g6wBDK_zJcNi8nTm-xGptvtnimncXkvBCOPw7K38Y2RgyfSH6bahf9d5692cpHAy7nocjVng3ZtznCF8BbJGuYYsRQdaI0Z0ADj6CX7Hf"/>
+<div class="absolute top-3 left-3">
+<span class="bg-zinc-900/80 backdrop-blur-sm border border-zinc-700 px-2 py-1 font-label text-[9px] text-zinc-400 uppercase tracking-tighter">Newly added</span>
+</div>
+<div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col justify-between p-4">
+<div class="flex justify-end gap-2">
+<button class="w-8 h-8 bg-zinc-800 flex items-center justify-center hover:bg-zinc-700">
+<span class="material-symbols-outlined text-sm text-zinc-300">content_copy</span>
+</button>
+<button class="w-8 h-8 bg-zinc-800 flex items-center justify-center hover:bg-error-container">
+<span class="material-symbols-outlined text-sm text-zinc-300">delete</span>
+</button>
+</div>
+<div class="font-label">
+<p class="text-[10px] text-white truncate">CORE_MODULE_BETA.AVIF</p>
+<p class="text-[8px] text-zinc-400 uppercase mt-1">4.2 MB • 5400x3200</p>
+</div>
+</div>
+</div>
+<!-- Existing Asset (Example) -->
+<div class="group relative aspect-video bg-[#111111] border border-zinc-800 overflow-hidden cursor-pointer">
+<img class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-300" data-alt="A cinematic, low-angle shot of a futuristic data center interior. High-contrast lighting highlights the sleek, black server racks and industrial ceiling pipes. The atmosphere is quiet, dark, and technically dense, featuring a monochrome palette with deep shadows and subtle metallic reflections." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJ7SuXpaGdRWBbi5xrDi3WA2d_t6yzsfrcx72bCqCQ5idENKpv7DNkRt07hg_47nqIKX9QPDUFBkFR_pVUu6XDfGvfqI9a4UE1mvYLeVVeTKa0Ksuaqc5_rGL5cWn-uG5unekpGmggwcdSriLPcYDvI5iDkd1AMXs2N5F2tY-YNZMl_0--zaDnkndn8kR4f2Db7Sbzkeo6D0O0sX_J8A5wfaqpG3tInKD32ZTBZtsupSV3d4_op1OBq0Qw51wTe9fjxWAWT4gTzrbL"/>
+<div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col justify-between p-4">
+<div class="flex justify-end gap-2">
+<button class="w-8 h-8 bg-zinc-800 flex items-center justify-center hover:bg-zinc-700">
+<span class="material-symbols-outlined text-sm text-zinc-300">content_copy</span>
+</button>
+<button class="w-8 h-8 bg-zinc-800 flex items-center justify-center hover:bg-error-container">
+<span class="material-symbols-outlined text-sm text-zinc-300">delete</span>
+</button>
+</div>
+<div class="font-label">
+<p class="text-[10px] text-white truncate">ARCHIVE_SERVER_ROOM.JPG</p>
+<p class="text-[8px] text-zinc-400 uppercase mt-1">890 KB • 1200x800</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Load More Trigger -->
+<div class="mt-24 pb-12 border-t border-zinc-800/50 pt-12 flex justify-center">
+<button class="font-label text-[10px] tracking-[0.3em] text-zinc-500 hover:text-zinc-300 transition-all uppercase group flex items-center gap-4">
+<span class="w-12 h-[1px] bg-zinc-800 group-hover:w-24 transition-all"></span>
+                    Load Archive
+                    <span class="w-12 h-[1px] bg-zinc-800 group-hover:w-24 transition-all"></span>
+</button>
+</div>
+</section>
+</main>
+<!-- Hidden Luminescence Overlay -->
+<div class="fixed inset-0 pointer-events-none bg-[radial-gradient(circle_at_90%_10%,rgba(30,41,59,0.08),transparent_40%)]"></div>
+</body></html>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ZeroAbstraction Admin Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=Metropolis:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-primary-fixed": "#1c1b1b",
+              "surface-bright": "#3a3939",
+              "on-secondary-container": "#b8b8bc",
+              "tertiary-container": "#010a1b",
+              "on-error": "#690005",
+              "inverse-primary": "#5f5e5e",
+              "inverse-on-surface": "#313030",
+              "surface-container-highest": "#353434",
+              "on-secondary-fixed": "#1a1c1f",
+              "primary-fixed": "#e5e2e1",
+              "on-primary-fixed-variant": "#474646",
+              "secondary-fixed-dim": "#c6c6ca",
+              "on-tertiary-container": "#6f7a8f",
+              "surface": "#141313",
+              "secondary-container": "#48494c",
+              "surface-tint": "#c9c6c5",
+              "on-primary": "#313030",
+              "on-error-container": "#ffdad6",
+              "surface-container-low": "#1c1b1b",
+              "surface-container-high": "#2b2a2a",
+              "on-surface-variant": "#c4c7c7",
+              "on-secondary": "#2f3034",
+              "on-background": "#e5e2e1",
+              "outline-variant": "#444748",
+              "tertiary-fixed-dim": "#bcc7de",
+              "surface-container-lowest": "#0e0e0e",
+              "primary-fixed-dim": "#c9c6c5",
+              "primary-container": "#0a0a0a",
+              "secondary-fixed": "#e2e2e6",
+              "on-surface": "#e5e2e1",
+              "on-secondary-fixed-variant": "#45474a",
+              "outline": "#8e9192",
+              "on-primary-container": "#7b7979",
+              "surface-variant": "#353434",
+              "surface-dim": "#141313",
+              "secondary": "#c6c6ca",
+              "primary": "#c9c6c5",
+              "on-tertiary-fixed": "#111c2d",
+              "tertiary-fixed": "#d8e3fb",
+              "surface-container": "#201f1f",
+              "inverse-surface": "#e5e2e1",
+              "error-container": "#93000a",
+              "on-tertiary": "#263143",
+              "tertiary": "#bcc7de",
+              "error": "#ffb4ab",
+              "on-tertiary-fixed-variant": "#3c475a",
+              "background": "#141313"
+            },
+            borderRadius: {
+              "DEFAULT": "0.25rem",
+              "lg": "0.5rem",
+              "xl": "0.75rem",
+              "full": "9999px"
+            },
+            fontFamily: {
+              "headline": ["Metropolis", "sans-serif"],
+              "display": ["Metropolis", "sans-serif"],
+              "body": ["Hanken Grotesk", "sans-serif"],
+              "label": ["JetBrains Mono", "monospace"]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+      body {
+        background-color: #0a0a0a;
+        color: #e5e2e1;
+      }
+      .glow-hover:hover {
+        box-shadow: 0 0 32px rgba(30, 41, 59, 0.4);
+      }
+    </style>
+</head>
+<body class="font-body antialiased min-h-screen flex selection:bg-primary selection:text-on-primary">
+<!-- Fixed Left Sidebar -->
+<aside class="fixed top-0 left-0 h-screen w-[240px] bg-[#0d0d0d] border-r border-zinc-800 flex flex-col z-40">
+<!-- Brand Wordmark -->
+<div class="px-6 py-8">
+<h1 class="font-display text-xl font-bold tracking-tighter text-on-background uppercase">ZeroAbstraction</h1>
+</div>
+<!-- Navigation -->
+<nav class="flex-1 px-4 space-y-2 font-label text-sm">
+<a class="flex items-center space-x-3 px-3 py-2.5 rounded text-on-background bg-zinc-800 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2.5 rounded text-on-surface-variant hover:text-primary hover:bg-zinc-900 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="article">article</span>
+<span>Posts</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2.5 rounded text-on-surface-variant hover:text-primary hover:bg-zinc-900 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="architecture">architecture</span>
+<span>Projects</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2.5 rounded text-on-surface-variant hover:text-primary hover:bg-zinc-900 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="perm_media">perm_media</span>
+<span>Media</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2.5 rounded text-on-surface-variant hover:text-primary hover:bg-zinc-900 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="biotech">biotech</span>
+<span>Research</span>
+</a>
+</nav>
+<!-- User Session -->
+<div class="p-6 border-t border-zinc-800 flex items-center space-x-3">
+<div class="w-8 h-8 rounded bg-zinc-700 flex items-center justify-center font-label text-xs">ZA</div>
+<div class="flex flex-col">
+<span class="font-label text-xs text-on-background">Admin User</span>
+<span class="font-label text-[10px] text-on-surface-variant">Session Active</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-[240px] flex-1 p-12 space-y-16">
+<!-- Header -->
+<header class="flex justify-between items-end">
+<div>
+<h2 class="font-display font-bold text-4xl text-on-background tracking-tight">Dashboard</h2>
+<div class="font-label text-xs text-zinc-500 mt-2 uppercase tracking-widest">Admin / Overview</div>
+</div>
+<div>
+<button class="bg-zinc-800 hover:bg-zinc-700 text-on-background font-label text-xs px-4 py-2 border border-zinc-700 transition-all duration-200 flex items-center space-x-2">
+<span class="material-symbols-outlined text-[16px]" data-icon="sync">sync</span>
+<span>Sync Systems</span>
+</button>
+</div>
+</header>
+<!-- Row 1: Stats Grid -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+<!-- Stat Card -->
+<div class="bg-zinc-900 border border-zinc-700 p-6 flex flex-col justify-between h-32 glow-hover transition-all duration-200">
+<div class="font-display font-bold text-3xl text-on-background">142</div>
+<div class="font-label text-xs text-on-surface-variant uppercase tracking-widest">Posts</div>
+</div>
+<!-- Stat Card -->
+<div class="bg-zinc-900 border border-zinc-700 p-6 flex flex-col justify-between h-32 glow-hover transition-all duration-200">
+<div class="font-display font-bold text-3xl text-on-background">17</div>
+<div class="font-label text-xs text-on-surface-variant uppercase tracking-widest">Projects</div>
+</div>
+<!-- Stat Card -->
+<div class="bg-zinc-900 border border-zinc-700 p-6 flex flex-col justify-between h-32 glow-hover transition-all duration-200">
+<div class="font-display font-bold text-3xl text-on-background">89</div>
+<div class="font-label text-xs text-on-surface-variant uppercase tracking-widest">Research Logs</div>
+</div>
+<!-- Stat Card -->
+<div class="bg-zinc-900 border border-zinc-700 p-6 flex flex-col justify-between h-32 glow-hover transition-all duration-200">
+<div class="font-display font-bold text-3xl text-on-background">24</div>
+<div class="font-label text-xs text-on-surface-variant uppercase tracking-widest">Drafts</div>
+</div>
+<!-- Stat Card -->
+<div class="bg-zinc-900 border border-zinc-700 p-6 flex flex-col justify-between h-32 glow-hover transition-all duration-200">
+<div class="font-display font-bold text-3xl text-on-background">1,024</div>
+<div class="font-label text-xs text-on-surface-variant uppercase tracking-widest">Media Count</div>
+</div>
+</section>
+<!-- Row 2: Tables (2 Column Layout) -->
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<!-- Left Table: Recent Posts -->
+<div class="space-y-4">
+<div class="flex justify-between items-center border-b border-zinc-800 pb-2">
+<h3 class="font-display font-semibold text-lg text-on-background">Recent Posts</h3>
+<button class="bg-zinc-300 text-black hover:bg-zinc-200 font-label text-xs px-3 py-1.5 transition-all duration-200">New Post</button>
+</div>
+<div class="bg-[#111111] border border-zinc-700 overflow-hidden">
+<table class="w-full text-left font-body text-sm">
+<thead class="font-label text-xs text-on-surface-variant uppercase border-b border-zinc-800 bg-[#0a0a0a]">
+<tr>
+<th class="py-3 px-4 font-normal">Title</th>
+<th class="py-3 px-4 font-normal">Status</th>
+<th class="py-3 px-4 font-normal text-right">Date</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-zinc-800">
+<tr class="hover:bg-zinc-800 transition-colors duration-200 group">
+<td class="py-3 px-4 font-medium">The Architecture of Void</td>
+<td class="py-3 px-4">
+<span class="inline-block px-2 py-0.5 bg-zinc-700 text-on-background font-label text-[10px] rounded-sm uppercase">Published</span>
+</td>
+<td class="py-3 px-4 text-right text-on-surface-variant font-label text-xs">2024-05-12</td>
+</tr>
+<tr class="bg-[#0f0f0f] hover:bg-zinc-800 transition-colors duration-200 group">
+<td class="py-3 px-4 font-medium">System Design Patterns</td>
+<td class="py-3 px-4">
+<span class="inline-block px-2 py-0.5 bg-zinc-700 text-on-background font-label text-[10px] rounded-sm uppercase">Published</span>
+</td>
+<td class="py-3 px-4 text-right text-on-surface-variant font-label text-xs">2024-05-10</td>
+</tr>
+<tr class="hover:bg-zinc-800 transition-colors duration-200 group">
+<td class="py-3 px-4 font-medium">Minimalism in UI</td>
+<td class="py-3 px-4">
+<span class="inline-block px-2 py-0.5 bg-amber-900 text-amber-200 font-label text-[10px] rounded-sm uppercase">Draft</span>
+</td>
+<td class="py-3 px-4 text-right text-on-surface-variant font-label text-xs">2024-05-08</td>
+</tr>
+<tr class="bg-[#0f0f0f] hover:bg-zinc-800 transition-colors duration-200 group">
+<td class="py-3 px-4 font-medium">Legacy Migration Strategy</td>
+<td class="py-3 px-4">
+<span class="inline-block px-2 py-0.5 bg-zinc-600 text-zinc-300 font-label text-[10px] rounded-sm uppercase">Archived</span>
+</td>
+<td class="py-3 px-4 text-right text-on-surface-variant font-label text-xs">2024-04-20</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Right Table: Recent Projects -->
+<div class="space-y-4">
+<div class="flex justify-between items-center border-b border-zinc-800 pb-2">
+<h3 class="font-display font-semibold text-lg text-on-background">Recent Projects</h3>
+<button class="bg-transparent border border-zinc-700 text-on-background hover:bg-zinc-800 font-label text-xs px-3 py-1.5 transition-all duration-200">New Project</button>
+</div>
+<div class="bg-[#111111] border border-zinc-700 overflow-hidden">
+<table class="w-full text-left font-body text-sm">
+<thead class="font-label text-xs text-on-surface-variant uppercase border-b border-zinc-800 bg-[#0a0a0a]">
+<tr>
+<th class="py-3 px-4 font-normal">Project Name</th>
+<th class="py-3 px-4 font-normal">Status</th>
+<th class="py-3 px-4 font-normal text-right">Commit</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-zinc-800">
+<tr class="hover:bg-zinc-800 transition-colors duration-200 group">
+<td class="py-3 px-4 font-medium">Nexus Core</td>
+<td class="py-3 px-4">
+<span class="inline-block px-2 py-0.5 bg-zinc-700 text-on-background font-label text-[10px] rounded-sm uppercase">Active</span>
+</td>
+<td class="py-3 px-4 text-right text-on-surface-variant font-label text-xs">a1b2c3d</td>
+</tr>
+<tr class="bg-[#0f0f0f] hover:bg-zinc-800 transition-colors duration-200 group">
+<td class="py-3 px-4 font-medium">Orbital API</td>
+<td class="py-3 px-4">
+<span class="inline-block px-2 py-0.5 bg-amber-900 text-amber-200 font-label text-[10px] rounded-sm uppercase">Dev</span>
+</td>
+<td class="py-3 px-4 text-right text-on-surface-variant font-label text-xs">f9e8d7c</td>
+</tr>
+<tr class="hover:bg-zinc-800 transition-colors duration-200 group">
+<td class="py-3 px-4 font-medium">Sentinel UI</td>
+<td class="py-3 px-4">
+<span class="inline-block px-2 py-0.5 bg-zinc-700 text-on-background font-label text-[10px] rounded-sm uppercase">Active</span>
+</td>
+<td class="py-3 px-4 text-right text-on-surface-variant font-label text-xs">4b5a6c7</td>
+</tr>
+<tr class="bg-[#0f0f0f] hover:bg-zinc-800 transition-colors duration-200 group">
+<td class="py-3 px-4 font-medium">Void Engine v1</td>
+<td class="py-3 px-4">
+<span class="inline-block px-2 py-0.5 bg-zinc-600 text-zinc-300 font-label text-[10px] rounded-sm uppercase">Deprecated</span>
+</td>
+<td class="py-3 px-4 text-right text-on-surface-variant font-label text-xs">8d9e0f1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- Row 3: Bottom Full Width Table -->
+<section class="space-y-4">
+<div class="flex justify-between items-center border-b border-zinc-800 pb-2">
+<h3 class="font-display font-semibold text-lg text-on-background">In Progress Tasks</h3>
+</div>
+<div class="bg-[#111111] border border-zinc-700 overflow-hidden">
+<table class="w-full text-left font-body text-sm">
+<thead class="font-label text-xs text-on-surface-variant uppercase border-b border-zinc-800 bg-[#0a0a0a]">
+<tr>
+<th class="py-3 px-4 font-normal">Task ID</th>
+<th class="py-3 px-4 font-normal">Description</th>
+<th class="py-3 px-4 font-normal">Assignee</th>
+<th class="py-3 px-4 font-normal">Priority</th>
+<th class="py-3 px-4 font-normal text-right">Due Date</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-zinc-800">
+<tr class="hover:bg-zinc-800 transition-colors duration-200 group">
+<td class="py-4 px-4 font-label text-xs text-zinc-500">TSK-001</td>
+<td class="py-4 px-4 font-medium">Implement new authentication flow</td>
+<td class="py-4 px-4 text-on-surface-variant">System Auth</td>
+<td class="py-4 px-4">
+<span class="text-error font-label text-[10px] uppercase">High</span>
+</td>
+<td class="py-4 px-4 text-right text-on-surface-variant font-label text-xs">Today</td>
+</tr>
+<tr class="bg-[#0f0f0f] hover:bg-zinc-800 transition-colors duration-200 group">
+<td class="py-4 px-4 font-label text-xs text-zinc-500">TSK-002</td>
+<td class="py-4 px-4 font-medium">Optimize database queries for dashboard</td>
+<td class="py-4 px-4 text-on-surface-variant">Data Team</td>
+<td class="py-4 px-4">
+<span class="text-primary font-label text-[10px] uppercase">Medium</span>
+</td>
+<td class="py-4 px-4 text-right text-on-surface-variant font-label text-xs">Tomorrow</td>
+</tr>
+<tr class="hover:bg-zinc-800 transition-colors duration-200 group">
+<td class="py-4 px-4 font-label text-xs text-zinc-500">TSK-003</td>
+<td class="py-4 px-4 font-medium">Update UI component library</td>
+<td class="py-4 px-4 text-on-surface-variant">Design Eng</td>
+<td class="py-4 px-4">
+<span class="text-on-surface-variant font-label text-[10px] uppercase">Low</span>
+</td>
+<td class="py-4 px-4 text-right text-on-surface-variant font-label text-xs">Next Week</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</main>
+</body></html>

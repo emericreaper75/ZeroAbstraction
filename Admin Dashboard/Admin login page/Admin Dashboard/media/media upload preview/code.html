@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Hanken+Grotesk:wght@300;400;600&amp;family=Metropolis:wght@700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #0a0a0a;
+            color: #e5e2e1;
+            font-family: 'Hanken Grotesk', sans-serif;
+        }
+        .font-headline { font-family: 'Metropolis', sans-serif; }
+        .font-label { font-family: 'JetBrains Mono', monospace; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-primary": "#313030",
+                      "inverse-primary": "#5f5e5e",
+                      "error": "#ffb4ab",
+                      "tertiary": "#bcc7de",
+                      "surface-tint": "#c9c6c5",
+                      "on-tertiary-fixed": "#111c2d",
+                      "surface-variant": "#353434",
+                      "on-tertiary-container": "#6f7a8f",
+                      "on-tertiary": "#263143",
+                      "on-primary-container": "#7b7979",
+                      "tertiary-container": "#010a1b",
+                      "secondary-fixed-dim": "#c6c6ca",
+                      "secondary-fixed": "#e2e2e6",
+                      "inverse-on-surface": "#313030",
+                      "background": "#141313",
+                      "on-background": "#e5e2e1",
+                      "outline": "#8e9192",
+                      "tertiary-fixed": "#d8e3fb",
+                      "primary-fixed": "#e5e2e1",
+                      "primary-fixed-dim": "#c9c6c5",
+                      "on-secondary-container": "#b8b8bc",
+                      "on-secondary": "#2f3034",
+                      "primary-container": "#0a0a0a",
+                      "primary": "#c9c6c5",
+                      "tertiary-fixed-dim": "#bcc7de",
+                      "surface-container-highest": "#353434",
+                      "error-container": "#93000a",
+                      "surface-container": "#201f1f",
+                      "on-surface-variant": "#c4c7c7",
+                      "on-surface": "#e5e2e1",
+                      "inverse-surface": "#e5e2e1",
+                      "on-secondary-fixed": "#1a1c1f",
+                      "secondary-container": "#48494c",
+                      "on-tertiary-fixed-variant": "#3c475a",
+                      "surface-container-low": "#1c1b1b",
+                      "surface": "#141313",
+                      "outline-variant": "#444748",
+                      "surface-container-lowest": "#0e0e0e",
+                      "surface-bright": "#3a3939",
+                      "on-primary-fixed-variant": "#474646",
+                      "on-primary-fixed": "#1c1b1b",
+                      "on-error-container": "#ffdad6",
+                      "on-error": "#690005",
+                      "secondary": "#c6c6ca",
+                      "surface-container-high": "#2b2a2a",
+                      "surface-dim": "#141313",
+                      "on-secondary-fixed-variant": "#45474a"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "fontFamily": {
+                      "headline": ["Metropolis"],
+                      "display": ["Metropolis"],
+                      "body": ["Hanken Grotesk"],
+                      "label": ["JetBrains Mono"]
+              }
+            }
+          }
+        }
+      </script>
+</head>
+<body class="overflow-hidden">
+<!-- Background Layer (Dimmed Media Library) -->
+<div class="fixed inset-0 opacity-30 pointer-events-none">
+<!-- Sidebar Navigation (From JSON) -->
+<aside class="flex flex-col h-full z-40 fixed left-0 top-0 h-screen w-[240px] bg-surface-container-low dark:bg-surface-container-low border-r border-outline-variant">
+<div class="p-6">
+<div class="text-headline-sm font-headline font-black tracking-widest text-on-surface dark:text-on-surface">ZeroAbstraction</div>
+<div class="font-label text-[10px] tracking-tight text-on-surface-variant">v2.4.0-stable</div>
+</div>
+<nav class="flex-1 mt-4">
+<div class="text-on-surface-variant hover:text-on-surface py-3 px-6 font-label text-sm tracking-tighter uppercase flex items-center gap-3">
+<span class="material-symbols-outlined text-xl">dashboard</span> Dashboard
+                </div>
+<div class="text-on-surface-variant hover:text-on-surface py-3 px-6 font-label text-sm tracking-tighter uppercase flex items-center gap-3">
+<span class="material-symbols-outlined text-xl">article</span> Posts
+                </div>
+<div class="text-primary font-bold bg-surface-variant border-r-2 border-primary py-3 px-6 font-label text-sm tracking-tighter uppercase flex items-center gap-3">
+<span class="material-symbols-outlined text-xl">perm_media</span> Media
+                </div>
+<div class="text-on-surface-variant hover:text-on-surface py-3 px-6 font-label text-sm tracking-tighter uppercase flex items-center gap-3">
+<span class="material-symbols-outlined text-xl">settings</span> System Settings
+                </div>
+<div class="text-on-surface-variant hover:text-on-surface py-3 px-6 font-label text-sm tracking-tighter uppercase flex items-center gap-3">
+<span class="material-symbols-outlined text-xl">verified_user</span> Security
+                </div>
+</nav>
+<div class="p-6 border-t border-outline-variant">
+<button class="w-full bg-primary text-on-primary font-label text-xs font-bold py-3 uppercase tracking-widest">New Deployment</button>
+</div>
+</aside>
+<!-- Top Bar (From JSON) -->
+<header class="flex justify-between items-center h-16 ml-[240px] px-8 w-[calc(100%-240px)] bg-background dark:bg-background border-b border-outline-variant">
+<div class="flex items-center gap-8">
+<nav class="flex gap-6">
+<a class="font-label text-[10px] tracking-tight text-on-surface-variant hover:text-primary transition-colors" href="#">Main</a>
+<a class="font-label text-[10px] tracking-tight text-primary border-b border-primary pb-1" href="#">Archive</a>
+<a class="font-label text-[10px] tracking-tight text-on-surface-variant hover:text-primary transition-colors" href="#">Logs</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-4 text-on-surface-variant">
+<span class="material-symbols-outlined text-lg">notifications</span>
+<span class="material-symbols-outlined text-lg">terminal</span>
+</div>
+<button class="bg-surface-container-highest text-on-surface text-[10px] font-label px-4 py-2 uppercase tracking-tighter border border-outline-variant">Deploy System</button>
+</div>
+</header>
+<!-- Masonry Grid Content (Placeholder for dimmed bg) -->
+<main class="ml-[240px] p-8 pt-24 grid grid-cols-4 gap-4">
+<div class="h-64 bg-surface-container-high border border-outline-variant"></div>
+<div class="h-48 bg-surface-container-high border border-outline-variant"></div>
+<div class="h-80 bg-surface-container-high border border-outline-variant"></div>
+<div class="h-56 bg-surface-container-high border border-outline-variant"></div>
+<div class="h-72 bg-surface-container-high border border-outline-variant"></div>
+<div class="h-64 bg-surface-container-high border border-outline-variant"></div>
+<div class="h-48 bg-surface-container-high border border-outline-variant"></div>
+<div class="h-80 bg-surface-container-high border border-outline-variant"></div>
+</main>
+</div>
+<!-- Overlay Layer -->
+<div class="fixed inset-0 bg-[#0a0a0a]/80 z-50 flex items-center justify-center p-6 backdrop-blur-[2px]">
+<!-- Modal Card -->
+<div class="w-full max-w-[720px] bg-[#111111] border border-zinc-700 p-12 flex flex-col gap-8 shadow-2xl">
+<!-- Top Row -->
+<div class="flex justify-between items-center">
+<h2 class="text-2xl font-bold text-zinc-200">Upload Preview</h2>
+<button class="text-zinc-500 hover:text-zinc-200 transition-colors">
+<span class="material-symbols-outlined text-2xl">close</span>
+</button>
+</div>
+<!-- File Preview Strip -->
+<div class="flex gap-4 overflow-x-auto pb-4 no-scrollbar">
+<!-- Active Item -->
+<div class="flex-shrink-0 flex flex-col gap-2 w-[150px]">
+<div class="w-[150px] h-[150px] border-2 border-zinc-400 bg-zinc-900 relative overflow-hidden group">
+<img alt="Technical Abstract" class="w-full h-full object-cover" data-alt="A cinematic, high-contrast digital art piece featuring flowing, obsidian-like geometric waves with subtle charcoal-blue luminescence. The lighting is low-key and dramatic, casting sharp highlights on the polished surfaces of the abstract forms. The overall aesthetic is minimalist and technical, perfectly aligned with a high-end architectural design system. The composition is clean and focused, evoking a sense of calm power and precision." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeshS0MrsH_xn7vwsJdavo_UunMhTzmazeMIATeRhP9RQ00fAyZhREVRcoN464PDYk7RT9Smm5uzEwtdWG0yfLQwjuxxe820N7squ-N3WIIdeEfgpnO2C_yPzDipbMD3_LJ0YDY8dmfOs2UY9GE-RVM01nFG8NSshbNJ7czC-WQrFikqYciiF9DpP-zh-KADGt9Alm5fC7p5fj-eBHKlmPmAb7MiPLT13WYqESTnmV5jxlPOfVhcgOPe_D6ZkBYTVhV5_tgUyDSvh8"/>
+</div>
+<div class="flex flex-col">
+<span class="font-label text-[10px] text-zinc-300 truncate">ABSTRACT_RENDER_V2.PNG</span>
+<span class="font-label text-[10px] text-zinc-600">2.4 MB</span>
+</div>
+</div>
+<!-- Non-Image Item -->
+<div class="flex-shrink-0 flex flex-col gap-2 w-[150px]">
+<div class="w-[150px] h-[150px] border border-zinc-700 bg-zinc-900 flex items-center justify-center">
+<span class="material-symbols-outlined text-4xl text-zinc-600">terminal</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label text-[10px] text-zinc-500 truncate">SYS_LOG_DEPLOY_STABLE.LOG</span>
+<span class="font-label text-[10px] text-zinc-600">12 KB</span>
+</div>
+</div>
+<!-- Other Image Item -->
+<div class="flex-shrink-0 flex flex-col gap-2 w-[150px]">
+<div class="w-[150px] h-[150px] border border-zinc-700 bg-zinc-900 relative overflow-hidden">
+<img alt="Server Rack Close Up" class="w-full h-full object-cover opacity-60 hover:opacity-100 transition-opacity" data-alt="A macro photograph of high-end server hardware in a dark data center environment. Sharp focus on metallic textures and blinking LEDs that emit a soft, atmospheric blue glow. The background is a deep, void-like black, emphasizing the technical precision of the equipment. The lighting is focused and intentional, creating a moody, professional atmosphere suitable for a premium technical dashboard." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCC-_zKd5WLh8wiHEkF-_QDhFo1Uv7ZMoQXj479F4zMW7L66xy11lwOUAs2QJG_jTVgg1fldAe4S1v9QRBeXNPGOs4tGQeI9GWxQC269uYWWZVB05sF7mYF7yuH2CBGyB80u_R2B0KfP5CnBc-KV89LyqhRJY1KFuqP78dZ104O5wmnfx6ELRA-PvjKkfCWX2h2EOBZgmd4a0Iv5RG_TpWAmLOUjTLGZzwsrmrqfjk9RClGqq4S5IxILOZfXXdczABQO2ABJ75sKIRT"/>
+</div>
+<div class="flex flex-col">
+<span class="font-label text-[10px] text-zinc-500 truncate">INFRA_SATELLITE_01.JPG</span>
+<span class="font-label text-[10px] text-zinc-600">4.1 MB</span>
+</div>
+</div>
+</div>
+<!-- Selected File Detail Panel -->
+<div class="bg-zinc-800/50 border border-zinc-700/50 p-4 flex flex-col gap-3">
+<div class="flex justify-between items-start">
+<span class="font-label text-sm text-zinc-300">ABSTRACT_RENDER_V2.PNG</span>
+<span class="font-label text-[10px] bg-zinc-700 px-2 py-0.5 text-zinc-300 uppercase tracking-widest">Image / PNG</span>
+</div>
+<div class="flex gap-6">
+<div class="flex flex-col">
+<span class="text-[10px] text-zinc-600 uppercase tracking-tighter">Dimensions</span>
+<span class="font-label text-xs text-zinc-500 uppercase">4096 x 2160 PX</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[10px] text-zinc-600 uppercase tracking-tighter">File Size</span>
+<span class="font-label text-xs text-zinc-500 uppercase">2.4 MB</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[10px] text-zinc-600 uppercase tracking-tighter">Uploaded On</span>
+<span class="font-label text-xs text-zinc-500 uppercase">2023.10.24 — 14:20</span>
+</div>
+</div>
+</div>
+<!-- Accessibility Section (Conditional Display Logic applied via design) -->
+<div class="flex flex-col gap-3">
+<label class="text-[10px] font-label text-zinc-500 uppercase tracking-[0.2em]">Describe this media for screen readers...</label>
+<textarea class="w-full bg-zinc-800 border border-zinc-700 p-4 font-body text-sm text-zinc-300 focus:outline-none focus:border-zinc-300 transition-colors h-24 resize-none" placeholder="High-contrast monochromatic abstract render with charcoal-blue glow..."></textarea>
+</div>
+<!-- Modal Bottom Row -->
+<div class="flex justify-between items-center pt-4 border-t border-zinc-800">
+<div class="text-[10px] font-label text-zinc-600 uppercase tracking-widest">3 files ready</div>
+<div class="flex gap-4">
+<button class="px-6 py-2 text-zinc-400 font-label text-xs uppercase tracking-widest hover:text-zinc-200 transition-colors">
+                        Cancel
+                    </button>
+<button class="px-8 py-2 bg-zinc-300 text-zinc-900 font-label text-xs font-bold uppercase tracking-widest hover:bg-zinc-100 transition-colors">
+                        Upload All
+                    </button>
+</div>
+</div>
+</div>
+</div>
+</body></html>

@@ -15,6 +15,7 @@ const badgeVariants = cva(
         astrophysics: 'border-violet-500/30 bg-violet-500/10 text-violet-400',
         physics: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-400',
         research: 'border-amber-500/30 bg-amber-500/10 text-amber-400',
+        communications: 'border-blue-500/30 bg-blue-500/10 text-blue-400',
       },
     },
     defaultVariants: {

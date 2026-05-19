@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;family=Metropolis:wght@700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary": "#bcc7de",
+                    "inverse-on-surface": "#313030",
+                    "surface-tint": "#c9c6c5",
+                    "on-tertiary-container": "#6f7a8f",
+                    "background": "#141313",
+                    "surface-container-high": "#2b2a2a",
+                    "on-primary-fixed-variant": "#474646",
+                    "on-secondary-fixed-variant": "#45474a",
+                    "surface-container-low": "#1c1b1b",
+                    "secondary-container": "#48494c",
+                    "primary-fixed": "#e5e2e1",
+                    "on-tertiary": "#263143",
+                    "on-secondary-fixed": "#1a1c1f",
+                    "secondary": "#c6c6ca",
+                    "on-tertiary-fixed-variant": "#3c475a",
+                    "on-primary-fixed": "#1c1b1b",
+                    "surface-dim": "#141313",
+                    "surface-variant": "#353434",
+                    "on-surface-variant": "#c4c7c7",
+                    "primary-fixed-dim": "#c9c6c5",
+                    "on-tertiary-fixed": "#111c2d",
+                    "secondary-fixed-dim": "#c6c6ca",
+                    "secondary-fixed": "#e2e2e6",
+                    "outline": "#8e9192",
+                    "inverse-surface": "#e5e2e1",
+                    "inverse-primary": "#5f5e5e",
+                    "on-surface": "#e5e2e1",
+                    "on-secondary": "#2f3034",
+                    "on-error-container": "#ffdad6",
+                    "outline-variant": "#444748",
+                    "on-secondary-container": "#b8b8bc",
+                    "tertiary-fixed-dim": "#bcc7de",
+                    "on-primary": "#313030",
+                    "primary-container": "#0a0a0a",
+                    "primary": "#c9c6c5",
+                    "on-error": "#690005",
+                    "surface-container": "#201f1f",
+                    "on-background": "#e5e2e1",
+                    "tertiary-fixed": "#d8e3fb",
+                    "surface-bright": "#3a3939",
+                    "on-primary-container": "#7b7979",
+                    "tertiary-container": "#010a1b",
+                    "error-container": "#93000a",
+                    "surface-container-lowest": "#0e0e0e",
+                    "surface": "#141313",
+                    "error": "#ffb4ab",
+                    "surface-container-highest": "#353434"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Metropolis"],
+                    "display": ["Metropolis"],
+                    "body": ["Hanken Grotesk"],
+                    "label": ["JetBrains Mono"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { background-color: #0a0a0a; color: #e5e2e1; }
+        .border-zinc-800 { border-color: #27272a; }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .syntax-string { color: #bcc7de; }
+        .syntax-keyword { color: #c9c6c5; }
+        .syntax-comment { color: #444748; }
+        .glow-subtle { box-shadow: 0 0 40px rgba(30, 41, 59, 0.15); }
+    </style>
+</head>
+<body class="font-body selection:bg-primary selection:text-primary-container">
+<!-- Global Layout Container -->
+<div class="flex h-screen overflow-hidden">
+<!-- Persistent Left Sidebar (The Shell) -->
+<aside class="w-64 flex-shrink-0 border-r border-zinc-800 flex flex-col bg-surface-container-lowest">
+<div class="px-6 py-8">
+<div class="flex items-center gap-3 mb-12">
+<span class="material-symbols-outlined text-primary" data-icon="terminal">terminal</span>
+<span class="font-display text-xl font-bold tracking-tighter text-on-background">ZeroAbstraction</span>
+</div>
+<nav class="space-y-6">
+<div class="space-y-1">
+<p class="font-label text-[10px] uppercase tracking-widest text-outline mb-4">Core System</p>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:text-primary transition-colors duration-200 group" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="dashboard">dashboard</span>
+<span class="font-label text-xs uppercase tracking-wider">Dashboard</span>
+</a>
+<!-- ACTIVE STATE: Posts -->
+<a class="flex items-center gap-3 px-3 py-2 text-primary bg-surface-container-high rounded-sm transition-colors duration-200 group" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="article">article</span>
+<span class="font-label text-xs uppercase tracking-wider">Posts</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:text-primary transition-colors duration-200 group" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="folder_data">folder_data</span>
+<span class="font-label text-xs uppercase tracking-wider">Media</span>
+</a>
+</div>
+<div class="space-y-1">
+<p class="font-label text-[10px] uppercase tracking-widest text-outline mb-4">Infrastructure</p>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:text-primary transition-colors duration-200 group" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="settings_ethernet">settings_ethernet</span>
+<span class="font-label text-xs uppercase tracking-wider">System Settings</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:text-primary transition-colors duration-200 group" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="shield">shield</span>
+<span class="font-label text-xs uppercase tracking-wider">Security</span>
+</a>
+</div>
+</nav>
+</div>
+<div class="mt-auto px-6 py-8 border-t border-zinc-800">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-container-high border border-zinc-800 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" data-icon="person">person</span>
+</div>
+<div>
+<p class="text-xs font-bold text-on-surface">Admin_Root</p>
+<p class="text-[10px] font-label text-outline uppercase tracking-tighter">Status: Active</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 flex flex-col overflow-y-auto scrollbar-hide relative bg-[#0a0a0a]">
+<!-- Sticky Header Controls -->
+<header class="sticky top-0 z-40 bg-[#0a0a0a]/80 backdrop-blur-md px-12 py-8 flex items-center justify-between">
+<div>
+<nav class="mb-2">
+<ol class="flex items-center gap-2 font-label text-[10px] uppercase tracking-[0.2em] text-outline">
+<li>Admin</li>
+<li>/</li>
+<li>Posts</li>
+<li>/</li>
+<li class="text-primary">New</li>
+</ol>
+</nav>
+<h1 class="text-[36px] font-bold text-zinc-300 leading-none tracking-tight">New Post</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="px-6 py-2.5 font-label text-xs uppercase tracking-widest text-zinc-400 border border-zinc-800 hover:bg-zinc-900 transition-all duration-200">
+                        Save Draft
+                    </button>
+<button class="px-8 py-2.5 font-label text-xs uppercase tracking-widest bg-zinc-100 text-[#0a0a0a] font-bold hover:bg-zinc-300 transition-all duration-200">
+                        Publish
+                    </button>
+</div>
+</header>
+<!-- Form Content -->
+<div class="max-w-4xl px-12 pb-32 space-y-16">
+<!-- Metadata Section -->
+<section class="space-y-8">
+<div class="group">
+<label class="block font-label text-[10px] uppercase tracking-widest text-outline mb-3">Post Title</label>
+<input class="w-full bg-transparent border-b border-zinc-800 focus:border-primary text-4xl font-bold text-on-surface placeholder:text-zinc-800 py-4 outline-none transition-all duration-300" placeholder="Enter post title..." type="text"/>
+</div>
+<div class="grid grid-cols-2 gap-8">
+<div>
+<label class="block font-label text-[10px] uppercase tracking-widest text-outline mb-3">URL Slug</label>
+<div class="flex items-center bg-[#111111] border border-zinc-800 px-4 focus-within:border-zinc-300 transition-colors">
+<span class="font-label text-xs text-outline pr-2">zeroabstraction.com/post/</span>
+<input class="flex-1 bg-transparent py-3 font-label text-xs text-primary outline-none" placeholder="the-abstraction-layer" type="text"/>
+</div>
+</div>
+<div>
+<label class="block font-label text-[10px] uppercase tracking-widest text-outline mb-3">Category</label>
+<div class="relative">
+<select class="w-full appearance-none bg-[#111111] border border-zinc-800 py-3 px-4 font-label text-xs text-on-surface outline-none focus:border-zinc-300 cursor-pointer">
+<option>Select Category</option>
+<option>Infrastructure</option>
+<option>Cloud Architecture</option>
+<option>DevOps Philosophy</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-3 text-sm pointer-events-none text-outline" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+</div>
+<div>
+<label class="block font-label text-[10px] uppercase tracking-widest text-outline mb-3">Tags</label>
+<div class="flex flex-wrap gap-2 p-3 bg-[#111111] border border-zinc-800">
+<div class="flex items-center gap-2 bg-zinc-800 px-3 py-1 text-[10px] font-label uppercase tracking-wider text-on-surface">
+                                Kubernetes <span class="material-symbols-outlined text-[10px] cursor-pointer hover:text-error" data-icon="close">close</span>
+</div>
+<div class="flex items-center gap-2 bg-zinc-800 px-3 py-1 text-[10px] font-label uppercase tracking-wider text-on-surface">
+                                Bare Metal <span class="material-symbols-outlined text-[10px] cursor-pointer hover:text-error" data-icon="close">close</span>
+</div>
+<input class="bg-transparent font-label text-[10px] uppercase tracking-widest text-on-surface outline-none ml-2" placeholder="Add tag..." type="text"/>
+</div>
+</div>
+<div>
+<label class="block font-label text-[10px] uppercase tracking-widest text-outline mb-3">Excerpt</label>
+<textarea class="w-full bg-[#111111] border border-zinc-800 p-4 font-body text-sm text-on-surface-variant outline-none focus:border-zinc-300 transition-colors" placeholder="Brief summary for indexing..." rows="3"></textarea>
+</div>
+</section>
+<!-- Editor Section -->
+<section class="space-y-4">
+<div class="flex items-center justify-between">
+<label class="font-label text-[10px] uppercase tracking-widest text-outline">MDX Content Editor</label>
+<div class="flex gap-4">
+<button class="font-label text-[10px] text-primary hover:underline">Preview Mode</button>
+<button class="font-label text-[10px] text-outline">Cheat Sheet</button>
+</div>
+</div>
+<div class="border border-zinc-800 bg-[#111111] rounded-sm overflow-hidden glow-subtle">
+<div class="flex items-center gap-2 px-4 py-2 bg-zinc-900/50 border-b border-zinc-800">
+<button class="p-1 hover:text-primary"><span class="material-symbols-outlined text-sm" data-icon="format_bold">format_bold</span></button>
+<button class="p-1 hover:text-primary"><span class="material-symbols-outlined text-sm" data-icon="format_italic">format_italic</span></button>
+<div class="w-px h-4 bg-zinc-800 mx-1"></div>
+<button class="p-1 hover:text-primary"><span class="material-symbols-outlined text-sm" data-icon="code">code</span></button>
+<button class="p-1 hover:text-primary"><span class="material-symbols-outlined text-sm" data-icon="link">link</span></button>
+<div class="w-px h-4 bg-zinc-800 mx-1"></div>
+<button class="p-1 hover:text-primary"><span class="material-symbols-outlined text-sm" data-icon="image">image</span></button>
+</div>
+<div class="p-8 font-label text-sm leading-relaxed min-h-[400px]">
+<p><span class="syntax-keyword">import</span> { CodeBlock } <span class="syntax-keyword">from</span> <span class="syntax-string">'@components/technical'</span>;</p>
+<p class="mt-4"># Decoupling the Infrastructure Layer</p>
+<p class="mt-4 text-on-surface-variant">Modern software architecture requires a radical departure from traditional abstraction patterns. By focusing on the <span class="text-primary">ZeroAbstraction</span> methodology, we can achieve peak performance.</p>
+<p class="mt-4 text-zinc-500">// Initialize the kernel module</p>
+<p class="text-on-surface"><span class="syntax-keyword">const</span> system = <span class="syntax-keyword">await</span> init_abstraction_bridge({</p>
+<p class="ml-4">id: <span class="syntax-string">"ZA-091"</span>,</p>
+<p class="ml-4">mode: <span class="syntax-string">"DIRECT_HARDWARE_ACCESS"</span></p>
+<p>});</p>
+<p class="mt-4 text-on-surface-variant">The following metrics demonstrate the impact of overhead reduction on L3 cache hit rates...</p>
+<span class="inline-block w-1 h-5 bg-primary ml-1 animate-pulse align-middle"></span>
+</div>
+</div>
+</section>
+<!-- Hero Media Section -->
+<section class="space-y-4">
+<label class="block font-label text-[10px] uppercase tracking-widest text-outline">Hero Media</label>
+<div class="relative group h-80 w-full bg-[#111111] border-2 border-dashed border-zinc-800 flex flex-col items-center justify-center cursor-pointer hover:border-zinc-400 transition-all duration-300">
+<img class="absolute inset-0 w-full h-full object-cover opacity-20 grayscale transition-opacity duration-500 group-hover:opacity-40" data-alt="A highly detailed close-up shot of a modern enterprise server rack in a dark, high-tech data center. Blue and green status LEDs flicker across the brushed metal chassis, reflecting off polished glass floor panels. The atmosphere is cinematic and cold, with a focus on precision engineering and complex network cabling. Deep shadows and subtle atmospheric fog create a sense of vast technical infrastructure." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAX4L-7f-DDBGXXa2yNXw9EqiTW2BOpLADV-mCpE4kwXGTJ2IAD54jZmHSUgoN1NOMdosgUzVoFbmXcJRjoZARt_nS8e--7kvijlChR0caGwV4euZwLhJg08lHu-Hu_430pqQqHw7pATJDCNoSzko_UqNqwwHd0n9MoFwpAQQGu7ZpiiAzK5g-w0E-UiV4NEqolO0bpz-uGo6UyJVeLu6LmxMcb9CkV5LMmHoaTg7yYSyJGQV4yuhwqEiNcoXa--QLdMeVua9v867KB"/>
+<div class="relative z-10 flex flex-col items-center">
+<span class="material-symbols-outlined text-4xl text-zinc-500 mb-4" data-icon="cloud_upload">cloud_upload</span>
+<p class="font-label text-xs uppercase tracking-widest text-on-surface">Upload Hero Image</p>
+<p class="text-[10px] text-outline mt-2">Recommended: 1920x1080 (WebP or PNG)</p>
+</div>
+</div>
+</section>
+</div>
+<!-- Absolute Positioning for Background Ambience -->
+<div class="fixed top-0 right-0 -z-10 w-[800px] h-[800px] bg-slate-900/10 blur-[120px] rounded-full pointer-events-none translate-x-1/2 -translate-y-1/2"></div>
+<div class="fixed bottom-0 left-64 -z-10 w-[600px] h-[600px] bg-slate-900/5 blur-[100px] rounded-full pointer-events-none -translate-x-1/3 translate-y-1/3"></div>
+</main>
+</div>
+</body></html>

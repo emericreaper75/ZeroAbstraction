@@ -14,13 +14,15 @@ export const metadata: Metadata = {
     'All articles on electronics, astrophysics, physics, and mathematics — rigorous technical writing without hand-waving.',
 };
 
+import { PublicPostCard } from '@/lib/public/post-card';
+
 const POSTS_PER_PAGE = 12;
 
-const categoryVariants: Record<string, 'electronics' | 'astrophysics' | 'physics' | 'research'> = {
+const categoryVariants: Record<string, 'electronics' | 'astrophysics' | 'physics' | 'communications'> = {
   electronics: 'electronics',
   astrophysics: 'astrophysics',
   'physics-math': 'physics',
-  'research-logs': 'research',
+  'communications': 'communications',
 };
 
 export default async function BlogIndexPage({
@@ -34,7 +36,7 @@ export default async function BlogIndexPage({
   const allPosts = await listPublishedPosts();
 
   const filteredPosts = filterCategory
-    ? allPosts.filter((p) => p.routeCategory === filterCategory)
+    ? allPosts.filter((p: PublicPostCard) => p.routeCategory === filterCategory)
     : allPosts;
 
   const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
@@ -94,19 +96,19 @@ export default async function BlogIndexPage({
               >
                 All
               </Link>
-              {categories.map((cat) => (
-                <Link
-                  key={cat}
-                  href={`/blog?category=${cat}`}
-                  className={`inline-flex items-center rounded-full border px-3 py-1.5 text-xs font-mono transition-all ${
-                    filterCategory === cat
-                      ? 'border-cyan-500/50 bg-cyan-500/10 text-cyan-400'
-                      : 'border-zinc-800 text-zinc-500 hover:text-zinc-300 hover:border-zinc-600'
-                  }`}
-                >
-                  {CATEGORY_LABELS[cat]}
-                </Link>
-              ))}
+            {categories.map((cat: string) => (
+              <Link
+                key={cat}
+                href={`/blog?category=${cat}`}
+                className={`inline-flex items-center rounded-full border px-3 py-1.5 text-xs font-mono transition-all ${
+                  filterCategory === cat
+                    ? 'border-cyan-500/50 bg-cyan-500/10 text-cyan-400'
+                    : 'border-zinc-800 text-zinc-500 hover:text-zinc-300 hover:border-zinc-600'
+                }`}
+              >
+                {CATEGORY_LABELS[cat]}
+              </Link>
+            ))}
             </div>
           </FadeIn>
         </div>
@@ -116,7 +118,7 @@ export default async function BlogIndexPage({
       <div className="mx-auto max-w-screen-xl px-6 py-12">
         {paginatedPosts.length > 0 ? (
           <StaggerContainer className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {paginatedPosts.map((post) => (
+            {paginatedPosts.map((post: PublicPostCard) => (
               <StaggerItem key={`${post.routeCategory}-${post.slug}`} className="h-full">
                 <Link
                   href={`/${post.routeCategory}/${post.slug}`}
@@ -165,7 +167,7 @@ export default async function BlogIndexPage({
                 Previous
               </Link>
             )}
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+            {Array.from({ length: totalPages }, (_, i: number) => i + 1).map((page: number) => (
               <Link
                 key={page}
                 href={`/blog?page=${page}${filterCategory ? `&category=${filterCategory}` : ''}`}

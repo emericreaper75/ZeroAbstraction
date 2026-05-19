@@ -30,7 +30,7 @@ const blogCategories = [
 const navLinks = [
   { name: 'About', href: '/about' },
   { name: 'Projects', href: '/projects' },
-  { name: 'Research Logs', href: '/research-logs' },
+  { name: 'Communications', href: '/communications' },
   { name: 'Timeline', href: '/timeline' },
   { name: 'Contact', href: '/contact' },
 ];

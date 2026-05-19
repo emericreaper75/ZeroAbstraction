@@ -44,7 +44,7 @@ export async function searchContent(opts: {
               WHEN 'ELECTRONICS' THEN 'electronics'
               WHEN 'ASTROPHYSICS' THEN 'astrophysics'
               WHEN 'PHYSICS_MATH' THEN 'physics-math'
-              WHEN 'RESEARCH_LOGS' THEN 'research-logs'
+              WHEN 'COMMUNICATIONS' THEN 'communications'
             END
           ) || '/' || p.slug) AS href,
           COALESCE(p.tags, ARRAY[]::text[]) AS tags,
@@ -57,7 +57,7 @@ export async function searchContent(opts: {
               WHEN 'ELECTRONICS' THEN 'electronics'
               WHEN 'ASTROPHYSICS' THEN 'astrophysics'
               WHEN 'PHYSICS_MATH' THEN 'physics-math'
-              WHEN 'RESEARCH_LOGS' THEN 'research-logs'
+              WHEN 'COMMUNICATIONS' THEN 'communications'
             END
           ) AS category,
           p.thumbnail AS thumbnail

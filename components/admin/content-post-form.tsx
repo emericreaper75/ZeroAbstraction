@@ -52,7 +52,7 @@ const CATEGORY_OPTIONS: { value: ContentCategory; label: string }[] = [
   { value: "ELECTRONICS", label: "Electronics" },
   { value: "ASTROPHYSICS", label: "Astrophysics" },
   { value: "PHYSICS_MATH", label: "Physics & Math" },
-  { value: "RESEARCH_LOGS", label: "Research Logs" },
+  { value: "COMMUNICATIONS", label: "Communications" },
 ];
 
 export default function ContentPostForm({

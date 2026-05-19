@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Link from 'next/link';
 import { formatDate } from '@/lib/utils';
@@ -5,18 +6,18 @@ import { Badge } from '@/components/ui/badge';
 import { ArrowRight, Clock } from 'lucide-react';
 import type { PublicPostCard } from '@/lib/public/post-card';
 
-const categoryVariants: Record<string, 'electronics' | 'astrophysics' | 'physics' | 'research'> = {
+const categoryVariants: Record<string, 'electronics' | 'astrophysics' | 'physics' | 'communications'> = {
   electronics: 'electronics',
   astrophysics: 'astrophysics',
   'physics-math': 'physics',
-  'research-logs': 'research',
+  'communications': 'communications',
 };
 
 const categoryLabels: Record<string, string> = {
   electronics: 'Electronics',
   astrophysics: 'Astrophysics',
   'physics-math': 'Physics & Math',
-  'research-logs': 'Research Logs',
+  'communications': 'Communications',
 };
 
 type FeaturedPostsProps = {
@@ -52,9 +53,8 @@ export default function FeaturedPosts({ posts }: FeaturedPostsProps) {
             <Link
               key={post.slug}
               href={`/${post.routeCategory}/${post.slug}`}
-              className={`group relative flex flex-col rounded-xl border border-zinc-800 bg-zinc-900/40 transition-all duration-300 hover:border-zinc-700 hover:bg-zinc-900/70 overflow-hidden ${
-                index === 0 ? 'md:col-span-2 md:row-span-2' : ''
-              }`}
+              className={`group relative flex flex-col rounded-xl border border-zinc-800 bg-zinc-900/40 transition-all duration-300 hover:border-zinc-700 hover:bg-zinc-900/70 overflow-hidden ${index === 0 ? 'md:col-span-2 md:row-span-2' : ''
+                }`}
             >
               {/* Gradient accent bar */}
               <div className="h-1 w-full bg-gradient-to-r from-cyan-500 via-indigo-500 to-violet-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -70,15 +70,13 @@ export default function FeaturedPosts({ posts }: FeaturedPostsProps) {
                   </span>
                 </div>
 
-                <h3 className={`font-serif font-semibold text-zinc-100 mb-3 group-hover:text-cyan-400 transition-colors ${
-                  index === 0 ? 'text-2xl md:text-3xl' : 'text-lg'
-                }`}>
+                <h3 className={`font-serif font-semibold text-zinc-100 mb-3 group-hover:text-cyan-400 transition-colors ${index === 0 ? 'text-2xl md:text-3xl' : 'text-lg'
+                  }`}>
                   {post.title}
                 </h3>
 
-                <p className={`text-zinc-500 leading-relaxed mb-4 flex-grow ${
-                  index === 0 ? 'text-base line-clamp-4' : 'text-sm line-clamp-2'
-                }`}>
+                <p className={`text-zinc-500 leading-relaxed mb-4 flex-grow ${index === 0 ? 'text-base line-clamp-4' : 'text-sm line-clamp-2'
+                  }`}>
                   {post.description}
                 </p>
 

@@ -11,7 +11,7 @@ enum ContentCategory {
   ELECTRONICS
   ASTROPHYSICS
   PHYSICS_MATH
-  RESEARCH_LOGS
+  COMMUNICATIONS
 }
 
 enum UserRole {
@@ -138,4 +138,21 @@ model MediaAsset {
   updatedAt DateTime @updatedAt
 
   @@index([createdAt])
+}
+
+model ResearchLog {
+  id          String   @id @default(cuid())
+  entryNumber Int      @unique
+  title       String
+  slug        String   @unique
+  series      String
+  abstract    String?
+  content     String?
+  tags        String[]
+  published   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([series])
+  @@index([published])
 }

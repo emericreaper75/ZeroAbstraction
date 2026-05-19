@@ -101,23 +101,28 @@ export default function AboutPage() {
         </FadeIn>
         <StaggerContainer className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
           {[
-            { name: "Next.js 14", category: "Framework" },
-            { name: "TypeScript", category: "Language" },
-            { name: "Tailwind CSS", category: "Styling" },
-            { name: "Framer Motion", category: "Animation" },
-            { name: "Prisma", category: "ORM" },
-            { name: "PostgreSQL", category: "Database" },
-            { name: "MDX", category: "Content" },
-            { name: "KaTeX", category: "Math" },
-            { name: "Shiki", category: "Syntax" },
-            { name: "NextAuth", category: "Auth" },
-            { name: "UploadThing", category: "Media" },
-            { name: "Docker", category: "Deploy" },
+            { name: "Next.js 14", category: "Framework", desc: "React Framework" },
+            { name: "TypeScript", category: "Language", desc: "Typed JavaScript" },
+            { name: "Tailwind CSS", category: "Styling", desc: "Utility-first CSS" },
+            { name: "Framer Motion", category: "Animation", desc: "Animation Library" },
+            { name: "Prisma", category: "ORM", desc: "Next-gen ORM" },
+            { name: "PostgreSQL", category: "Database", desc: "Relational DB" },
+            { name: "MDX", category: "Content", desc: "Markdown for Components" },
+            { name: "KaTeX", category: "Math", desc: "Math Typesetting" },
+            { name: "Shiki", category: "Syntax", desc: "Syntax Highlighter" },
+            { name: "NextAuth", category: "Auth", desc: "Authentication" },
+            { name: "UploadThing", category: "Media", desc: "File Uploads" },
+            { name: "Docker", category: "Deploy", desc: "Containerization" },
           ].map((tech) => (
             <StaggerItem key={tech.name}>
-              <div className="flex flex-col items-center justify-center p-6 rounded-lg bg-zinc-900/30 border border-zinc-800/50 hover:border-cyan-500/30 transition-colors h-full text-center">
+              <div className="group relative flex flex-col items-center justify-center p-6 rounded-lg bg-white/5 backdrop-blur-md border border-white/10 opacity-90 hover:opacity-95 hover:border-cyan-500/40 hover:bg-white/10 transition-all duration-300 h-full text-center cursor-default">
                 <span className="text-white font-medium mb-2">{tech.name}</span>
                 <span className="text-[10px] font-mono text-cyan-500 uppercase tracking-tighter">{tech.category}</span>
+                
+                {/* Hover Tooltip */}
+                <div className="absolute -top-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10 px-3 py-1.5 bg-neutral-900/90 backdrop-blur-sm border border-neutral-800 text-xs text-neutral-300 rounded-md shadow-2xl whitespace-nowrap">
+                  {tech.desc}
+                </div>
               </div>
             </StaggerItem>
           ))}

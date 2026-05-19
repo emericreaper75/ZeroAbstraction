@@ -6,6 +6,7 @@ export type Project = {
   github: string;
   status: 'active' | 'completed' | 'archived';
   year: number;
+  demoUrl?: string;
 };
 
 export const projects: Project[] = [
@@ -18,6 +19,7 @@ export const projects: Project[] = [
     github: 'https://github.com/zero-abstraction/fir-filter-designer',
     status: 'active',
     year: 2024,
+    demoUrl: '/demo/fir-filter-designer',
   },
   {
     title: 'Dark Matter Density Map',
@@ -38,6 +40,7 @@ export const projects: Project[] = [
     github: 'https://github.com/zero-abstraction/qsim',
     status: 'active',
     year: 2024,
+    demoUrl: '/demo/qsim',
   },
   {
     title: 'MEMS Sensor Calibration Suite',

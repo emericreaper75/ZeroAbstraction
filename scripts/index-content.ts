@@ -1,25 +1,20 @@
 import { prisma } from "@/lib/db/prisma";
 import { getAllPosts } from "@/lib/posts";
 import { extractTOC } from "@/lib/toc";
+import { ContentCategory } from "@/lib/editorial/categories";
 
 import readingTime from "reading-time";
 
-type ContentCategoryEnum =
-  | "ELECTRONICS"
-  | "ASTROPHYSICS"
-  | "PHYSICS_MATH"
-  | "RESEARCH_LOGS";
-
-function mapCategoryToEnum(category: string): ContentCategoryEnum {
+function mapCategoryToEnum(category: string): ContentCategory {
   switch (category) {
     case "electronics":
-      return "ELECTRONICS";
+      return "ELECTRONICS" as ContentCategory;
     case "astrophysics":
-      return "ASTROPHYSICS";
+      return "ASTROPHYSICS" as ContentCategory;
     case "physics-math":
-      return "PHYSICS_MATH";
-    case "research-logs":
-      return "RESEARCH_LOGS";
+      return "PHYSICS_MATH" as ContentCategory;
+    case "communications":
+      return "COMMUNICATIONS" as ContentCategory;
     default:
       // Keep a strict mapping to avoid indexing broken content silently.
       throw new Error(`Unknown category: ${category}`);
@@ -87,10 +82,10 @@ async function main() {
   const dbSlugs = await prisma.contentPost.findMany({
     select: { slug: true },
   });
-  const missing = dbSlugs.filter((x) => !slugs.has(x.slug));
+  const missing = dbSlugs.filter((x: { slug: string }) => !slugs.has(x.slug));
   if (missing.length > 0) {
     await prisma.contentPost.updateMany({
-      where: { slug: { in: missing.map((m) => m.slug) } },
+      where: { slug: { in: missing.map((m: { slug: string }) => m.slug) } },
       data: { published: false },
     });
   }

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Metropolis:wght@400;700;900&amp;family=Hanken+Grotesk:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-low": "#1c1b1b",
+                    "secondary-container": "#48494c",
+                    "surface-container-high": "#2b2a2a",
+                    "on-primary-fixed-variant": "#474646",
+                    "on-secondary-fixed-variant": "#45474a",
+                    "surface-tint": "#c9c6c5",
+                    "on-tertiary-container": "#6f7a8f",
+                    "background": "#141313",
+                    "inverse-on-surface": "#313030",
+                    "tertiary": "#bcc7de",
+                    "on-surface": "#e5e2e1",
+                    "on-secondary": "#2f3034",
+                    "on-error-container": "#ffdad6",
+                    "outline": "#8e9192",
+                    "inverse-surface": "#e5e2e1",
+                    "inverse-primary": "#5f5e5e",
+                    "secondary-fixed-dim": "#c6c6ca",
+                    "secondary-fixed": "#e2e2e6",
+                    "primary-fixed-dim": "#c9c6c5",
+                    "on-tertiary-fixed": "#111c2d",
+                    "surface-variant": "#353434",
+                    "on-surface-variant": "#c4c7c7",
+                    "on-tertiary-fixed-variant": "#3c475a",
+                    "on-primary-fixed": "#1c1b1b",
+                    "surface-dim": "#141313",
+                    "secondary": "#c6c6ca",
+                    "primary-fixed": "#e5e2e1",
+                    "on-tertiary": "#263143",
+                    "on-secondary-fixed": "#1a1c1f",
+                    "on-primary-container": "#7b7979",
+                    "on-background": "#e5e2e1",
+                    "tertiary-fixed": "#d8e3fb",
+                    "surface-bright": "#3a3939",
+                    "surface-container": "#201f1f",
+                    "primary-container": "#0a0a0a",
+                    "primary": "#c9c6c5",
+                    "on-error": "#690005",
+                    "tertiary-fixed-dim": "#bcc7de",
+                    "on-primary": "#313030",
+                    "outline-variant": "#444748",
+                    "on-secondary-container": "#b8b8bc",
+                    "surface-container-highest": "#353434",
+                    "error": "#ffb4ab",
+                    "surface-container-lowest": "#0e0e0e",
+                    "surface": "#141313",
+                    "error-container": "#93000a",
+                    "tertiary-container": "#010a1b"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Metropolis"],
+                    "display": ["Metropolis"],
+                    "body": ["Hanken Grotesk"],
+                    "label": ["JetBrains Mono"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .custom-dashed-border {
+            background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='8' ry='8' stroke='%233f3f46' stroke-width='1' stroke-dasharray='6%2c 4' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+            border-radius: 8px;
+        }
+        body { background-color: #0a0a0a; color: #e5e2e1; }
+        .masonry-grid {
+            column-count: 3;
+            column-gap: 1.5rem;
+        }
+        .masonry-item {
+            display: inline-block;
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="font-body selection:bg-primary selection:text-on-primary">
+<!-- SIDEBAR NAV -->
+<aside class="fixed left-0 top-0 h-screen w-[240px] flex flex-col z-40 bg-surface-container-low border-r border-outline-variant">
+<div class="p-6">
+<h1 class="text-headline-sm font-headline font-black tracking-widest text-on-surface">ZeroAbstraction</h1>
+<p class="font-label text-xs text-on-surface-variant opacity-50">v2.4.0-stable</p>
+</div>
+<nav class="flex-grow mt-4">
+<div class="text-on-surface-variant hover:text-on-surface py-3 px-6 hover:bg-surface-container-high transition-all duration-200 ease-in-out cursor-pointer flex items-center gap-3 font-label text-sm tracking-tighter uppercase">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</div>
+<div class="text-on-surface-variant hover:text-on-surface py-3 px-6 hover:bg-surface-container-high transition-all duration-200 ease-in-out cursor-pointer flex items-center gap-3 font-label text-sm tracking-tighter uppercase">
+<span class="material-symbols-outlined">article</span>
+<span>Posts</span>
+</div>
+<!-- ACTIVE STATE: Media -->
+<div class="text-primary font-bold bg-surface-variant border-r-2 border-primary py-3 px-6 cursor-default flex items-center gap-3 font-label text-sm tracking-tighter uppercase">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">perm_media</span>
+<span>Media</span>
+</div>
+<div class="text-on-surface-variant hover:text-on-surface py-3 px-6 hover:bg-surface-container-high transition-all duration-200 ease-in-out cursor-pointer flex items-center gap-3 font-label text-sm tracking-tighter uppercase">
+<span class="material-symbols-outlined">settings</span>
+<span>System Settings</span>
+</div>
+<div class="text-on-surface-variant hover:text-on-surface py-3 px-6 hover:bg-surface-container-high transition-all duration-200 ease-in-out cursor-pointer flex items-center gap-3 font-label text-sm tracking-tighter uppercase">
+<span class="material-symbols-outlined">verified_user</span>
+<span>Security</span>
+</div>
+</nav>
+<div class="p-6 border-t border-outline-variant">
+<button class="w-full bg-primary text-on-primary py-2 px-4 rounded font-label text-xs tracking-widest uppercase hover:brightness-110 active:scale-[0.98] transition-all">
+                New Deployment
+            </button>
+</div>
+</aside>
+<!-- MAIN CONTENT AREA -->
+<main class="ml-[240px] min-h-screen">
+<!-- HEADER -->
+<header class="flex justify-between items-center h-24 px-12">
+<div>
+<nav class="flex items-center gap-2 mb-1">
+<span class="font-label text-xs text-zinc-500 uppercase tracking-widest">Admin</span>
+<span class="text-zinc-700">/</span>
+<span class="font-label text-xs text-zinc-500 uppercase tracking-widest">Media</span>
+</nav>
+<h2 class="text-4xl font-headline font-bold text-on-surface tracking-tight">Media</h2>
+</div>
+<button class="bg-zinc-300 text-black px-8 py-3 rounded-none font-bold text-sm hover:bg-zinc-200 active:scale-95 transition-all duration-200">
+                Upload Media
+            </button>
+</header>
+<!-- CONTENT CONTAINER -->
+<div class="px-12 pb-24 space-y-12">
+<!-- UPLOAD ZONE (Top Third) -->
+<section class="w-full h-[320px] custom-dashed-border bg-[#0d0d0d] flex flex-col items-center justify-center p-16 cursor-pointer group hover:bg-[#111111] transition-colors duration-200">
+<div class="flex flex-col items-center text-center space-y-4">
+<span class="material-symbols-outlined text-zinc-500 text-5xl group-hover:text-primary transition-colors duration-200">cloud_upload</span>
+<div class="space-y-1">
+<p class="text-xl font-bold text-zinc-300">Drop files here</p>
+<p class="text-zinc-500 text-sm">or click to browse your system</p>
+</div>
+<div class="pt-4">
+<span class="font-label text-[10px] text-zinc-600 tracking-wider bg-zinc-900/50 px-3 py-1 border border-zinc-800">PNG, JPG, WEBP, PDF — MAX 10MB</span>
+</div>
+</div>
+</section>
+<!-- TOOLS & FILTERS -->
+<section class="flex flex-col md:flex-row justify-between items-end border-b border-zinc-800 pb-4">
+<div class="relative w-full max-w-md group">
+<span class="material-symbols-outlined absolute left-0 bottom-2 text-zinc-500 group-focus-within:text-primary transition-colors">search</span>
+<input class="w-full bg-transparent border-none pl-8 pb-2 focus:ring-0 text-on-surface placeholder:text-zinc-600 font-label text-sm tracking-tight" placeholder="Search assets..." type="text"/>
+</div>
+<div class="flex gap-8 font-label text-xs tracking-widest uppercase mt-6 md:mt-0">
+<button class="text-primary border-b border-primary pb-2">All</button>
+<button class="text-zinc-500 hover:text-zinc-300 transition-colors pb-2">Images</button>
+<button class="text-zinc-500 hover:text-zinc-300 transition-colors pb-2">Documents</button>
+</div>
+</section>
+<!-- MEDIA MASONRY GRID -->
+<section class="masonry-grid">
+<!-- Tile 1 -->
+<div class="masonry-item relative group bg-[#111111] border border-zinc-800 overflow-hidden cursor-pointer transition-all duration-200">
+<img class="w-full h-auto grayscale hover:grayscale-0 transition-all duration-700 ease-out" data-alt="A wide, cinematic abstract landscape featuring smooth, flowing 3D topographical waves in shades of charcoal and deep slate. The lighting is low-key, with subtle luminescence on the crests of the waves creating a technical, architectural mood. The visual style is hyper-minimalist and atmospheric, adhering to a dark monochrome palette with soft gradients." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5QGLOKlmN-3hN5eVRwDq-SxLtjG4IntJiJMjqdIq_7YKFuuaNlz3xA-Lg1IK3Cnujcl785Kmv3nd5IJw-psrrr-7Ux1B04klR4u9Rl6HG1Ywrl0V-5NN9pJZHgz9RtAD50buwVw-s4v_ITmKhju_T9n1dCqxSYOZHiomR4F5mTgB_J6uttLhb6ClztPmNLQ-Hj15NGSx1u6eP9106TURDrMWxBFel9Om79mfp_2O5XWU3MmfHiVbcd4Vidu0ItQA7c1Ty7qoeSkK-"/>
+<div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col justify-end p-4">
+<p class="font-label text-[10px] text-white">ABSTRACT_WAVE_01.JPG</p>
+<p class="text-[9px] text-zinc-400 uppercase">1.2 MB • 2400x1600</p>
+</div>
+</div>
+<!-- Tile 2 -->
+<div class="masonry-item relative group bg-[#111111] border border-zinc-800 overflow-hidden cursor-pointer transition-all duration-200">
+<img class="w-full h-auto grayscale hover:grayscale-0 transition-all duration-700 ease-out" data-alt="A vertical, detailed shot of a Brutalist concrete structure with sharp geometric angles and deep shadows. The atmosphere is cold and precise, featuring a high-contrast black and white photography style. Subtle blue charcoal glows appear in the deep shadows of the recesses, maintaining a premium technical aesthetic for a modern developer environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBeREnozD5XEnGmDUkcWcV51Eduq32vdxqYplhF-V_tFtKo_PjLML0RtnZYTTZ6WKB7Mfo4fHwy0ZqOMaRuzhwD2IQkn-GVrhsefjuQUYwrVcomSB_4JTZuo1_2jCGxuZoYL-Hw1vzcPBe1kCLy8JxBMLN4milTSHMiYuxj1kNn4P4fJ0MXGOsmh1f0wUCQHB56j_5y23rDvT_hFrXpa3tvc9nDxj47skTfH4aPpEaZznR3inXNmcxnQm2smRhajAmJt_t26LL7ZwCN"/>
+<div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col justify-end p-4">
+<p class="font-label text-[10px] text-white">BRUTALIST_STRUCT.PNG</p>
+<p class="text-[9px] text-zinc-400 uppercase">3.4 MB • 1200x1800</p>
+</div>
+</div>
+<!-- Tile 3 -->
+<div class="masonry-item relative group bg-[#111111] border border-zinc-800 overflow-hidden cursor-pointer transition-all duration-200">
+<img class="w-full h-auto grayscale hover:grayscale-0 transition-all duration-700 ease-out" data-alt="A macro shot of vintage server hardware components with clean, rhythmic lines of circuit boards and connectors. The scene is rendered in a desaturated, high-end cinematic style with shallow depth of field. The mood is one of quiet technical intensity, using a palette of deep blacks, dark greys, and metallic accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8Gq--tc-MMH0Ox8hzbiP-vF5KQWDnAIPbvmjSH3trae5VkoZ0glI59mDo22PaYR1xs-QW-PDYaCNySPm_y9AdiW6h7CS9K9cJ187JTE88_FjKN2tjPG1o5vlTU4WL-lh7TvkgBw5QSJAXIMlllrMTn0sWDDAbxPhzkMvmJJxh24ETD7fTfSyuaWvXMgVAHOYaj565XlQ7cUDPKwu_-z973rxhPN7-oaPlUY9bvTemMWTNQs7OcLISpfbYKYJ6-OdWK3Kl5MV-nIvF"/>
+<div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col justify-end p-4">
+<p class="font-label text-[10px] text-white">HARDWARE_SCAN.JPG</p>
+<p class="text-[9px] text-zinc-400 uppercase">840 KB • 1920x1080</p>
+</div>
+</div>
+<!-- Tile 4 -->
+<div class="masonry-item relative group bg-[#111111] border border-zinc-800 overflow-hidden cursor-pointer transition-all duration-200">
+<img class="w-full h-auto grayscale hover:grayscale-0 transition-all duration-700 ease-out" data-alt="An expansive view of a digital network web rendered in thin, glowing cobalt lines against a void-like black background. The visual represents high-speed data transmission and connectivity in a minimalist, architectural way. The lighting is purely luminescent, creating a sense of depth through tonal layering and atmospheric space." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3WotFYvkK_CVxHGuFRy9h_LtQgb2EpcAsMQVPujEM6l-XnOE8I0hFNL7r_hHOY6ssCgbaNd3y9V-gyXuLo-Irxc6aey2fjhdrIiKV-UWKF8xPMIadRjAcuMEgsKG-t_eLVijZ6FaR2m9kn5YFHUAYNgpGwXKR7WGmF3DuJ0Z6HeOfQrnyu3GVJqE5z5-srufEHD2IXL9qqV2_MzCNZkwJLRlby3-BqIpoUzP23-S_1ZyIuhNP6Hh5IWSfWhqzkXS86EKcTa0eHCDT"/>
+<div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col justify-end p-4">
+<p class="font-label text-[10px] text-white">NETWORK_FLOW_STATIC.WEBP</p>
+<p class="text-[9px] text-zinc-400 uppercase">2.1 MB • 3840x2160</p>
+</div>
+</div>
+<!-- Tile 5 -->
+<div class="masonry-item relative group bg-[#111111] border border-zinc-800 overflow-hidden cursor-pointer transition-all duration-200">
+<img class="w-full h-auto grayscale hover:grayscale-0 transition-all duration-700 ease-out" data-alt="A minimalist technical illustration of abstract geometric shapes—cubes and planes—suspended in a dark, atmospheric void. The surfaces have a subtle metallic sheen and are defined by sharp, hairline edges. The color palette is strictly monochrome, with the only variation being the intensity of light falling across the matte surfaces." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBS4SlvsV1DaUtviZXL-yuYYRlCSwCRnd-5B1zVk_GUC-52DAXSLJ59d0wevFehQdy92MDUs0U7p7XIEH6N98ZW5OIswdHw8Bhd3pSDwRVTcB1ZLdj8R97nChr7oo7bT7qftwCtedGPuxdL32RU_EN1E6QfOKUxq1QYkX22y-hmNxpETk8VBbPMm5y36xbqp1vQRMIb8fSJ-Vptn5fPkzYqgQUNo2D9X241pYae3cl5T37nJtGIpkyAZ700cgYG6Px-FbZnqe8giqTN"/>
+<div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col justify-end p-4">
+<p class="font-label text-[10px] text-white">GEOMETRY_09.JPG</p>
+<p class="text-[9px] text-zinc-400 uppercase">1.7 MB • 2000x2000</p>
+</div>
+</div>
+<!-- Tile 6 -->
+<div class="masonry-item relative group bg-[#111111] border border-zinc-800 overflow-hidden cursor-pointer transition-all duration-200">
+<img class="w-full h-auto grayscale hover:grayscale-0 transition-all duration-700 ease-out" data-alt="A high-contrast architectural detail of a modern facade with repeating patterns of glass and steel. The shot is taken from a low angle, emphasizing the scale and precision of the engineering. The mood is professional and austere, using deep black shadows and bright, sharp highlights to create a sense of focused intensity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxXKQqPHbo_b3ll0pSxzvE-9iC9V2udsJICCeEHLAuTLNeleQyd-vqZnVvGIELghOgMxGM5-11_5LHLVcUVUBWiCUa9gGVp1DqiiYxZt7v_sfKvNT3lkCwcdBhjsrYPtu_Ag17dAEYGsamCk4xua_vX26lssVVxccugNbCT-5uI-DLQ8Qg0PwzcAU1mfkPeKnI9W1rnaEdBCQ1ZRjOLMuxZ8qOeVvyryZbUWZkYIn7uHdsrUgfnLx3EXdVbHByMGKVcrXCsK6KlQAx"/>
+<div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col justify-end p-4">
+<p class="font-label text-[10px] text-white">FACADE_STUDY.JPG</p>
+<p class="text-[9px] text-zinc-400 uppercase">4.5 MB • 5000x3000</p>
+</div>
+</div>
+</section>
+</div>
+</main>
+</body></html>

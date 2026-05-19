@@ -3,6 +3,7 @@
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 import CopyButton from '@/components/CopyButton';
 import { slugify } from '@/lib/toc';
+import { LightboxImage } from '@/components/ui/lightbox-image';
 
 type Props = {
   source: MDXRemoteSerializeResult;
@@ -26,6 +27,7 @@ const components = {
   h2: makeHeading(2),
   h3: makeHeading(3),
   h4: makeHeading(4),
+  img: (props: any) => <LightboxImage {...props} />,
   pre: ({ children, ...props }: React.HTMLAttributes<HTMLPreElement> & { children?: React.ReactNode }) => {
     const codeEl = (children as React.ReactElement)?.props;
     const rawCode = codeEl?.children ?? '';

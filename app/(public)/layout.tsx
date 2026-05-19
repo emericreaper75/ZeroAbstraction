@@ -4,6 +4,7 @@ import Footer from '@/components/Footer';
 import { headers } from 'next/headers';
 import { DistractionFreeProvider } from '@/components/DistractionFreeProvider';
 import { generateWebSiteJsonLd } from '@/lib/jsonld';
+import { Breadcrumbs } from '@/components/ui/breadcrumbs';
 
 export default async function PublicLayout({
   children,
@@ -32,6 +33,7 @@ export default async function PublicLayout({
       <DistractionFreeProvider>
         <div className="min-h-screen bg-neutral-950 text-neutral-300">
           <Navbar />
+          <Breadcrumbs />
 
           <main
             id="main-content"
