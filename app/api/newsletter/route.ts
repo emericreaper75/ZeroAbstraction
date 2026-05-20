@@ -2,6 +2,11 @@ import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { z } from 'zod';
 import WelcomeEmail from '@/components/emails/welcome';
+import {
+  checkRateLimit,
+  rateLimitHeaders,
+  RATE_LIMITS,
+} from '@/lib/security/rate-limit';
 
 // The API key is set in standard NextJS env vars, fallback to dummy for development if not present
 const resend = new Resend(process.env.RESEND_API_KEY || 're_dummy_123');
@@ -11,6 +16,18 @@ const NewsletterSchema = z.object({
 });
 
 export async function POST(req: Request) {
+  // ── Rate limiting ──────────────────────────────────────────────────
+  const forwarded = req.headers.get('x-forwarded-for');
+  const ip = forwarded?.split(',')[0]?.trim() || 'unknown';
+  const rateLimitResult = checkRateLimit(`newsletter:${ip}`, RATE_LIMITS.newsletter);
+
+  if (!rateLimitResult.allowed) {
+    return NextResponse.json(
+      { error: 'Too many requests. Please try again later.' },
+      { status: 429, headers: rateLimitHeaders(rateLimitResult) }
+    );
+  }
+
   try {
     const body = await req.json();
     const result = NewsletterSchema.safeParse(body);

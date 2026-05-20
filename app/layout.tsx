@@ -8,6 +8,7 @@ import {
 
 import 'katex/dist/katex.min.css';
 import './globals.css';
+import SkeletonProvider from '@/components/SkeletonProvider';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -52,7 +53,9 @@ export default function RootLayout({
       className={`dark ${inter.variable} ${ibmPlexSerif.variable} ${jetbrainsMono.variable} ${ibmPlexMono.variable}`}
     >
       <body className="min-h-screen bg-neutral-950 text-neutral-300 antialiased">
-        {children}
+        <SkeletonProvider>
+          {children}
+        </SkeletonProvider>
       </body>
     </html>
   );

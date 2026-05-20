@@ -5,6 +5,12 @@ import bcrypt from "bcrypt";
 
 import authConfig from "@/auth.config";
 import { prisma } from "@/lib/db/prisma";
+import { logSecurityEvent } from "@/lib/security/logger";
+import {
+  isLockedOut,
+  recordFailedAttempt,
+  resetLockout,
+} from "@/lib/security/account-lockout";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
@@ -29,13 +35,34 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           return null;
         }
 
+        const email = (credentials.email as string).toLowerCase().trim();
+
+        // ── Account lockout check ─────────────────────────────────────
+        const lockoutRemaining = isLockedOut(email);
+        if (lockoutRemaining !== null) {
+          logSecurityEvent({
+            type: "AUTH_LOCKOUT",
+            message: `Login attempt on locked account`,
+            metadata: { email, remainingSeconds: lockoutRemaining },
+          });
+          // Return null — don't reveal lockout details to the client
+          return null;
+        }
+
         const user = await prisma.user.findUnique({
-          where: {
-            email: credentials.email as string,
-          },
+          where: { email },
         });
 
         if (!user || !user.passwordHash) {
+          // Record failed attempt even for non-existent users
+          // to prevent user enumeration via timing attacks
+          recordFailedAttempt(email);
+
+          logSecurityEvent({
+            type: "AUTH_FAILURE",
+            message: "Login failed — user not found or no password set",
+            metadata: { email },
+          });
           return null;
         }
 
@@ -45,8 +72,28 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         );
 
         if (!isValid) {
+          const result = recordFailedAttempt(email);
+
+          logSecurityEvent({
+            type: "AUTH_FAILURE",
+            message: "Login failed — invalid password",
+            metadata: {
+              email,
+              attempts: result.attempts,
+              locked: result.locked,
+            },
+          });
           return null;
         }
+
+        // ── Successful login — reset lockout counter ─────────────────
+        resetLockout(email);
+
+        logSecurityEvent({
+          type: "AUTH_SUCCESS",
+          message: "Login successful",
+          metadata: { email, userId: user.id },
+        });
 
         return {
           id: user.id,

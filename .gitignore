@@ -44,3 +44,6 @@ CLAUDE.local.md
 checklistfile.md
 design.md
 tree-to-be-implemented.md
+
+# agents
+.agents/

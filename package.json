@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "content:index": "tsx scripts/index-content.ts",
-    "search:index": "tsx scripts/build-search.ts"
+    "search:index": "tsx scripts/build-search.ts",
+    "security:audit": "npm audit --audit-level=high",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.2",
