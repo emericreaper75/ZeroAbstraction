@@ -1619,8 +1619,8 @@ export function PageSkeleton({ pathname }: { pathname: string }) {
   
   if (pathname === "/login") return <LoginSkeleton />;
 
-  // Support for category list pages e.g. /electronics, /astrophysics, /physics-math, /communications
-  const publicCategories = ["/electronics", "/astrophysics", "/physics-math", "/communications"];
+  // Support for category list pages e.g. /electronics, /astrophysics, /physics-math, /communications, /research
+  const publicCategories = ["/electronics", "/astrophysics", "/physics-math", "/communications", "/research"];
   if (publicCategories.includes(pathname)) {
     return <ListSkeleton type="blog" />;
   }

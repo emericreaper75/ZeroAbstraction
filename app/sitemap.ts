@@ -1,9 +1,10 @@
 import { MetadataRoute } from 'next';
 import { getAllPosts, VALID_CATEGORIES } from '@/lib/posts';
+import { prisma } from '@/lib/db/prisma';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://zero-abstraction.dev';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts = getAllPosts();
 
   const postEntries: MetadataRoute.Sitemap = posts.map((post) => ({
@@ -20,11 +21,26 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
+  // Fetch dynamic research log paths
+  const researchLogs = await prisma.researchLog.findMany({
+    where: { published: true },
+    select: { slug: true, updatedAt: true },
+  });
+
+  const researchEntries: MetadataRoute.Sitemap = researchLogs.map((log) => ({
+    url: `${siteUrl}/research/${log.slug}`,
+    lastModified: log.updatedAt,
+    changeFrequency: 'monthly',
+    priority: 0.8,
+  }));
+
   return [
     { url: siteUrl, lastModified: new Date(), changeFrequency: 'daily', priority: 1 },
     { url: `${siteUrl}/projects`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
+    { url: `${siteUrl}/research`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
     { url: `${siteUrl}/timeline`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
     ...categoryEntries,
     ...postEntries,
+    ...researchEntries,
   ];
 }

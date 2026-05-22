@@ -1,62 +1,53 @@
 import CopyButton from '@/components/CopyButton';
-import { slugify } from '@/lib/toc';
-
-function makeHeading(level: 1 | 2 | 3 | 4) {
-  const Tag = `h${level}` as 'h1' | 'h2' | 'h3' | 'h4';
-  return function Heading({ children, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
-    const text = typeof children === 'string' ? children : '';
-    const id = props.id?.toString() || slugify(text);
-    return (
-      <Tag id={id} className="scroll-mt-24" {...props}>
-        {children}
-      </Tag>
-    );
-  };
-}
+import HeadingWithAnchor from '@/components/mdx/HeadingWithAnchor';
+import { Surface } from '@/components/ui/surface';
 
 export const mdxComponents = {
-  h1: makeHeading(1),
-  h2: makeHeading(2),
-  h3: makeHeading(3),
-  h4: makeHeading(4),
+  h1: (props: React.HTMLAttributes<HTMLHeadingElement>) => <HeadingWithAnchor level={1} {...props} />,
+  h2: (props: React.HTMLAttributes<HTMLHeadingElement>) => <HeadingWithAnchor level={2} {...props} />,
+  h3: (props: React.HTMLAttributes<HTMLHeadingElement>) => <HeadingWithAnchor level={3} {...props} />,
+  h4: (props: React.HTMLAttributes<HTMLHeadingElement>) => <HeadingWithAnchor level={4} {...props} />,
   // Code block with copy button
   pre: ({ children, ...props }: React.HTMLAttributes<HTMLPreElement>) => {
     const codeEl = (children as React.ReactElement)?.props;
     const rawCode: string = typeof codeEl?.children === 'string' ? codeEl.children : '';
     return (
-      <div className="group relative my-6">
+      <div className="group relative my-8">
         <CopyButton code={rawCode} />
-        <pre
-          className="overflow-x-auto rounded-lg border border-neutral-800 bg-[hsl(220,16%,10%)] p-5 font-mono text-sm leading-relaxed text-neutral-200"
-          {...props}
-        >
-          {children}
-        </pre>
+        <Surface variant="elevated" padding="none" className="overflow-hidden">
+          <pre
+            className="overflow-x-auto p-5 font-mono text-[13px] leading-relaxed text-zinc-200"
+            {...props}
+          >
+            {children}
+          </pre>
+        </Surface>
       </div>
     );
   },
   // Table styling
   table: ({ children }: React.HTMLAttributes<HTMLTableElement>) => (
-    <div className="my-6 w-full overflow-x-auto rounded-lg border border-neutral-800 bg-neutral-900/30">
-      <table className="w-full border-collapse text-sm text-neutral-200">
-        {children}
-      </table>
+    <div className="my-8 w-full overflow-x-auto">
+      <Surface variant="glass" padding="none" className="overflow-hidden">
+        <table className="w-full border-collapse text-sm text-zinc-200">
+          {children}
+        </table>
+      </Surface>
     </div>
   ),
   thead: ({ children }: React.HTMLAttributes<HTMLTableSectionElement>) => (
-    <thead className="bg-neutral-800/50">{children}</thead>
+    <thead className="bg-zinc-900/50 border-b border-zinc-800">{children}</thead>
   ),
   tbody: ({ children }: React.HTMLAttributes<HTMLTableSectionElement>) => (
-    <tbody>{children}</tbody>
+    <tbody className="divide-y divide-zinc-800/50">{children}</tbody>
   ),
   tr: ({ children }: React.HTMLAttributes<HTMLTableRowElement>) => (
-    <tr className="border-b border-neutral-700 last:border-b-0 hover:bg-neutral-800/30">{children}</tr>
+    <tr className="hover:bg-zinc-800/20 transition-colors duration-200">{children}</tr>
   ),
   th: ({ children }: React.HTMLAttributes<HTMLTableCellElement>) => (
-    <th className="px-4 py-2 text-left font-medium text-neutral-300">{children}</th>
+    <th className="px-5 py-3 text-left font-mono text-[11px] uppercase tracking-widest text-zinc-400 font-medium">{children}</th>
   ),
   td: ({ children }: React.HTMLAttributes<HTMLTableCellElement>) => (
-    <td className="px-4 py-2 border-t border-neutral-700">{children}</td>
+    <td className="px-5 py-3 text-zinc-300">{children}</td>
   ),
 };
-

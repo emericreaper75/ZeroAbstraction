@@ -10,21 +10,23 @@ export default function DistractionFreeToggle() {
       onClick={toggle}
       aria-label={isDistractionFree ? 'Exit focus mode' : 'Enter focus mode to read full document'}
       title={isDistractionFree ? 'Exit focus mode' : 'Enter focus mode to read full document'}
-      className="flex items-center gap-1.5 rounded-md border border-neutral-800 bg-neutral-900 px-3 py-1.5 font-mono text-xs text-neutral-500 transition-all hover:border-neutral-600 hover:text-neutral-300"
+      className="group relative flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/50 px-4 py-2 font-mono text-xs text-zinc-400 transition-all duration-300 hover:border-cyan-500/50 hover:bg-zinc-800 hover:text-cyan-400"
     >
+      <span className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-cyan-500/5 blur-md" />
+      
       {isDistractionFree ? (
         <>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
+          <svg className="w-3.5 h-3.5 transition-transform duration-300 group-hover:scale-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3" />
           </svg>
-          Exit Focus Mode
+          <span className="relative z-10">Exit Focus Mode</span>
         </>
       ) : (
         <>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg className="w-3.5 h-3.5 transition-transform duration-300 group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
           </svg>
-          Enter Focus Mode
+          <span className="relative z-10">Enter Focus Mode</span>
         </>
       )}
     </button>

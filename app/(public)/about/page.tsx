@@ -17,7 +17,7 @@ export default function AboutPage() {
       <section className="container mx-auto px-6 py-24 border-t border-neutral-900 bg-[var(--surface-01)]">
         <div className="max-w-3xl">
           <FadeIn>
-            <h2 className="text-3xl font-serif font-bold text-white mb-6">Revanth</h2>
+            <h2 className="text-3xl font-serif font-bold text-white mb-6">Manoj Amavasya</h2>
             <p className="text-zinc-400 leading-relaxed mb-8 text-lg">
               ECE student at JNTUA College of Engineering, Ananthapuramu. Researching signal processing, astrophysics, and embedded systems. Published research across electronics and astrophysics domains.
             </p>

@@ -36,24 +36,29 @@ function buildSearchIndex() {
     
     // Determine the route path
     const isProject = file.includes(path.join('content', 'projects'));
-    // Usually posts are at /posts/[slug] or /[category]/[slug], assuming /[category]/[slug] based on ZeroAbstraction structure.
+    const isResearchLog = file.includes(path.join('content', 'research-logs'));
     const slug = data.slug || path.basename(file, '.mdx');
     const category = data.category || 'misc';
     
     // Let's deduce URL based on the file location
     let url = '';
+    let categoryLabel = 'Post';
     if (isProject) {
-      // Assuming projects have their own dedicated page or maybe they are just in /projects
       url = `/projects/${slug}`;
+      categoryLabel = 'Project';
+    } else if (isResearchLog) {
+      url = `/research/${slug}`;
+      categoryLabel = 'Research';
     } else {
-      url = `/posts/${category}/${slug}`;
+      url = `/${category}/${slug}`;
+      categoryLabel = 'Post';
     }
 
     index.push({
       id: url,
       title: data.title || 'Untitled',
       description: data.description || '',
-      category: isProject ? 'Project' : 'Post',
+      category: categoryLabel,
       tags: data.tags || [],
       content: content.slice(0, 5000), // Limit content size per entry
       url,

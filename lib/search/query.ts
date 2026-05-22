@@ -84,11 +84,32 @@ export async function searchContent(opts: {
         WHERE
           pr.published = true
           AND to_tsvector('english', pr.title || ' ' || pr.description || ' ' || COALESCE(pr.content, '')) @@ query.tsq
+      ),
+      research AS (
+        SELECT
+          'research'::text AS type,
+          rl.id AS id,
+          rl.title AS title,
+          NULLIF(rl.abstract, '') AS description,
+          ('/research/' || rl.slug) AS href,
+          COALESCE(rl.tags, ARRAY[]::text[]) AS tags,
+          ts_rank_cd(
+            to_tsvector('english', rl.title || ' ' || COALESCE(rl.abstract, '') || ' ' || COALESCE(rl.content, '')),
+            (SELECT tsq FROM query)
+          ) AS score,
+          'research'::text AS category,
+          NULL::text AS thumbnail
+        FROM "ResearchLog" rl, query
+        WHERE
+          rl.published = true
+          AND to_tsvector('english', rl.title || ' ' || COALESCE(rl.abstract, '') || ' ' || COALESCE(rl.content, '')) @@ query.tsq
       )
     SELECT * FROM (
       SELECT * FROM posts
       UNION ALL
       SELECT * FROM projects
+      UNION ALL
+      SELECT * FROM research
     ) AS combined
     ORDER BY score DESC, title ASC
     LIMIT ${limit};

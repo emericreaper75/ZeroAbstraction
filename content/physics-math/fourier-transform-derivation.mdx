@@ -9,7 +9,7 @@ slug: "fourier-transform-derivation"
 
 ## Starting Point: Fourier Series on $[-L, L]$
 
-Let $f \in L^2([-L,L])$. The family of exponentials $\left\{ \frac{1}{\sqrt{2L}} e^{i n \pi x / L} \right\}_{n \in \mathbb{Z}}$ forms a complete orthonormal basis in $L^2([-L,L])$. Orthonormality follows from the integral identity
+Let $f \in L^2([-L,L])$. The family of exponentials $\left\lbrace \frac{1}{\sqrt{2L}} e^{i n \pi x / L} \right\rbrace_{n \in \mathbb{Z}}$ forms a complete orthonormal basis in $L^2([-L,L])$. Orthonormality follows from the integral identity
 
 $$
 \frac{1}{2L} \int_{-L}^{L} e^{i(m-n)\pi x / L} \, dx = \delta_{mn},
@@ -46,13 +46,13 @@ $$
 where we define the **Fourier Transform**:
 
 $$
-\boxed{\hat{f}(\xi) = \mathcal{F}\{f\}(\xi) = \int_{-\infty}^{\infty} f(x) \, e^{-2\pi i \xi x} \, dx}
+\boxed{\hat{f}(\xi) = \mathcal{F}\lbrace f\rbrace(\xi) = \int_{-\infty}^{\infty} f(x) \, e^{-2\pi i \xi x} \, dx}
 $$
 
 and the **Inverse Fourier Transform**:
 
 $$
-f(x) = \mathcal{F}^{-1}\{\hat{f}\}(x) = \int_{-\infty}^{\infty} \hat{f}(\xi) \, e^{2\pi i \xi x} \, d\xi.
+f(x) = \mathcal{F}^{-1}\lbrace\hat{f}\rbrace(x) = \int_{-\infty}^{\infty} \hat{f}(\xi) \, e^{2\pi i \xi x} \, d\xi.
 $$
 
 > **Warning.** The above limiting argument is heuristic. The passage from sum to integral requires justification via dominated convergence or uniform convergence conditions. A rigorous treatment requires working in the Schwartz space $\mathcal{S}(\mathbb{R})$ of rapidly decreasing functions, where the Fourier transform is a topological isomorphism, before extending to $L^1$ and $L^2$ by density and continuity arguments.
@@ -121,18 +121,18 @@ $$
 f = \lim_{R \to \infty} \int_{-R}^{R} \hat{f}(\xi) e^{2\pi i \xi x} \, d\xi,
 $$
 
-where the limit is taken in $L^2$ norm. This follows directly from $\mathcal{F}$ being unitary: $\mathcal{F}^{-1} = \mathcal{F}^*$ (the adjoint), and for this convention $\mathcal{F}^*\{g\}(x) = \int g(\xi) e^{2\pi i \xi x} d\xi$.
+where the limit is taken in $L^2$ norm. This follows directly from $\mathcal{F}$ being unitary: $\mathcal{F}^{-1} = \mathcal{F}^*$ (the adjoint), and for this convention $\mathcal{F}^*\lbrace g\rbrace(x) = \int g(\xi) e^{2\pi i \xi x} d\xi$.
 
 ## Key Properties Table
 
 | Property | Formula |
 |---|---|
-| Linearity | $\mathcal{F}\{\alpha f + \beta g\} = \alpha \hat{f} + \beta \hat{g}$ |
-| Translation | $\mathcal{F}\{f(x-a)\}(\xi) = e^{-2\pi i a \xi} \hat{f}(\xi)$ |
-| Modulation | $\mathcal{F}\{e^{2\pi i \xi_0 x} f(x)\}(\xi) = \hat{f}(\xi - \xi_0)$ |
-| Dilation | $\mathcal{F}\{f(ax)\}(\xi) = \frac{1}{|a|}\hat{f}\!\left(\frac{\xi}{a}\right)$ |
-| Differentiation | $\mathcal{F}\{f'\}(\xi) = 2\pi i \xi \, \hat{f}(\xi)$ |
-| Convolution | $\mathcal{F}\{f * g\} = \hat{f} \cdot \hat{g}$ |
+| Linearity | $\mathcal{F}\lbrace\alpha f + \beta g\rbrace = \alpha \hat{f} + \beta \hat{g}$ |
+| Translation | $\mathcal{F}\lbrace f(x-a)\rbrace(\xi) = e^{-2\pi i a \xi} \hat{f}(\xi)$ |
+| Modulation | $\mathcal{F}\lbrace e^{2\pi i \xi_0 x} f(x)\rbrace(\xi) = \hat{f}(\xi - \xi_0)$ |
+| Dilation | $\mathcal{F}\lbrace f(ax)\rbrace(\xi) = (1/|a|)\hat{f}(\xi/a)$ |
+| Differentiation | $\mathcal{F}\lbrace f'\rbrace(\xi) = 2\pi i \xi \, \hat{f}(\xi)$ |
+| Convolution | $\mathcal{F}\lbrace f * g\rbrace = \hat{f} \cdot \hat{g}$ |
 
 Each property is derived from direct substitution into the definition. The convolution theorem, for example, converts the integral operator $(f*g)(x) = \int f(x-y)g(y)dy$ into pointwise multiplication in the frequency domain — the fundamental reason why the Fourier transform simplifies linear time-invariant systems.
 

@@ -2,6 +2,9 @@ import { prisma } from "@/lib/db/prisma";
 import { getAllPosts } from "@/lib/posts";
 import { extractTOC } from "@/lib/toc";
 import { ContentCategory } from "@/lib/editorial/categories";
+import fs from "fs";
+import path from "path";
+import matter from "gray-matter";
 
 import readingTime from "reading-time";
 
@@ -24,6 +27,83 @@ function mapCategoryToEnum(category: string): ContentCategory {
 function countWords(content: string) {
   const words = content.trim().split(/\s+/).filter(Boolean);
   return words.length;
+}
+
+async function indexResearchLogs() {
+  console.log("Indexing research logs...");
+  const researchDir = path.join(process.cwd(), "content", "research-logs");
+  if (!fs.existsSync(researchDir)) {
+    console.log("No research-logs directory found.");
+    return;
+  }
+
+  const files = fs.readdirSync(researchDir).filter((f) => f.endsWith(".mdx"));
+  const slugs = new Set<string>();
+
+  for (const file of files) {
+    const filePath = path.join(researchDir, file);
+    const raw = fs.readFileSync(filePath, "utf-8");
+    const { data, content } = matter(raw);
+
+    const slug = data.slug || path.basename(file, ".mdx");
+    slugs.add(slug);
+
+    // Determine entry number
+    let entryNumber = 0;
+    const fileMatch = file.match(/^(\d+)/);
+    if (fileMatch) {
+      entryNumber = parseInt(fileMatch[1], 10);
+    } else {
+      const titleMatch = (data.title || "").match(/#(\d+)/);
+      if (titleMatch) {
+        entryNumber = parseInt(titleMatch[1], 10);
+      }
+    }
+
+    // Determine series
+    let series = "Signal Processing";
+    if ((data.title || "").toLowerCase().includes("thesis")) {
+      series = "Communications Theory";
+    }
+
+    const published = data.published !== false;
+    const tags = data.tags || [];
+
+    await prisma.researchLog.upsert({
+      where: { slug },
+      create: {
+        entryNumber,
+        title: data.title || "Untitled Research Log",
+        slug,
+        series,
+        abstract: data.description || null,
+        content: content || null,
+        tags,
+        published,
+      },
+      update: {
+        entryNumber,
+        title: data.title || "Untitled Research Log",
+        series,
+        abstract: data.description || null,
+        content: content || null,
+        tags,
+        published,
+        updatedAt: new Date(),
+      },
+    });
+  }
+
+  // Cleanup: unpublish or delete DB logs that no longer exist in filesystem
+  const dbLogs = await prisma.researchLog.findMany({ select: { slug: true } });
+  const missing = dbLogs.filter((x) => !slugs.has(x.slug));
+  if (missing.length > 0) {
+    await prisma.researchLog.updateMany({
+      where: { slug: { in: missing.map((m) => m.slug) } },
+      data: { published: false },
+    });
+  }
+  console.log(`Successfully indexed ${files.length} research logs.`);
 }
 
 async function main() {
@@ -89,6 +169,9 @@ async function main() {
       data: { published: false },
     });
   }
+
+  // Index research logs
+  await indexResearchLogs();
 }
 
 main()
@@ -100,4 +183,5 @@ main()
     await prisma.$disconnect();
     process.exit(1);
   });
+
 

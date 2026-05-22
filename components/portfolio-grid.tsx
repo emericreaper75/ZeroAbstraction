@@ -1,8 +1,12 @@
+"use client";
+
+import React from "react";
 import Link from "next/link";
-
+import { motion } from "framer-motion";
 import { ArrowRight, Code2 } from "lucide-react";
-
 import { Badge } from "@/components/ui/badge";
+import { Surface } from "@/components/ui/surface";
+import { staggerContainer, fadeUpVariant } from "@/lib/design/motion";
 
 interface PortfolioProject {
   id: string;
@@ -17,9 +21,7 @@ interface PortfolioGridProps {
   projects: PortfolioProject[];
 }
 
-export default function PortfolioGrid({
-  projects,
-}: PortfolioGridProps) {
+export default function PortfolioGrid({ projects }: PortfolioGridProps) {
   if (projects.length === 0) {
     return null;
   }
@@ -49,71 +51,69 @@ export default function PortfolioGrid({
             className="hidden items-center gap-2 text-sm font-mono text-zinc-500 transition-colors hover:text-cyan-400 sm:inline-flex"
           >
             View all
-
-            <ArrowRight
-              className="h-4 w-4"
-              aria-hidden="true"
-            />
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
         </div>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <motion.div
+          className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+          variants={staggerContainer}
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true, margin: "-100px" }}
+        >
           {projects.map((project) => (
-            <Link
-              key={project.id}
-              href={`/projects/${project.slug}`}
-              className="group relative flex flex-col rounded-xl border border-zinc-800 bg-zinc-900/40 p-6 transition-all duration-300 hover:border-zinc-700 hover:bg-zinc-900/70"
-            >
-              <div className="mb-4 flex items-center justify-between">
-                <Badge
-                  variant="outline"
-                  className="border-zinc-700 text-[10px] font-mono uppercase tracking-wider text-cyan-400"
-                >
-                  Featured
-                </Badge>
+            <motion.div key={project.id} variants={fadeUpVariant}>
+              <Surface variant="floating" interactive padding="lg" asChild className="h-full flex flex-col group">
+                <Link href={`/projects/${project.slug}`}>
+                  <div className="mb-4 flex items-center justify-between">
+                    <Badge
+                      variant="outline"
+                      className="border-zinc-700 text-[10px] font-mono uppercase tracking-wider text-cyan-400"
+                    >
+                      Featured
+                    </Badge>
 
-                {project.githubUrl && (
-                  <a
-                    href={project.githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-zinc-600 transition-colors hover:text-zinc-300"
-                    aria-label={`${project.title} source code`}
-                  >
-                    <Code2
-                      className="h-4 w-4"
-                      aria-hidden="true"
-                    />
-                  </a>
-                )}
-              </div>
-
-              <h3 className="mb-2 text-lg font-serif font-semibold text-zinc-100 transition-colors group-hover:text-cyan-400">
-                {project.title}
-              </h3>
-
-              <p className="mb-4 flex-grow text-sm leading-relaxed text-zinc-500 line-clamp-3">
-                {project.description}
-              </p>
-
-              {project.tags.length > 0 && (
-                <div className="flex flex-wrap gap-1.5">
-                  {project.tags
-                    .slice(0, 3)
-                    .map((tag) => (
-                      <Badge
-                        key={tag}
-                        variant="outline"
-                        className="border-zinc-800 text-[10px] font-mono text-zinc-500"
+                    {project.githubUrl && (
+                      <a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-zinc-600 transition-colors hover:text-zinc-300 relative z-20"
+                        aria-label={`${project.title} source code`}
+                        onClick={(e) => e.stopPropagation()}
                       >
-                        {tag.replace(/^"|"$/g, '')}
-                      </Badge>
-                    ))}
-                </div>
-              )}
-            </Link>
+                        <Code2 className="h-4 w-4" aria-hidden="true" />
+                      </a>
+                    )}
+                  </div>
+
+                  <h3 className="mb-2 text-lg font-serif font-semibold text-zinc-100 transition-colors group-hover:text-cyan-400">
+                    {project.title}
+                  </h3>
+
+                  <p className="mb-4 flex-grow text-sm leading-relaxed text-zinc-500 line-clamp-3">
+                    {project.description}
+                  </p>
+
+                  {project.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 mt-auto">
+                      {project.tags.slice(0, 3).map((tag) => (
+                        <Badge
+                          key={tag}
+                          variant="outline"
+                          className="border-zinc-800 text-[10px] font-mono text-zinc-500"
+                        >
+                          {tag.replace(/^"|"$/g, "")}
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
+                </Link>
+              </Surface>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         <div className="mt-8 text-center sm:hidden">
           <Link
@@ -121,11 +121,7 @@ export default function PortfolioGrid({
             className="inline-flex items-center gap-2 text-sm font-mono text-zinc-500 transition-colors hover:text-cyan-400"
           >
             View all projects
-
-            <ArrowRight
-              className="h-4 w-4"
-              aria-hidden="true"
-            />
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
         </div>
       </div>

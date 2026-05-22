@@ -1,0 +1,48 @@
+{
+  "architecture": [
+    "system-overview.md",
+    "frontend-architecture.md",
+    "backend-architecture.md",
+    "auth-architecture.md",
+    "mdx-rendering.md"
+  ],
+  "decisions": [
+    "001-mdx-filesystem-over-db.md",
+    "002-nextjs-14-standardization.md",
+    "003-prisma-v6-standard.md"
+  ],
+  "patterns": [
+    "nextjs-rules.md",
+    "prisma-rules.md",
+    "server-actions.md",
+    "admin-architecture.md",
+    "component-rules.md"
+  ],
+  "errors": [
+    "hydration-errors.json",
+    "prisma-errors.json",
+    "auth-errors.json",
+    "mdx-errors.json"
+  ],
+  "active_systems": [
+    "current-state.json",
+    "active-systems.json"
+  ],
+  "critical_rules": [
+    "execution-checklist.md",
+    "auth-rules.md",
+    "upload-rules.md",
+    "api-security.md"
+  ],
+  "changelog": [
+    "initial-memory-bootstrap.md",
+    "2026-05.md"
+  ],
+  "runtime": [
+    "memory-access-log.json",
+    "execution-trace.json",
+    "latest-context.json",
+    "retrieval-quality.json",
+    "session-runtime.json"
+  ]
+}

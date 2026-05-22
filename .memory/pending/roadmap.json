@@ -1,0 +1,27 @@
+{
+  "current_priorities": [
+    "advanced MDX rendering",
+    "TOC improvements",
+    "focus mode integration stabilization",
+    "search improvements"
+  ],
+  "blocked_work": [],
+  "future_systems": [
+    "media pipeline",
+    "AI editorial tooling",
+    "reading experience upgrades",
+    "analytics systems",
+    "deployment improvements"
+  ],
+  "scalability_goals": [
+    "Sub 100ms response time for public pages",
+    "Zero layout shifts",
+    "Reduce initial payload bloat for long-form whitepapers"
+  ],
+  "frontend_gaps": [
+    "TOC sync with dynamically unmounted DOM elements"
+  ],
+  "backend_gaps": [
+    "Native Prisma abstract columns vs gray-matter parsing overlap"
+  ]
+}

@@ -17,11 +17,14 @@ export function slugify(text: string): string {
 }
 
 export function extractTOC(content: string): TOCEntry[] {
+  // Strip code blocks to prevent `#` comments from being parsed as headings
+  const contentWithoutCodeBlocks = content.replace(/```[\s\S]*?```/g, '');
+
   const headingRegex = /^(#{1,3})\s+(.+)$/gm;
   const entries: TOCEntry[] = [];
   let match: RegExpExecArray | null;
 
-  while ((match = headingRegex.exec(content)) !== null) {
+  while ((match = headingRegex.exec(contentWithoutCodeBlocks)) !== null) {
     const level = match[1].length as 1 | 2 | 3;
     const text = match[2].replace(/\*\*|__|\*|_|`/g, '').trim();
     const id = slugify(text);

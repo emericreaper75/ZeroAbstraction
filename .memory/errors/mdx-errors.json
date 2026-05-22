@@ -1,0 +1,32 @@
+[
+  {
+    "id": "MDX_TOC_DRIFT_001",
+    "problem": "TOC tracker exhibits drift or clicks fail when DistractionFree mode is false.",
+    "cause": "TOC is generated statically from full MDX, but in preview mode, subsequent headings are unmounted.",
+    "failed_attempts": [],
+    "successful_fix": "Graceful failure on click. Allow active tracker to ignore missing DOM nodes.",
+    "prevention": [
+      "Do not force hydration or throw errors if a hash route attempts to locate a missing node in preview mode."
+    ],
+    "affected_files": [
+      "components/InteractiveTOC.tsx"
+    ],
+    "status": "resolved",
+    "timestamp": "2026-05-22"
+  },
+  {
+    "id": "MDX_TOC_CODE_COMMENT_002",
+    "problem": "TOC picks up comments from MDX code blocks as headings if they start with # at the beginning of a line.",
+    "cause": "Raw markdown regex matched headings in python or shell code blocks since they start with # at start of line.",
+    "failed_attempts": [],
+    "successful_fix": "Strip code blocks from markdown content before extracting headings in lib/toc.ts.",
+    "prevention": [
+      "Always clean the raw markdown text of non-content blocks (e.g. code blocks) before executing regex-based layout or metadata extraction."
+    ],
+    "affected_files": [
+      "lib/toc.ts"
+    ],
+    "status": "resolved",
+    "timestamp": "2026-05-22"
+  }
+]

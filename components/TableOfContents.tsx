@@ -43,12 +43,12 @@ export default function TableOfContents({ entries = [] }: Props) {
   return (
     <div className="relative">
       {/* Heading */}
-      <p className="mb-6 font-mono text-[11px] uppercase tracking-[0.24em] text-neutral-500">
+      <p className="mb-6 font-mono text-[11px] uppercase tracking-[0.24em] text-zinc-500">
         On This Page
       </p>
 
       {/* Links */}
-      <div className="space-y-1 relative border-l border-neutral-800">
+      <div className="space-y-1 relative border-l border-zinc-800/50">
         {headings.map(({ id, text, level }) => {
           const isActive = activeId === id;
           return (
@@ -57,7 +57,7 @@ export default function TableOfContents({ entries = [] }: Props) {
               {isActive && (
                 <motion.div
                   layoutId="active-toc-line"
-                  className="absolute left-[-1px] top-0 bottom-0 w-[2px] bg-cyan-500 z-10"
+                  className="absolute left-[-1px] top-0 bottom-0 w-[2px] bg-cyan-400 z-10 shadow-[0_0_8px_theme(colors.cyan.400)]"
                   initial={false}
                   transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                 />
@@ -78,7 +78,7 @@ export default function TableOfContents({ entries = [] }: Props) {
                   level === 1 ? 'pl-4' : level === 2 ? 'pl-6' : 'pl-8',
                   isActive
                     ? 'border-transparent text-cyan-400 font-medium'
-                    : 'border-transparent text-neutral-500 hover:text-neutral-300 hover:border-neutral-600'
+                    : 'border-transparent text-zinc-500 hover:text-zinc-300 hover:border-zinc-600'
                 )}
               >
                 {text}

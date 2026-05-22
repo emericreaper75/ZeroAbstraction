@@ -1,0 +1,30 @@
+[
+  {
+    "timestamp": "2026-05-22T17:04:00+05:30",
+    "task": "Implement Anchor Navigation in all the reading pages",
+    "memory_files_read": [
+      ".memory/architecture/mdx-rendering.md",
+      ".memory/architecture/frontend-architecture.md"
+    ],
+    "agent_rules_read": [
+      ".agents/memory-system-integration.md"
+    ],
+    "retrieval_reason": "Understand MDX rendering pipeline, TOC structure, and progressive focus mode to implement anchor navigation safely.",
+    "retrieval_scope": "Frontend components and MDX configuration",
+    "status": "success"
+  },
+  {
+    "timestamp": "2026-05-22T21:53:28+05:30",
+    "task": "Fix Anchor Navigation, TOC Heading Extraction and Author Brand Name Updates",
+    "memory_files_read": [
+      ".memory/architecture/frontend-architecture.md",
+      ".memory/architecture/mdx-rendering.md"
+    ],
+    "agent_rules_read": [
+      ".agents/memory-system-integration.md"
+    ],
+    "retrieval_reason": "Verify scroll-spy tracking behavior, check how headings are generated on the server and rendered on the client, and locate author brand references.",
+    "retrieval_scope": "Table of Contents logic, MDX parsing utilities, and public brand details",
+    "status": "success"
+  }
+]

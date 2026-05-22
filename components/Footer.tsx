@@ -11,6 +11,7 @@ const footerLinks = [
   { href: '/astrophysics', label: 'Astrophysics' },
   { href: '/physics-math', label: 'Physics & Math' },
   { href: '/communications', label: 'Communications' },
+  { href: '/research', label: 'Research' },
   { href: '/projects', label: 'Projects' },
   { href: '/timeline', label: 'Timeline' },
 ];

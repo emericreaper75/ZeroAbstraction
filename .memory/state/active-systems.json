@@ -1,0 +1,16 @@
+{
+  "systems": [
+    {
+      "name": "Frontend Public",
+      "status": "active"
+    },
+    {
+      "name": "Admin Dashboard",
+      "status": "active"
+    },
+    {
+      "name": "AI Memory",
+      "status": "active"
+    }
+  ]
+}

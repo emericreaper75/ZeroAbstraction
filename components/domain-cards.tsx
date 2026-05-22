@@ -1,59 +1,56 @@
-import React from 'react';
-import Link from 'next/link';
+"use client";
+
+import React from "react";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { Surface } from "@/components/ui/surface";
+import { staggerContainer, fadeUpVariant } from "@/lib/design/motion";
 
 const domains = [
   {
-    title: 'Electronics & Comm',
-    href: '/electronics',
-    description: 'Signal processing, circuits, RF systems, and embedded design.',
+    title: "Electronics & Comm",
+    href: "/electronics",
+    description: "Signal processing, circuits, RF systems, and embedded design.",
     icon: (
       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
       </svg>
     ),
-    color: 'electronics',
-    hoverClass: 'hover:border-cyan-500/50 hover:bg-cyan-500/5 group-hover:text-cyan-400',
-    iconBgClass: 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20'
+    iconBgClass: "bg-cyan-500/10 text-cyan-400 border border-cyan-500/20",
   },
   {
-    title: 'Astrophysics',
-    href: '/astrophysics',
-    description: 'Cosmology, stellar physics, gravitational waves, and observational methods.',
+    title: "Astrophysics",
+    href: "/astrophysics",
+    description: "Cosmology, stellar physics, gravitational waves, and observational methods.",
     icon: (
       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
       </svg>
     ),
-    color: 'astrophysics',
-    hoverClass: 'hover:border-violet-500/50 hover:bg-violet-500/5 group-hover:text-violet-400',
-    iconBgClass: 'bg-violet-500/10 text-violet-400 border border-violet-500/20'
+    iconBgClass: "bg-violet-500/10 text-violet-400 border border-violet-500/20",
   },
   {
-    title: 'Physics & Math',
-    href: '/physics-math',
-    description: 'Quantum mechanics, electrodynamics, analysis, and differential geometry.',
+    title: "Physics & Math",
+    href: "/physics-math",
+    description: "Quantum mechanics, electrodynamics, analysis, and differential geometry.",
     icon: (
       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
       </svg>
     ),
-    color: 'physics',
-    hoverClass: 'hover:border-emerald-500/50 hover:bg-emerald-500/5 group-hover:text-emerald-400',
-    iconBgClass: 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+    iconBgClass: "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20",
   },
   {
-    title: 'Communications',
-    href: '/communications',
-    description: 'Signal theory, information systems, communication protocols, and network engineering.',
+    title: "Communications",
+    href: "/communications",
+    description: "Signal theory, information systems, communication protocols, and network engineering.",
     icon: (
       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
       </svg>
     ),
-    color: 'communications',
-    hoverClass: 'hover:border-blue-500/50 hover:bg-blue-500/5 group-hover:text-blue-400',
-    iconBgClass: 'bg-blue-500/10 text-blue-400 border border-blue-500/20'
-  }
+    iconBgClass: "bg-blue-500/10 text-blue-400 border border-blue-500/20",
+  },
 ];
 
 export default function DomainCards() {
@@ -61,45 +58,50 @@ export default function DomainCards() {
     <section className="py-24 px-6 bg-surface border-b border-zinc-800">
       <div className="mx-auto max-w-screen-xl">
         <div className="mb-12">
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-zinc-500 mb-2">Research Domains</p>
-          <h2 className="text-3xl font-serif font-bold text-zinc-100">Explore by field</h2>
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-zinc-500 mb-2">
+            Research Domains
+          </p>
+          <h2 className="text-3xl font-serif font-bold text-zinc-100">
+            Explore by field
+          </h2>
         </div>
-        
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        <motion.div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+          variants={staggerContainer}
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true, margin: "-100px" }}
+        >
           {domains.map((domain) => (
-            <Link 
-              href={domain.href} 
-              key={domain.href}
-              className={`group relative flex flex-col p-6 rounded-xl border border-zinc-800 bg-zinc-900/40 transition-all duration-300 overflow-hidden ${domain.hoverClass}`}
-            >
-              {/* Radial glow background on hover */}
-              <div className={`absolute -inset-px opacity-0 group-hover:opacity-10 transition-opacity duration-300 pointer-events-none glow-${domain.color}`} />
-              
-              <div className="relative z-10 flex flex-col h-full">
-                <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-5 transition-colors ${domain.iconBgClass}`}>
-                  {domain.icon}
-                </div>
-                <h3 className="text-lg font-serif font-semibold mb-2 transition-colors">
-                  {domain.title}
-                </h3>
-                <p className="text-sm text-zinc-500 leading-relaxed mb-6 flex-grow">
-                  {domain.description}
-                </p>
-                <div className="flex items-center text-xs font-mono font-medium uppercase tracking-wider text-zinc-600 group-hover:text-inherit transition-colors">
-                  <span>Explore domain</span>
-                  <svg 
-                    className="w-4 h-4 ml-2 transform transition-transform duration-300 group-hover:translate-x-1" 
-                    fill="none" 
-                    viewBox="0 0 24 24" 
-                    stroke="currentColor"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </div>
-              </div>
-            </Link>
+            <motion.div key={domain.href} variants={fadeUpVariant}>
+              <Surface variant="elevated" interactive padding="lg" asChild className="h-full flex flex-col group">
+                <Link href={domain.href}>
+                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-5 transition-colors ${domain.iconBgClass}`}>
+                    {domain.icon}
+                  </div>
+                  <h3 className="text-lg font-serif font-semibold mb-2 transition-colors">
+                    {domain.title}
+                  </h3>
+                  <p className="text-sm text-zinc-500 leading-relaxed mb-6 flex-grow">
+                    {domain.description}
+                  </p>
+                  <div className="flex items-center text-xs font-mono font-medium uppercase tracking-wider text-zinc-600 group-hover:text-cyan-400 transition-colors">
+                    <span>Explore domain</span>
+                    <svg
+                      className="w-4 h-4 ml-2 transform transition-transform duration-300 group-hover:translate-x-1"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </div>
+                </Link>
+              </Surface>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

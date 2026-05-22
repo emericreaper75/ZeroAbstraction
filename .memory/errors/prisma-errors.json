@@ -1,0 +1,17 @@
+[
+  {
+    "id": "PRISMA_ERR_001",
+    "problem": "TypeScript type mismatch for Prisma Enum (e.g., ContentCategory) in sync scripts.",
+    "cause": "Importing the enum from a relative path instead of `@prisma/client` or relying on implicit types.",
+    "failed_attempts": [],
+    "successful_fix": "Always import Enums from `@prisma/client`. Ensure all array methods are explicitly typed.",
+    "prevention": [
+      "Verify imports when using Prisma generated types."
+    ],
+    "affected_files": [
+      "scripts/index-content.ts"
+    ],
+    "status": "resolved",
+    "timestamp": "2026-05-14"
+  }
+]

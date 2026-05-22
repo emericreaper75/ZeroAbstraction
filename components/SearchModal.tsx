@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/cn";
 import { useInstantSearch } from "@/components/hooks/useInstantSearch";
+import { Surface } from "@/components/ui/surface";
 
 function useGlobalHotkey(onOpen: () => void) {
   useEffect(() => {
@@ -108,7 +109,7 @@ export default function SearchModal() {
     <>
       <Button
         variant="ghost"
-        className="hidden md:inline-flex items-center gap-2 border border-zinc-800 bg-zinc-900/40 text-zinc-400 hover:text-cyan-400 hover:border-cyan-500/50"
+        className="hidden md:inline-flex items-center gap-2 border border-zinc-800 bg-zinc-900/40 text-zinc-400 hover:text-cyan-400 hover:border-cyan-500/50 transition-all duration-300"
         onClick={openModal}
         aria-label="Search"
       >
@@ -121,7 +122,7 @@ export default function SearchModal() {
 
       {open ? (
         <div
-          className="fixed inset-0 z-[100] flex items-start justify-center bg-black/60 px-4 pt-24 backdrop-blur-sm"
+          className="fixed inset-0 z-[100] flex items-start justify-center bg-black/60 px-4 pt-24 backdrop-blur-md transition-all duration-300"
           role="dialog"
           aria-modal="true"
           aria-label="Search"
@@ -129,21 +130,21 @@ export default function SearchModal() {
             if (e.target === e.currentTarget) close();
           }}
         >
-          <div className="w-full max-w-2xl overflow-hidden rounded-2xl border border-zinc-800 bg-[#050810] shadow-2xl">
-            <div className="flex items-center gap-2 border-b border-zinc-800 px-4 py-3">
-              <Search className="h-4 w-4 text-zinc-500" aria-hidden="true" />
+          <Surface variant="glass" padding="none" className="w-full max-w-2xl overflow-hidden shadow-2xl">
+            <div className="flex items-center gap-2 border-b border-zinc-800/50 px-4 py-3 bg-zinc-900/40">
+              <Search className="h-4 w-4 text-cyan-400" aria-hidden="true" />
               <Input
                 ref={inputRef}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={onKeyDown}
                 placeholder="Search posts and projects…"
-                className="h-10 border-0 bg-transparent px-1 text-zinc-200 placeholder:text-zinc-600 focus-visible:ring-0"
+                className="h-10 border-0 bg-transparent px-2 text-zinc-200 placeholder:text-zinc-600 focus-visible:ring-0 text-base"
               />
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-9 w-9 text-zinc-500 hover:text-zinc-200"
+                className="h-8 w-8 text-zinc-500 hover:text-zinc-200 rounded-full hover:bg-zinc-800"
                 onClick={close}
                 aria-label="Close search"
               >
@@ -151,17 +152,20 @@ export default function SearchModal() {
               </Button>
             </div>
 
-            <div className="px-2 py-2">
+            <div className="px-2 py-2 bg-zinc-950/40">
               {error ? (
-                <div className="px-3 py-4 text-sm text-red-300">{error}</div>
+                <div className="px-3 py-4 text-sm text-red-400 font-mono">{error}</div>
               ) : status === "loading" && query.trim() ? (
-                <div className="px-3 py-4 text-sm text-zinc-500">Searching…</div>
+                <div className="px-3 py-4 text-sm text-cyan-500 font-mono flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" />
+                  Searching archive...
+                </div>
               ) : !query.trim() ? (
                 <div className="px-3 py-4 text-sm text-zinc-500">
                   Tip: press <span className="font-mono text-zinc-300">{hint}</span> or <span className="font-mono text-zinc-300">/</span> to open search.
                 </div>
               ) : !hasResults ? (
-                <div className="px-3 py-4 text-sm text-zinc-500">No results.</div>
+                <div className="px-3 py-4 text-sm text-zinc-500">No matching documents found.</div>
               ) : (
                 <div ref={listRef} className="max-h-[60vh] overflow-auto py-1">
                   {items.map((item, idx) => (
@@ -171,43 +175,44 @@ export default function SearchModal() {
                       onClick={close}
                       data-idx={idx}
                       className={cn(
-                        "group flex items-start gap-3 rounded-xl px-3 py-3 text-left transition",
+                        "group flex items-start gap-4 rounded-xl px-4 py-3 text-left transition-all duration-200",
                         idx === activeIndex
-                          ? "bg-cyan-500/10 outline outline-1 outline-cyan-500/30"
-                          : "hover:bg-zinc-900/40"
+                          ? "bg-cyan-500/10 border border-cyan-500/30"
+                          : "border border-transparent hover:bg-zinc-900/60"
                       )}
                       onMouseEnter={() => setActiveIndex(idx)}
                     >
-                      <div className="mt-0.5 w-20 shrink-0">
+                      <div className="mt-0.5 shrink-0">
                         <span
                           className={cn(
-                            "inline-flex rounded-full border px-2 py-1 text-[10px] font-mono uppercase tracking-wider",
+                            "inline-flex items-center justify-center w-8 h-8 rounded-lg border",
                             item.type === "post"
-                              ? "border-cyan-500/30 bg-cyan-500/10 text-cyan-300"
-                              : "border-rose-500/30 bg-rose-500/10 text-rose-200"
+                              ? "border-cyan-500/30 bg-cyan-500/10 text-cyan-400"
+                              : "border-violet-500/30 bg-violet-500/10 text-violet-400"
                           )}
                         >
-                          {item.type}
+                          {item.type === "post" ? (
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                          ) : (
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
+                          )}
                         </span>
                       </div>
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center justify-between gap-3">
-                          <p className="truncate text-sm font-medium text-zinc-100 group-hover:text-white">
+                          <p className={cn("truncate font-serif font-medium transition-colors", idx === activeIndex ? "text-cyan-400" : "text-zinc-200 group-hover:text-cyan-400")}>
                             {item.title}
                           </p>
-                          <span className="text-[10px] font-mono text-zinc-600">
-                            {Math.round(item.score * 100) / 100}
-                          </span>
                         </div>
                         {item.description ? (
-                          <p className="mt-1 line-clamp-2 text-xs text-zinc-500">{item.description}</p>
+                          <p className="mt-1 line-clamp-1 text-xs text-zinc-500">{item.description}</p>
                         ) : null}
                         {item.tags?.length ? (
                           <div className="mt-2 flex flex-wrap gap-1.5">
-                            {item.tags.slice(0, 4).map((t) => (
+                            {item.tags.slice(0, 3).map((t) => (
                               <span
                                 key={t}
-                                className="rounded border border-zinc-800 bg-zinc-950/40 px-1.5 py-0.5 text-[10px] font-mono text-zinc-500"
+                                className="rounded border border-zinc-800 bg-zinc-900/50 px-1.5 py-0.5 text-[10px] font-mono text-zinc-500"
                               >
                                 {t}
                               </span>
@@ -220,10 +225,9 @@ export default function SearchModal() {
                 </div>
               )}
             </div>
-          </div>
+          </Surface>
         </div>
       ) : null}
     </>
   );
 }
-

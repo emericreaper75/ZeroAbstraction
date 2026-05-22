@@ -31,30 +31,44 @@ export function useTableOfContents(initialHeadings?: TOCItem[]) {
   useEffect(() => {
     if (headings.length === 0) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        // We only want to set the active ID if the entry is intersecting.
-        // Because of the tight threshold, usually only one heading is intersecting.
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveId(entry.target.id);
-          }
-        });
-      },
-      // The threshold ensures the "active" state triggers exactly when the heading 
-      // enters the top portion of the screen (20% from top) and leaves 70% from bottom.
-      { rootMargin: '-20% 0% -70% 0%' }
-    );
-
-    headings.forEach(({ id }) => {
-      const element = document.getElementById(id);
-      if (element) {
-        observer.observe(element);
+    const handleScroll = () => {
+      let currentActiveId = '';
+      
+      // When at the bottom of the page, highlight the last item
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 10) {
+        setActiveId(headings[headings.length - 1].id);
+        return;
       }
-    });
 
-    return () => observer.disconnect();
-  }, [headings]);
+      for (const { id } of headings) {
+        const element = document.getElementById(id);
+        if (!element) continue;
+
+        const rect = element.getBoundingClientRect();
+        // A heading is active if its top is above a certain threshold (150px accounts for headers)
+        // We find the last heading in the list that meets this criteria.
+        if (rect.top <= 150) {
+          currentActiveId = id;
+        }
+      }
+
+      // If no heading has top <= 150, it means we are above the first heading.
+      // We can fallback to the first heading.
+      if (!currentActiveId && headings.length > 0) {
+        currentActiveId = headings[0].id;
+      }
+
+      if (currentActiveId && currentActiveId !== activeId) {
+        setActiveId((prev) => currentActiveId !== prev ? currentActiveId : prev);
+      }
+    };
+
+    // Initial check
+    handleScroll();
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [headings, activeId]);
 
   return { activeId, headings };
 }

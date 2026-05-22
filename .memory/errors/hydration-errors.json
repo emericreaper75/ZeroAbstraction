@@ -1,0 +1,17 @@
+[
+  {
+    "id": "NEXT_HYDRATION_001",
+    "problem": "Text content does not match server-rendered HTML.",
+    "cause": "Using browser APIs (like `window.innerWidth`) in the initial render of a client component without a mounted check.",
+    "failed_attempts": [
+      "Using `typeof window !== 'undefined'` check directly in the render output."
+    ],
+    "successful_fix": "Use a `useEffect` to set a `mounted` state to `true`, and only render the browser-dependent content when `mounted` is `true`.",
+    "prevention": [
+      "Always check `mounted` state for components relying on browser dimensions or local storage."
+    ],
+    "affected_files": [],
+    "status": "resolved",
+    "timestamp": "2026-05-22"
+  }
+]
