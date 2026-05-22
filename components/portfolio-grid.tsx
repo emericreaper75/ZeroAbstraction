@@ -1,12 +1,9 @@
-"use client";
-
 import React from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { ArrowRight, Code2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Surface } from "@/components/ui/surface";
-import { staggerContainer, fadeUpVariant } from "@/lib/design/motion";
+import { StaggerContainer, StaggerItem } from "@/components/animations/fade-in";
 
 interface PortfolioProject {
   id: string;
@@ -55,15 +52,12 @@ export default function PortfolioGrid({ projects }: PortfolioGridProps) {
           </Link>
         </div>
 
-        <motion.div
+        <StaggerContainer
           className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
-          variants={staggerContainer}
-          initial="initial"
-          whileInView="animate"
-          viewport={{ once: true, margin: "-100px" }}
+          staggerDelay={0.08}
         >
           {projects.map((project) => (
-            <motion.div key={project.id} variants={fadeUpVariant}>
+            <StaggerItem key={project.id}>
               <Surface variant="floating" interactive padding="lg" asChild className="h-full flex flex-col group">
                 <Link href={`/projects/${project.slug}`}>
                   <div className="mb-4 flex items-center justify-between">
@@ -79,7 +73,7 @@ export default function PortfolioGrid({ projects }: PortfolioGridProps) {
                         href={project.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-zinc-600 transition-colors hover:text-zinc-300 relative z-20"
+                        className="text-zinc-500 transition-colors hover:text-zinc-300 relative z-20"
                         aria-label={`${project.title} source code`}
                         onClick={(e) => e.stopPropagation()}
                       >
@@ -111,9 +105,9 @@ export default function PortfolioGrid({ projects }: PortfolioGridProps) {
                   )}
                 </Link>
               </Surface>
-            </motion.div>
+            </StaggerItem>
           ))}
-        </motion.div>
+        </StaggerContainer>
 
         <div className="mt-8 text-center sm:hidden">
           <Link

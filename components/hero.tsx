@@ -225,9 +225,9 @@ export default function Hero() {
         {/* Left Column */}
         <div className="max-w-2xl">
           <div className="author-block flex items-center gap-3 mb-6">
-            <div className="author-avatar flex items-center justify-center w-10 h-10 rounded-full bg-[var(--surface-02)] border border-[var(--border-brand)] text-[var(--color-brand-primary)] font-bold text-sm" aria-hidden="true">R</div>
+            <div className="author-avatar flex items-center justify-center w-10 h-10 rounded-full bg-[var(--surface-02)] border border-[var(--border-brand)] text-[var(--color-brand-primary)] font-bold text-sm" aria-hidden="true">M</div>
             <div className="author-info flex flex-col">
-              <span className="author-name text-sm font-semibold text-white">Revanth</span>
+              <span className="author-name text-sm font-semibold text-white">Manoj Amavasya</span>
               <span className="author-descriptor text-xs text-zinc-400">ECE Engineer · Signal Processing · Astrophysics</span>
             </div>
           </div>
@@ -250,12 +250,13 @@ export default function Hero() {
             Rigorous notes on electronics, astrophysics, physics, and mathematics. No hand-waving. No simplifications. First principles only.
           </p>
           
-          <div className="flex flex-wrap gap-4 mb-12">
+          {/* Primary CTAs */}
+          <div className="flex flex-wrap gap-4 mb-8">
             <Link 
-              href="/electronics" 
-              className="px-6 py-3 rounded-md bg-cyan-500 hover:bg-cyan-400 text-zinc-950 font-semibold transition-colors duration-200"
+              href="/blog" 
+              className="px-6 py-3 rounded-md bg-cyan-500 hover:bg-cyan-400 text-zinc-950 font-semibold transition-all duration-200 shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:shadow-[0_0_28px_rgba(34,211,238,0.5)]"
             >
-              Browse Articles
+              Browse Blog
             </Link>
             <Link 
               href="/projects" 
@@ -264,6 +265,7 @@ export default function Hero() {
               View Projects
             </Link>
           </div>
+
 
           <div className="pt-8 border-t border-zinc-800 flex items-center gap-8 text-sm text-zinc-500 font-mono">
             <div className="flex flex-col">

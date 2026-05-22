@@ -1,4 +1,4 @@
-"use client";
+/* Server Component — pure CSS, no client-side APIs needed */
 
 import * as React from "react";
 import { cn } from "@/lib/cn";

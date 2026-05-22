@@ -1,5 +1,6 @@
 import PageHeader from "@/components/page-header";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/animations/fade-in";
+import { Cpu, Atom, Telescope } from "lucide-react";
 
 export default function AboutPage() {
   return (
@@ -89,24 +90,26 @@ export default function AboutPage() {
             {
               title: "Electronics & Embedded",
               desc: "From digital signal processing algorithms to microcontroller architecture and custom PCB design. Focus on bare-metal C, Verilog, and hardware-software co-design.",
-              icon: "⚡"
+              icon: <Cpu className="w-8 h-8 text-cyan-400" />
             },
             {
               title: "Physics & Mathematics",
               desc: "Deep dives into quantum mechanics, statistical thermodynamics, and differential equations. Deriving the formulas that govern physical reality.",
-              icon: "∑"
+              icon: <Atom className="w-8 h-8 text-cyan-400" />
             },
             {
               title: "Astrophysics",
               desc: "Research logs and observational data analysis. Exploring orbital mechanics, dark matter halo modeling, and radio astronomy techniques.",
-              icon: "🌌"
+              icon: <Telescope className="w-8 h-8 text-cyan-400" />
             }
           ].map((discipline) => (
             <StaggerItem key={discipline.title}>
-              <div className="p-8 rounded-xl bg-zinc-900/30 border border-zinc-800/50 hover:bg-zinc-900/50 transition-colors h-full">
-                <div className="text-3xl mb-4">{discipline.icon}</div>
-                <h3 className="text-lg font-bold text-white mb-3">{discipline.title}</h3>
-                <p className="text-sm text-zinc-400 leading-relaxed">{discipline.desc}</p>
+              <div className="p-8 rounded-xl bg-zinc-900/30 border border-zinc-800/50 hover:bg-zinc-900/50 transition-colors h-full flex flex-col justify-between">
+                <div>
+                  <div className="mb-4">{discipline.icon}</div>
+                  <h3 className="text-lg font-bold text-white mb-3">{discipline.title}</h3>
+                  <p className="text-sm text-zinc-400 leading-relaxed">{discipline.desc}</p>
+                </div>
               </div>
             </StaggerItem>
           ))}

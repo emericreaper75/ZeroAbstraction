@@ -5,6 +5,10 @@ export type TimelineEntry = {
   description: string;
   category: 'electronics' | 'astrophysics' | 'physics-math' | 'research' | 'academic';
   tags?: string[];
+  /** Link to the related content page (post, project, or research log) */
+  href?: string;
+  /** Type of linked content for display labeling */
+  contentType?: 'post' | 'project' | 'research';
 };
 
 export const timelineEntries: TimelineEntry[] = [
@@ -16,6 +20,8 @@ export const timelineEntries: TimelineEntry[] = [
       'Completed a rigorous walk-through of the Continuous Fourier Transform from first principles, including convergence proofs and applications to differential equations.',
     category: 'physics-math',
     tags: ['fourier', 'analysis', 'publication'],
+    href: '/physics-math/fourier-transform-from-first-principles',
+    contentType: 'post',
   },
   {
     id: 'tl-002',
@@ -25,6 +31,8 @@ export const timelineEntries: TimelineEntry[] = [
       'Major release of the MEMS calibration framework. Added support for temperature-dependent noise models and automated regression testing.',
     category: 'electronics',
     tags: ['mems', 'sensors', 'release'],
+    href: '/projects/mems-calibration-suite',
+    contentType: 'project',
   },
   {
     id: 'tl-003',
@@ -34,6 +42,8 @@ export const timelineEntries: TimelineEntry[] = [
       'Submitted and accepted at MNRAS Letters: "Bayesian estimation of dark matter halos from weak lensing surveys."',
     category: 'astrophysics',
     tags: ['dark-matter', 'bayesian', 'paper'],
+    href: '/astrophysics/dark-matter-bayesian-estimation',
+    contentType: 'post',
   },
   {
     id: 'tl-004',
@@ -43,6 +53,8 @@ export const timelineEntries: TimelineEntry[] = [
       'Integrated CUDA-based statevector backend, achieving 12× speedup on 18-qubit circuits compared to the NumPy reference implementation.',
     category: 'physics-math',
     tags: ['quantum', 'cuda', 'simulation'],
+    href: '/projects/quantum-circuit-simulator',
+    contentType: 'project',
   },
   {
     id: 'tl-005',
@@ -52,6 +64,8 @@ export const timelineEntries: TimelineEntry[] = [
       'Research log: conducted two-week field campaign to collect inertial data from UAV platform. Characterized vibration noise spectrum in real flight conditions.',
     category: 'research',
     tags: ['sensors', 'uav', 'field-work'],
+    href: '/research/sensor-calibration-field-campaign',
+    contentType: 'research',
   },
   {
     id: 'tl-006',
@@ -61,6 +75,8 @@ export const timelineEntries: TimelineEntry[] = [
       'Launched interactive web tool for FIR filter design. Supports windowing methods, Parks-McClellan, and frequency sampling with live preview.',
     category: 'electronics',
     tags: ['dsp', 'filters', 'tool'],
+    href: '/projects/fir-filter-designer',
+    contentType: 'project',
   },
   {
     id: 'tl-007',
@@ -70,6 +86,8 @@ export const timelineEntries: TimelineEntry[] = [
       'Submitted MSc thesis on "Adaptive Signal Processing Techniques for GNSS Anti-Jamming Systems." Defense scheduled for January 2024.',
     category: 'academic',
     tags: ['thesis', 'gnss', 'signal-processing'],
+    href: '/research/gnss-anti-jamming-thesis',
+    contentType: 'research',
   },
   {
     id: 'tl-008',
@@ -79,6 +97,8 @@ export const timelineEntries: TimelineEntry[] = [
       'Finished processing 5 years of IPTA data sets. Identified 3 new candidate millisecond pulsars and constrained gravitational wave background amplitude.',
     category: 'astrophysics',
     tags: ['pulsars', 'gravitational-waves', 'data-analysis'],
+    href: '/astrophysics/pulsar-timing-array-analysis',
+    contentType: 'post',
   },
 ];
 
@@ -90,3 +110,4 @@ export const timelineCategories = [
   { value: 'research', label: 'Research' },
   { value: 'academic', label: 'Academic' },
 ] as const;
+

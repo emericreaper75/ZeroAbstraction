@@ -1,4 +1,4 @@
-"use client";
+/* Server Component — pure CSS, no client-side APIs needed */
 
 import * as React from "react";
 import { cn } from "@/lib/cn";
@@ -23,6 +23,8 @@ export function Vignette({ className, intensity = "medium" }: VignetteProps) {
       className={cn("pointer-events-none absolute inset-0 z-10", className)}
       style={{
         background: intensityMap[intensity],
+        willChange: 'opacity',
+        transform: 'translateZ(0)',
       }}
       aria-hidden="true"
     />

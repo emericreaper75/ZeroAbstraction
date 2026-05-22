@@ -7,6 +7,7 @@ import { formatDate } from '@/lib/utils';
 import { Clock, ArrowRight, Search } from 'lucide-react';
 import { CATEGORY_LABELS } from '@/lib/editorial/categories';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/animations/fade-in';
+import { Surface } from '@/components/ui/surface';
 
 export const metadata: Metadata = {
   title: 'Blog',
@@ -120,10 +121,8 @@ export default async function BlogIndexPage({
           <StaggerContainer className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {paginatedPosts.map((post: PublicPostCard) => (
               <StaggerItem key={`${post.routeCategory}-${post.slug}`} className="h-full">
-                <Link
-                  href={`/${post.routeCategory}/${post.slug}`}
-                  className="group h-full relative flex flex-col rounded-xl border border-zinc-800 bg-zinc-900/40 p-6 transition-all duration-300 hover:border-zinc-700 hover:bg-zinc-900/70"
-                >
+                <Surface variant="glass" interactive padding="md" asChild className="h-full group flex flex-col transition-all duration-300">
+                  <Link href={`/${post.routeCategory}/${post.slug}`}>
                   <div className="mb-4 flex items-center gap-2">
                     <Badge variant={categoryVariants[post.routeCategory] ?? 'default'}>
                       {CATEGORY_LABELS[post.routeCategory] ?? post.routeCategory}
@@ -135,7 +134,7 @@ export default async function BlogIndexPage({
                   <p className="text-sm text-zinc-500 leading-relaxed mb-4 flex-grow line-clamp-3">
                     {post.description}
                   </p>
-                  <div className="flex items-center justify-between text-xs text-zinc-600 font-mono">
+                  <div className="flex items-center justify-between text-xs text-zinc-500 font-mono">
                     <time dateTime={post.date}>{formatDate(post.date)}</time>
                     <span className="flex items-center gap-1">
                       <Clock className="w-3 h-3" aria-hidden="true" />
@@ -145,7 +144,8 @@ export default async function BlogIndexPage({
                   <div className="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity">
                     <ArrowRight className="w-4 h-4 text-cyan-400" aria-hidden="true" />
                   </div>
-                </Link>
+                  </Link>
+                </Surface>
               </StaggerItem>
             ))}
           </StaggerContainer>

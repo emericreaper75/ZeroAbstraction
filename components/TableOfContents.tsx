@@ -8,6 +8,7 @@ import { useTableOfContents, TOCItem } from '@/hooks/useTableOfContents';
 
 type Props = {
   entries?: TOCNode[];
+  onLinkClick?: () => void;
 };
 
 function flattenTOC(nodes: TOCNode[]): TOCItem[] {
@@ -32,7 +33,7 @@ function flattenTOC(nodes: TOCNode[]): TOCItem[] {
   return out;
 }
 
-export default function TableOfContents({ entries = [] }: Props) {
+export default function TableOfContents({ entries = [], onLinkClick }: Props) {
   const flatEntries = useMemo(() => flattenTOC(entries), [entries]);
   const { activeId, headings } = useTableOfContents(flatEntries);
 
@@ -72,9 +73,11 @@ export default function TableOfContents({ entries = [] }: Props) {
                     behavior: 'smooth',
                     block: 'start',
                   });
+
+                  onLinkClick?.();
                 }}
                 className={cn(
-                  'group block text-sm leading-relaxed transition-colors duration-300 py-1.5 border-l-2 -ml-[1px]',
+                  'group block text-sm leading-relaxed transition-colors duration-300 py-2 md:py-1.5 border-l-2 -ml-[1px]',
                   level === 1 ? 'pl-4' : level === 2 ? 'pl-6' : 'pl-8',
                   isActive
                     ? 'border-transparent text-cyan-400 font-medium'

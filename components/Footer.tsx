@@ -31,10 +31,10 @@ export default function Footer() {
           <div className="order-1">
             <Link
               href="/"
-              className="font-serif text-base font-semibold text-neutral-300 hover:text-sky-400 transition-colors"
+              className="font-serif text-base font-semibold text-neutral-300 hover:text-cyan-400 transition-colors"
               aria-label="Zero Abstraction — Home"
             >
-              Zero<span className="text-sky-500">Abstraction</span>
+              Zero<span className="text-cyan-500">Abstraction</span>
             </Link>
             <p className="mt-2 text-sm text-neutral-500 max-w-sm">
               Notes without hand-waving. Exploring First-Principles engineering, physics, and applied mathematics.
@@ -77,7 +77,7 @@ export default function Footer() {
         <Separator className="bg-neutral-800/70" />
 
         <div className="mt-6 flex items-center justify-between">
-          <p className="text-xs text-neutral-600">
+          <p className="text-xs text-neutral-500">
             © {new Date().getFullYear()} Zero Abstraction. All rights reserved.
           </p>
         </div>

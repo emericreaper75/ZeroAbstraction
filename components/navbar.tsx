@@ -14,13 +14,15 @@ import {
   X,
   Sun,
   Moon,
- ChevronDown,
+  ChevronDown,
 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import SearchModal from '@/components/SearchModal';
+import { useDistractionFree } from '@/components/DistractionFreeProvider';
 
 const blogCategories = [
+  { name: 'All Articles', href: '/blog' },
   { name: 'Electronics', href: '/electronics' },
   { name: 'Astrophysics', href: '/astrophysics' },
   { name: 'Physics-Math', href: '/physics-math' },
@@ -31,12 +33,12 @@ const navLinks = [
   { name: 'About', href: '/about' },
   { name: 'Projects', href: '/projects' },
   { name: 'Research', href: '/research' },
-  { name: 'Communications', href: '/communications' },
   { name: 'Timeline', href: '/timeline' },
   { name: 'Contact', href: '/contact' },
 ];
 
 export default function Navbar() {
+  const { isDistractionFree } = useDistractionFree();
   const [isScrolled, setIsScrolled] =
     useState(false);
 
@@ -48,6 +50,8 @@ export default function Navbar() {
   const [isBlogOpen, setIsBlogOpen] =
     useState(false);
 
+  const [mounted, setMounted] = useState(false);
+
   const pathname = usePathname();
   const isHomepage = pathname === '/';
 
@@ -58,7 +62,8 @@ export default function Navbar() {
 
     window.addEventListener(
       'scroll',
-      handleScroll
+      handleScroll,
+      { passive: true }
     );
 
     return () =>
@@ -93,6 +98,7 @@ export default function Navbar() {
         'light'
       );
     }
+    setMounted(true);
   }, []);
 
   useEffect(() => {
@@ -171,15 +177,16 @@ export default function Navbar() {
     pathname.startsWith('/physics-math') ||
     pathname.startsWith('/communications');
 
+  if (isDistractionFree) return null;
+
   return (
     <header
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-        isHomepage
+      className={`fixed top-0 w-full z-50 transition-all duration-300 ${isHomepage
           ? isScrolled
             ? 'bg-[#050810]/90 backdrop-blur-md border-b border-zinc-800/60 shadow-lg'
-            : 'bg-transparent border-b border-transparent'
+            : 'bg-[#050810]/60 backdrop-blur-sm border-b border-zinc-800/40'
           : 'bg-[#050810]/95 backdrop-blur-md border-b border-zinc-800/60'
-      }`}
+        }`}
       role="banner"
     >
       <nav
@@ -202,7 +209,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="flex flex-1 items-center justify-center gap-1 overflow-visible px-4">
+        <div className="max-md:hidden flex flex-1 items-center justify-center gap-1 overflow-visible px-4">
           {/* Blog Dropdown */}
           <div className="relative overflow-visible">
             <button
@@ -211,20 +218,18 @@ export default function Navbar() {
               onClick={() =>
                 setIsBlogOpen(!isBlogOpen)
               }
-              className={`flex items-center justify-center min-h-[44px] md:min-h-0 gap-1 rounded-md px-3 py-2 text-sm font-mono transition-colors ${
-                isBlogActive
+              className={`flex items-center justify-center min-h-[44px] md:min-h-0 gap-1 rounded-md px-3 py-2 text-sm font-mono transition-colors ${isBlogActive
                   ? 'bg-cyan-500/10 text-cyan-400'
                   : 'text-zinc-400 hover:bg-zinc-800/50 hover:text-cyan-400'
-              }`}
+                }`}
             >
               Blog
 
               <ChevronDown
-                className={`h-4 w-4 transition-transform duration-200 ${
-                  isBlogOpen
+                className={`h-4 w-4 transition-transform duration-200 ${isBlogOpen
                     ? 'rotate-180'
                     : ''
-                }`}
+                  }`}
               />
             </button>
 
@@ -235,13 +240,12 @@ export default function Navbar() {
                     <Link
                       key={category.href}
                       href={category.href}
-                      className={`block rounded-lg px-4 py-3 text-sm font-mono transition-colors ${
-                        isActive(
-                          category.href
-                        )
+                      className={`block rounded-lg px-4 py-3 text-sm font-mono transition-colors ${isActive(
+                        category.href
+                      )
                           ? 'bg-cyan-500/10 text-cyan-400'
                           : 'text-zinc-400 hover:bg-zinc-800/50 hover:text-cyan-400'
-                      }`}
+                        }`}
                     >
                       {category.name}
                     </Link>
@@ -256,11 +260,10 @@ export default function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className={`flex items-center min-h-[44px] md:min-h-0 rounded-md px-3 py-2 text-sm font-mono transition-colors ${
-                isActive(link.href)
+              className={`flex items-center min-h-[44px] md:min-h-0 rounded-md px-3 py-2 text-sm font-mono transition-colors ${isActive(link.href)
                   ? 'bg-cyan-500/10 text-cyan-400'
                   : 'text-zinc-400 hover:bg-zinc-800/50 hover:text-cyan-400'
-              }`}
+                }`}
             >
               {link.name}
             </Link>
@@ -279,16 +282,20 @@ export default function Navbar() {
             aria-label="Toggle color theme"
             className="h-[44px] w-[44px] md:h-9 md:w-9 border border-zinc-800 bg-zinc-900/50 text-zinc-400 hover:border-cyan-500/50 hover:text-cyan-400"
           >
-            {isDark ? (
-              <Sun
-                className="h-4 w-4"
-                aria-hidden="true"
-              />
+            {mounted ? (
+              isDark ? (
+                <Sun
+                  className="h-4 w-4"
+                  aria-hidden="true"
+                />
+              ) : (
+                <Moon
+                  className="h-4 w-4"
+                  aria-hidden="true"
+                />
+              )
             ) : (
-              <Moon
-                className="h-4 w-4"
-                aria-hidden="true"
-              />
+              <div className="h-4 w-4" />
             )}
           </Button>
 
@@ -296,7 +303,7 @@ export default function Navbar() {
           <Button
             variant="ghost"
             size="icon"
-            className="h-[44px] w-[44px] md:h-9 md:w-9 shrink-0 border border-zinc-800 bg-zinc-900/50 text-zinc-400 hover:text-cyan-400 md:hidden"
+            className="h-[44px] w-[44px] shrink-0 border border-zinc-800 bg-zinc-900/50 text-zinc-400 hover:text-cyan-400 md:hidden"
             onClick={() =>
               setIsMobileMenuOpen(
                 !isMobileMenuOpen
@@ -319,11 +326,10 @@ export default function Navbar() {
 
       {/* Mobile Navigation */}
       <div
-        className={`overflow-hidden transition-all duration-300 ease-in-out md:hidden ${
-          isMobileMenuOpen
+        className={`overflow-hidden transition-all duration-300 ease-in-out md:hidden ${isMobileMenuOpen
             ? 'max-h-[32rem] border-b border-zinc-800 bg-[#050810]/95 backdrop-blur-md'
             : 'max-h-0'
-        }`}
+          }`}
       >
         <div className="flex flex-col space-y-1 px-6 py-4">
           <div className="px-3 py-2 text-xs uppercase tracking-wider text-zinc-500">
@@ -334,11 +340,11 @@ export default function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className={`flex items-center min-h-[44px] rounded-md px-3 py-2.5 text-sm font-mono transition-colors ${
-                isActive(link.href)
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`flex items-center min-h-[44px] rounded-md px-3 py-2.5 text-sm font-mono transition-colors ${isActive(link.href)
                   ? 'bg-cyan-500/10 text-cyan-400'
                   : 'text-zinc-400 hover:bg-zinc-800/50 hover:text-cyan-400'
-              }`}
+                }`}
             >
               {link.name}
             </Link>
@@ -350,11 +356,11 @@ export default function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className={`flex items-center min-h-[44px] rounded-md px-3 py-2.5 text-sm font-mono transition-colors ${
-                isActive(link.href)
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`flex items-center min-h-[44px] rounded-md px-3 py-2.5 text-sm font-mono transition-colors ${isActive(link.href)
                   ? 'bg-cyan-500/10 text-cyan-400'
                   : 'text-zinc-400 hover:bg-zinc-800/50 hover:text-cyan-400'
-              }`}
+                }`}
             >
               {link.name}
             </Link>

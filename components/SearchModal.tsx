@@ -107,6 +107,7 @@ export default function SearchModal() {
 
   return (
     <>
+      {/* Desktop search button — text + shortcut hint */}
       <Button
         variant="ghost"
         className="hidden md:inline-flex items-center gap-2 border border-zinc-800 bg-zinc-900/40 text-zinc-400 hover:text-cyan-400 hover:border-cyan-500/50 transition-all duration-300"
@@ -118,6 +119,17 @@ export default function SearchModal() {
         <span className="ml-2 rounded border border-zinc-800 bg-zinc-950/60 px-1.5 py-0.5 text-[10px] font-mono text-zinc-500">
           {hint}
         </span>
+      </Button>
+
+      {/* Mobile search button — icon only */}
+      <Button
+        variant="ghost"
+        size="icon"
+        className="md:hidden h-[44px] w-[44px] border border-zinc-800 bg-zinc-900/50 text-zinc-400 hover:border-cyan-500/50 hover:text-cyan-400"
+        onClick={openModal}
+        aria-label="Open search"
+      >
+        <Search className="h-4 w-4" aria-hidden="true" />
       </Button>
 
       {open ? (
@@ -139,7 +151,7 @@ export default function SearchModal() {
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={onKeyDown}
                 placeholder="Search posts and projects…"
-                className="h-10 border-0 bg-transparent px-2 text-zinc-200 placeholder:text-zinc-600 focus-visible:ring-0 text-base"
+                className="h-10 border-0 bg-transparent px-2 text-zinc-200 placeholder:text-zinc-500 focus-visible:ring-0 text-base"
               />
               <Button
                 variant="ghost"
@@ -188,11 +200,15 @@ export default function SearchModal() {
                             "inline-flex items-center justify-center w-8 h-8 rounded-lg border",
                             item.type === "post"
                               ? "border-cyan-500/30 bg-cyan-500/10 text-cyan-400"
+                              : item.type === "research"
+                              ? "border-amber-500/30 bg-amber-500/10 text-amber-400"
                               : "border-violet-500/30 bg-violet-500/10 text-violet-400"
                           )}
                         >
                           {item.type === "post" ? (
                             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                          ) : item.type === "research" ? (
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" /></svg>
                           ) : (
                             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
                           )}
@@ -203,6 +219,16 @@ export default function SearchModal() {
                           <p className={cn("truncate font-serif font-medium transition-colors", idx === activeIndex ? "text-cyan-400" : "text-zinc-200 group-hover:text-cyan-400")}>
                             {item.title}
                           </p>
+                          <span className={cn(
+                            "shrink-0 rounded px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-wider border",
+                            item.type === "post"
+                              ? "border-cyan-800/60 bg-cyan-950/40 text-cyan-500"
+                              : item.type === "research"
+                              ? "border-amber-800/60 bg-amber-950/40 text-amber-500"
+                              : "border-violet-800/60 bg-violet-950/40 text-violet-500"
+                          )}>
+                            {item.type === "post" ? "Article" : item.type === "research" ? "Research" : "Project"}
+                          </span>
                         </div>
                         {item.description ? (
                           <p className="mt-1 line-clamp-1 text-xs text-zinc-500">{item.description}</p>

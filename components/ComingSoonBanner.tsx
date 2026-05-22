@@ -1,4 +1,5 @@
 import React from 'react';
+import { Surface } from '@/components/ui/surface';
 
 interface ComingSoonBannerProps {
   count: number;
@@ -11,21 +12,22 @@ export default function ComingSoonBanner({ count, category }: ComingSoonBannerPr
   return (
     <>
       {Array.from({ length: count }).map((_, i) => (
-        <article
+        <Surface
           key={`placeholder-${i}`}
-          className="group relative flex flex-col rounded-lg border border-dashed border-white/6 bg-[#0f0f1a]/40 p-6 transition-all min-h-[320px] justify-center items-center"
+          variant="glass"
+          className="border-dashed border-white/10 min-h-[320px] flex flex-col justify-center items-center"
         >
           <div className="flex flex-col items-center gap-3 text-center">
             <div className="flex items-center gap-2">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                <span className="animate-pulse absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
               </span>
               <span className="text-sm font-mono text-neutral-400">Research in progress</span>
             </div>
             <span className="text-xs text-neutral-500 uppercase tracking-widest">{category}</span>
           </div>
-        </article>
+        </Surface>
       ))}
     </>
   );

@@ -1,10 +1,7 @@
-"use client";
-
 import React from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { Surface } from "@/components/ui/surface";
-import { staggerContainer, fadeUpVariant } from "@/lib/design/motion";
+import { StaggerContainer, StaggerItem } from "@/components/animations/fade-in";
 
 const domains = [
   {
@@ -49,7 +46,7 @@ const domains = [
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
       </svg>
     ),
-    iconBgClass: "bg-blue-500/10 text-blue-400 border border-blue-500/20",
+    iconBgClass: "bg-pink-500/10 text-pink-400 border border-pink-500/20",
   },
 ];
 
@@ -66,15 +63,12 @@ export default function DomainCards() {
           </h2>
         </div>
 
-        <motion.div
+        <StaggerContainer
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
-          variants={staggerContainer}
-          initial="initial"
-          whileInView="animate"
-          viewport={{ once: true, margin: "-100px" }}
+          staggerDelay={0.08}
         >
           {domains.map((domain) => (
-            <motion.div key={domain.href} variants={fadeUpVariant}>
+            <StaggerItem key={domain.href}>
               <Surface variant="elevated" interactive padding="lg" asChild className="h-full flex flex-col group">
                 <Link href={domain.href}>
                   <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-5 transition-colors ${domain.iconBgClass}`}>
@@ -86,7 +80,7 @@ export default function DomainCards() {
                   <p className="text-sm text-zinc-500 leading-relaxed mb-6 flex-grow">
                     {domain.description}
                   </p>
-                  <div className="flex items-center text-xs font-mono font-medium uppercase tracking-wider text-zinc-600 group-hover:text-cyan-400 transition-colors">
+                  <div className="flex items-center text-xs font-mono font-medium uppercase tracking-wider text-zinc-500 group-hover:text-cyan-400 transition-colors">
                     <span>Explore domain</span>
                     <svg
                       className="w-4 h-4 ml-2 transform transition-transform duration-300 group-hover:translate-x-1"
@@ -99,9 +93,9 @@ export default function DomainCards() {
                   </div>
                 </Link>
               </Surface>
-            </motion.div>
+            </StaggerItem>
           ))}
-        </motion.div>
+        </StaggerContainer>
       </div>
     </section>
   );

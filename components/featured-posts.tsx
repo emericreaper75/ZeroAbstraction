@@ -1,13 +1,10 @@
-"use client";
-
 import React from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { formatDate } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Clock } from "lucide-react";
 import { Surface } from "@/components/ui/surface";
-import { staggerContainer, fadeUpVariant } from "@/lib/design/motion";
+import { StaggerContainer, StaggerItem } from "@/components/animations/fade-in";
 import type { PublicPostCard } from "@/lib/public/post-card";
 
 const categoryVariants: Record<string, "electronics" | "astrophysics" | "physics" | "communications"> = {
@@ -52,18 +49,20 @@ export default function FeaturedPosts({ posts }: FeaturedPostsProps) {
           </Link>
         </div>
 
-        <motion.div
-          className="grid gap-6 md:grid-cols-3"
-          variants={staggerContainer}
-          initial="initial"
-          whileInView="animate"
-          viewport={{ once: true, margin: "-100px" }}
+        <StaggerContainer
+          className={
+            posts.length === 1
+              ? "grid gap-6 max-w-3xl mx-auto"
+              : posts.length === 2
+              ? "grid gap-6 md:grid-cols-2"
+              : "grid gap-6 md:grid-cols-3"
+          }
+          staggerDelay={0.08}
         >
           {posts.map((post, index) => (
-            <motion.div
+            <StaggerItem
               key={post.slug}
-              variants={fadeUpVariant}
-              className={index === 0 ? "md:col-span-2 md:row-span-2" : ""}
+              className={posts.length >= 3 && index === 0 ? "md:col-span-2 md:row-span-2" : "col-span-1"}
             >
               <Surface
                 variant="glass"
@@ -81,7 +80,7 @@ export default function FeaturedPosts({ posts }: FeaturedPostsProps) {
                       <Badge variant={categoryVariants[post.routeCategory] ?? "default"}>
                         {categoryLabels[post.routeCategory] ?? post.routeCategory}
                       </Badge>
-                      <span className="flex items-center gap-1 text-xs text-zinc-600 font-mono">
+                      <span className="flex items-center gap-1 text-xs text-zinc-500 font-mono">
                         <Clock className="w-3 h-3" aria-hidden="true" />
                         {post.readingTime}
                       </span>
@@ -104,10 +103,10 @@ export default function FeaturedPosts({ posts }: FeaturedPostsProps) {
                     </p>
 
                     <div className="flex items-center justify-between">
-                      <time dateTime={post.date} className="text-xs text-zinc-600 font-mono">
+                      <time dateTime={post.date} className="text-xs text-zinc-500 font-mono">
                         {formatDate(post.date)}
                       </time>
-                      <span className="text-xs font-mono text-zinc-600 group-hover:text-cyan-400 flex items-center gap-1 transition-colors">
+                      <span className="text-xs font-mono text-zinc-500 group-hover:text-cyan-400 flex items-center gap-1 transition-colors">
                         Read article
                         <ArrowRight
                           className="w-3 h-3 transform group-hover:translate-x-0.5 transition-transform"
@@ -118,9 +117,9 @@ export default function FeaturedPosts({ posts }: FeaturedPostsProps) {
                   </div>
                 </Link>
               </Surface>
-            </motion.div>
+            </StaggerItem>
           ))}
-        </motion.div>
+        </StaggerContainer>
 
         {/* Mobile "view all" link */}
         <div className="mt-8 text-center sm:hidden">

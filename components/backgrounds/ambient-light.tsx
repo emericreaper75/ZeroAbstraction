@@ -54,6 +54,8 @@ export function AmbientLight({
       className={cn("pointer-events-none absolute inset-0 z-0", className)}
       style={{
         background: gradient,
+        willChange: 'transform, opacity',
+        transform: 'translateZ(0)',
       }}
       aria-hidden="true"
     />

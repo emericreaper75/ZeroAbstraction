@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 
 import { useDistractionFree } from '@/components/DistractionFreeProvider';
 import { Post } from '@/lib/posts';
@@ -14,7 +15,7 @@ import DistractionFreeToggle from '@/components/DistractionFreeToggle';
 import MobileTOC from '@/components/MobileTOC';
 import { AmbientLight } from '@/components/backgrounds/ambient-light';
 import { Surface } from '@/components/ui/surface';
-import { staggerContainer, fadeUpVariant } from '@/lib/design/motion';
+import { Clock } from 'lucide-react';
 
 type Props = {
   post: Post;
@@ -23,6 +24,14 @@ type Props = {
   previewContent: React.ReactNode;
   remainingContent: React.ReactNode | null;
   relatedContent?: React.ReactNode;
+  /** Optional timeline entries related to this post by tag/category matching */
+  timelineEntries?: Array<{
+    id: string;
+    date: string;
+    title: string;
+    href?: string;
+    contentType?: string;
+  }>;
 };
 
 const categoryColors: Record<string, "cyan" | "violet" | "emerald" | "amber"> = {
@@ -32,6 +41,13 @@ const categoryColors: Record<string, "cyan" | "violet" | "emerald" | "amber"> = 
   communications: "amber",
 };
 
+/** Lightweight fade-up for sequential sections — avoids expensive layout recalculations */
+const EASE = [0.25, 0.1, 0.25, 1.0] as const;
+const sectionReveal = {
+  initial: { opacity: 0, y: 15 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE } },
+};
+
 export default function ArticleLayout({
   post,
   toc,
@@ -39,6 +55,7 @@ export default function ArticleLayout({
   previewContent,
   remainingContent,
   relatedContent,
+  timelineEntries: relatedTimeline,
 }: Props) {
   const { isDistractionFree } = useDistractionFree();
   const ambientColor = categoryColors[post.category] || "cyan";
@@ -46,7 +63,7 @@ export default function ArticleLayout({
   return (
     <div
       className={cn(
-        'mx-auto px-4 sm:px-6 py-16 transition-all duration-500 ease-in-out',
+        'mx-auto px-4 sm:px-6 py-10 md:py-16 transition-all duration-500 ease-in-out',
         isDistractionFree ? 'max-w-[1400px]' : 'max-w-[1200px]'
       )}
     >
@@ -57,17 +74,10 @@ export default function ArticleLayout({
         )}
       >
         {/* Main Content */}
-        <motion.div 
-          layout
-          className="min-w-0 flex-1 max-w-[820px] w-full"
-          variants={staggerContainer}
-          initial="initial"
-          animate="animate"
-        >
+        <div className="min-w-0 flex-1 max-w-[820px] w-full">
           {/* Hero */}
           <motion.header 
-            layout
-            variants={fadeUpVariant}
+            {...sectionReveal}
             className="relative overflow-hidden rounded-2xl p-6 sm:p-8 lg:p-10 border border-zinc-800/50 bg-zinc-950/40"
           >
             {/* Background Systems */}
@@ -91,7 +101,7 @@ export default function ArticleLayout({
               </div>
 
               {/* Title */}
-              <h1 className="font-serif text-4xl font-bold leading-tight text-white md:text-5xl">
+              <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold leading-tight text-white">
                 {post.title}
               </h1>
 
@@ -117,8 +127,9 @@ export default function ArticleLayout({
 
           {/* Article */}
           <motion.article
-            layout
-            variants={fadeUpVariant}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.15, ease: EASE }}
             id="article-content"
             className={cn(
               'min-w-0 transition-all duration-500 relative',
@@ -150,7 +161,7 @@ export default function ArticleLayout({
                 <motion.div 
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1.0] }}
+                  transition={{ duration: 0.7, ease: EASE }}
                 >
                   {remainingContent}
                 </motion.div>
@@ -168,22 +179,63 @@ export default function ArticleLayout({
 
           {/* Related Content */}
           {relatedContent && (
-             <motion.div layout variants={fadeUpVariant} className="mt-20">
+             <motion.div
+               initial={{ opacity: 0, y: 15 }}
+               animate={{ opacity: 1, y: 0 }}
+               transition={{ duration: 0.5, delay: 0.3, ease: EASE }}
+               className="mt-20"
+             >
                {relatedContent}
              </motion.div>
           )}
-        </motion.div>
+        </div>
 
         {/* TOC Rail (Right Aligned) */}
         {toc.length > 0 && (
           <motion.aside 
-            layout 
             initial={{ opacity: 0 }} 
             animate={{ opacity: 1 }} 
             transition={{ delay: 0.2 }}
-            className="hidden lg:!block sticky top-28 w-[240px] shrink-0 self-start"
+            className="hidden lg:!block sticky top-28 w-[240px] shrink-0 self-start space-y-8"
           >
             <TableOfContents entries={toc} />
+
+            {/* Timeline cross-references */}
+            {relatedTimeline && relatedTimeline.length > 0 && (
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <p className="font-mono text-[11px] uppercase tracking-[0.24em] text-zinc-500">
+                    Timeline
+                  </p>
+                  <Link
+                    href="/timeline"
+                    className="font-mono text-[10px] text-zinc-600 hover:text-cyan-400 transition-colors uppercase tracking-wider"
+                  >
+                    View all
+                  </Link>
+                </div>
+                <div className="space-y-3">
+                  {relatedTimeline.slice(0, 3).map((entry) => (
+                    <div key={entry.id} className="rounded-lg border border-zinc-800/50 bg-zinc-900/30 p-3">
+                      <p className="font-mono text-[10px] text-zinc-600 mb-1">
+                        <Clock className="inline w-3 h-3 mr-1" aria-hidden="true" />
+                        {new Date(entry.date).getFullYear()}
+                      </p>
+                      {entry.href ? (
+                        <Link
+                          href={entry.href}
+                          className="text-xs text-zinc-400 hover:text-cyan-400 transition-colors leading-snug line-clamp-2"
+                        >
+                          {entry.title}
+                        </Link>
+                      ) : (
+                        <p className="text-xs text-zinc-500 leading-snug line-clamp-2">{entry.title}</p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </motion.aside>
         )}
       </div>

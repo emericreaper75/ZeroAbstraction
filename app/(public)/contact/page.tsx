@@ -1,6 +1,7 @@
 import PageHeader from "@/components/page-header";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/animations/fade-in";
 import ContactForm from "@/components/ContactForm";
+import { Surface } from "@/components/ui/surface";
 
 export default function ContactPage() {
   return (
@@ -65,20 +66,20 @@ export default function ContactPage() {
             </StaggerContainer>
 
             <FadeIn delay={0.3}>
-              <div className="mt-12 p-6 rounded-xl bg-zinc-900/30 border border-zinc-800/50">
+              <Surface variant="glass" padding="md" className="mt-12">
                 <h4 className="text-white font-semibold mb-2">Response Time SLA</h4>
                 <p className="text-sm text-zinc-400">
                   I aim to respond to all technical inquiries within 48 hours. For consulting requests, please include "Consulting" in the subject line or message.
                 </p>
-              </div>
+              </Surface>
             </FadeIn>
           </div>
           
           <FadeIn delay={0.2}>
-            <div className="bg-zinc-900/50 p-8 rounded-xl border border-zinc-800 backdrop-blur-sm shadow-2xl">
+            <Surface variant="glass" padding="lg" className="shadow-2xl h-full">
               <h3 className="text-xl font-mono text-cyan-400 mb-6 uppercase tracking-widest text-sm">Send a Message</h3>
               <ContactForm />
-            </div>
+            </Surface>
           </FadeIn>
         </div>
       </section>

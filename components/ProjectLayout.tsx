@@ -10,7 +10,6 @@ import TableOfContents from '@/components/TableOfContents';
 import MobileTOC from '@/components/MobileTOC';
 import { TOCNode } from '@/lib/toc';
 import { Surface } from '@/components/ui/surface';
-import { staggerContainer, fadeUpVariant } from '@/lib/design/motion';
 import { AmbientLight } from '@/components/backgrounds/ambient-light';
 import { ArrowUpRight, Code2 } from 'lucide-react';
 
@@ -29,6 +28,13 @@ type Props = {
   previewContent: React.ReactNode;
   remainingContent: React.ReactNode | null;
   relatedContent?: React.ReactNode;
+};
+
+/** Lightweight fade-up — avoids expensive layout recalculations */
+const EASE = [0.25, 0.1, 0.25, 1.0] as const;
+const sectionReveal = {
+  initial: { opacity: 0, y: 15 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE } },
 };
 
 export default function ProjectLayout({
@@ -53,17 +59,10 @@ export default function ProjectLayout({
         isDistractionFree && "justify-center"
       )}>
         {/* Main Content */}
-        <motion.div 
-          layout
-          className="min-w-0 flex-1 max-w-[820px] w-full"
-          variants={staggerContainer}
-          initial="initial"
-          animate="animate"
-        >
+        <div className="min-w-0 flex-1 max-w-[820px] w-full">
           {/* Hero */}
           <motion.header 
-            layout
-            variants={fadeUpVariant}
+            {...sectionReveal}
             className="relative overflow-hidden rounded-2xl p-6 sm:p-8 lg:p-10 border border-zinc-800/50 bg-zinc-950/40"
           >
             {/* Background Systems */}
@@ -134,8 +133,9 @@ export default function ProjectLayout({
           </motion.header>
 
           <motion.article 
-            layout 
-            variants={fadeUpVariant} 
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.15, ease: EASE }}
             className={cn(
               'min-w-0 transition-all duration-500 relative',
               isDistractionFree ? 'pt-24 text-[1.0625rem]' : 'pt-16'
@@ -166,7 +166,7 @@ export default function ProjectLayout({
                 <motion.div 
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1.0] }}
+                  transition={{ duration: 0.7, ease: EASE }}
                 >
                   {remainingContent}
                 </motion.div>
@@ -184,20 +184,24 @@ export default function ProjectLayout({
 
           {/* Related Content */}
           {relatedContent && (
-            <motion.div layout variants={fadeUpVariant} className="mt-20">
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3, ease: EASE }}
+              className="mt-20"
+            >
               {relatedContent}
             </motion.div>
           )}
-        </motion.div>
+        </div>
 
         {/* TOC Rail (Right Aligned) */}
-        {toc.length > 0 && (
+        {toc.length > 0 && !isDistractionFree && (
           <motion.aside 
-            layout 
             initial={{ opacity: 0 }} 
             animate={{ opacity: 1 }} 
             transition={{ delay: 0.2 }}
-            className="hidden lg:!block sticky top-28 w-[240px] shrink-0 self-start"
+            className="hidden lg:block sticky top-28 w-[240px] shrink-0 self-start"
           >
             <TableOfContents entries={toc} />
           </motion.aside>
@@ -206,4 +210,3 @@ export default function ProjectLayout({
     </div>
   );
 }
-

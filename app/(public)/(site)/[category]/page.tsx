@@ -95,7 +95,7 @@ export default async function CategoryPage({ params }: Props) {
           />
 
           {posts.length > 0 ? (
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {posts.map((post: any) => (
                 <ArticleCard
                   key={post.slug}
@@ -112,7 +112,7 @@ export default async function CategoryPage({ params }: Props) {
             </div>
           ) : (
             <div style={{ minHeight: 'calc(100vh - 64px - 200px)' }} className="flex items-center justify-center">
-              <div className="w-full grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="w-full grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 <ComingSoonBanner count={6} category={category} />
               </div>
             </div>

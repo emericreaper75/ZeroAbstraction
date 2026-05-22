@@ -34,7 +34,7 @@ export default function MobileTOC({ toc }: Props) {
 
       {isOpen && (
         <div className="p-4 bg-zinc-950/20">
-          <TableOfContents entries={toc} />
+          <TableOfContents entries={toc} onLinkClick={() => setIsOpen(false)} />
         </div>
       )}
     </Surface>

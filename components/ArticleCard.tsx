@@ -3,6 +3,7 @@ import { Post } from '@/lib/posts';
 import CategoryBadge from './CategoryBadge';
 import { formatDate } from '@/lib/utils';
 import Image from 'next/image';
+import { Surface } from '@/components/ui/surface';
 
 type Props = {
   post: Post;
@@ -11,8 +12,8 @@ type Props = {
 
 export default function ArticleCard({ post, showCategory = true }: Props) {
   return (
-    <article className="group relative flex flex-col rounded-lg border border-neutral-800 bg-neutral-900/50 p-6 transition-all hover:border-neutral-700 hover:bg-neutral-900">
-      <div className="mb-3 flex flex-wrap items-center gap-2">
+    <Surface variant="glass" interactive padding="md" className="group flex flex-col h-full transition-all">
+      <div className="relative z-20 mb-3 flex flex-wrap items-center gap-2">
         {showCategory && <CategoryBadge category={post.category} />}
         {post.tags.slice(0, 2).map((tag) => (
           <span
@@ -33,6 +34,7 @@ export default function ArticleCard({ post, showCategory = true }: Props) {
             src={post.thumbnail}
             alt={post.thumbnailAlt || post.title}
             fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
         </Link>
@@ -42,7 +44,7 @@ export default function ArticleCard({ post, showCategory = true }: Props) {
         href={`/${post.category}/${post.slug}`}
         className="block before:absolute before:inset-0 before:rounded-lg before:content-['']"
       >
-        <h2 className="font-serif text-xl font-semibold leading-snug text-neutral-100 transition-colors group-hover:text-sky-400">
+        <h2 className="font-serif text-xl font-semibold leading-snug text-neutral-100 transition-colors group-hover:text-cyan-400">
           {post.title}
         </h2>
       </Link>
@@ -51,11 +53,11 @@ export default function ArticleCard({ post, showCategory = true }: Props) {
         {post.description}
       </p>
 
-      <div className="mt-4 flex items-center gap-3 text-xs text-neutral-600">
+      <div className="mt-4 flex items-center gap-3 text-xs text-neutral-500">
         <time dateTime={post.date}>{formatDate(post.date)}</time>
         <span className="text-neutral-700">·</span>
         <span>{post.readingTime}</span>
       </div>
-    </article>
+    </Surface>
   );
 }
