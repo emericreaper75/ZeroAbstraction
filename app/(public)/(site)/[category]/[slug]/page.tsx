@@ -9,6 +9,8 @@ import MDXContent from '@/components/mdx/MDXContent';
 import { generateArticleJsonLd, generateBreadcrumbJsonLd } from '@/lib/jsonld';
 import RelatedPosts from '@/components/related/RelatedPosts';
 import { contentPostToLegacyPost } from '@/lib/public/legacy-post-adapter';
+import matter from 'gray-matter';
+import { splitMDXContent } from '@/lib/mdx/split';
 
 type Props = { params: { category: string; slug: string } };
 
@@ -74,6 +76,12 @@ export default async function ArticlePage({ params }: Props) {
     { name: legacyPost.title },
   ]);
 
+  const { data, content: mdxBody } = matter(post.content ?? "");
+  const abstract = data.abstract ?? undefined;
+  const previewSections = typeof data.previewSections === 'number' ? data.previewSections : 2;
+
+  const { previewMDX, remainingMDX } = splitMDXContent(mdxBody, previewSections);
+
   return (
     <>
       <script
@@ -87,12 +95,10 @@ export default async function ArticlePage({ params }: Props) {
       <ArticleLayout
         post={legacyPost}
         toc={toc}
-        mdxContent={
-          <>
-            <MDXContent source={legacyPost.content} />
-            <RelatedPosts posts={relatedLegacy} />
-          </>
-        }
+        abstract={abstract}
+        previewContent={<MDXContent source={previewMDX} />}
+        remainingContent={remainingMDX ? <MDXContent source={remainingMDX} /> : null}
+        relatedContent={<RelatedPosts posts={relatedLegacy} />}
       />
     </>
   );

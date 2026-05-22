@@ -67,10 +67,7 @@ export default function TimelineItem({ entry, isLast = false }: Props) {
 
   return (
     <div className="relative flex gap-6 pb-12 group">
-      {/* Vertical line */}
-      {!isLast && (
-        <div className="absolute left-[11px] top-6 h-full w-px bg-neutral-800/80 group-hover:bg-neutral-700 transition-colors duration-300" />
-      )}
+      {/* Vertical line removed in favor of pseudo-element */}
 
       {/* Dot */}
       <div className={`relative mt-1 h-5 w-5 shrink-0 rounded-full ${cn.bg} ring-4 ${cn.ring} transition-all duration-300`} />

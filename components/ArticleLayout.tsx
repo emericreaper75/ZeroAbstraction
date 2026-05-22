@@ -16,13 +16,19 @@ import DistractionFreeToggle from '@/components/DistractionFreeToggle';
 type Props = {
   post: Post;
   toc: TOCNode[];
-  mdxContent: React.ReactNode;
+  abstract?: string;
+  previewContent: React.ReactNode;
+  remainingContent: React.ReactNode | null;
+  relatedContent?: React.ReactNode;
 };
 
 export default function ArticleLayout({
   post,
   toc,
-  mdxContent,
+  abstract,
+  previewContent,
+  remainingContent,
+  relatedContent,
 }: Props) {
   const { isDistractionFree } =
     useDistractionFree();
@@ -32,8 +38,8 @@ export default function ArticleLayout({
       className={cn(
         'mx-auto px-4 sm:px-6 py-16 transition-all duration-300',
         isDistractionFree
-          ? 'max-w-[960px]'
-          : 'max-w-[1400px]'
+          ? 'max-w-[1400px]'
+          : 'max-w-[960px]'
       )}
     >
 
@@ -46,7 +52,7 @@ export default function ArticleLayout({
         )}
       >
         {/* TOC Rail (Now on the left) */}
-        {!isDistractionFree &&
+        {isDistractionFree &&
           toc.length > 0 && (
             <aside className="hidden lg:block sticky top-28 w-[220px] shrink-0 self-start">
               <TableOfContents
@@ -140,16 +146,48 @@ export default function ArticleLayout({
           <article
             id="article-content"
             className={cn(
-              'min-w-0 pt-24 transition-all duration-300',
+              'min-w-0 transition-all duration-500 relative',
               isDistractionFree
-                ? 'text-[1.0625rem]'
-                : ''
+                ? 'pt-24 text-[1.0625rem]'
+                : 'pt-16'
             )}
           >
-            <div className="prose prose-invert prose-lg max-w-none prose-headings:scroll-mt-28 prose-p:text-neutral-300 prose-p:leading-8 prose-li:text-neutral-300 prose-strong:text-white prose-headings:text-white">
-              {mdxContent}
+            {/* Abstract */}
+            {abstract && !isDistractionFree && (
+              <div className="mb-8 p-6 rounded-xl bg-neutral-900/50 border border-neutral-800">
+                <h3 className="text-neutral-400 font-mono text-xs uppercase tracking-widest mb-3">Abstract</h3>
+                <p className="text-neutral-200 text-lg leading-relaxed">{abstract}</p>
+              </div>
+            )}
+
+            <div className={cn(
+              "prose prose-invert prose-lg mx-auto prose-headings:scroll-mt-28 prose-p:text-neutral-300 prose-p:leading-8 prose-li:text-neutral-300 prose-strong:text-white prose-headings:text-white transition-all duration-500",
+              isDistractionFree ? "max-w-none" : "max-w-[720px]"
+            )}>
+              {previewContent}
+
+              {isDistractionFree && remainingContent && (
+                <div className="animate-in fade-in slide-in-from-top-4 duration-700">
+                  {remainingContent}
+                </div>
+              )}
             </div>
+
+            {!isDistractionFree && remainingContent && (
+              <div className="relative h-48 -mt-24 bg-gradient-to-t from-black via-black/90 to-transparent flex flex-col items-center justify-end pb-4 z-10 pointer-events-none">
+                <div className="pointer-events-auto">
+                  <DistractionFreeToggle />
+                </div>
+              </div>
+            )}
           </article>
+
+          {/* Related Content */}
+          {relatedContent && (
+             <div className="mt-20">
+               {relatedContent}
+             </div>
+          )}
         </div>
       </div>
     </div>

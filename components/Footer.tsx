@@ -26,8 +26,8 @@ export default function Footer() {
       role="contentinfo"
     >
       <div className="mx-auto max-w-screen-xl px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
-          <div>
+        <div className="flex flex-col md:grid md:grid-cols-2 gap-y-10 md:gap-x-12 mb-10 md:mb-12">
+          <div className="order-1">
             <Link
               href="/"
               className="font-serif text-base font-semibold text-neutral-300 hover:text-sky-400 transition-colors"
@@ -39,7 +39,20 @@ export default function Footer() {
               Notes without hand-waving. Exploring First-Principles engineering, physics, and applied mathematics.
             </p>
           </div>
-          <div className="flex flex-col items-start md:items-end space-y-4">
+          
+          <nav className="order-2 md:hidden flex flex-wrap gap-x-5 gap-y-2" aria-label="Footer navigation mobile">
+            {footerLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-sm text-neutral-500 hover:text-neutral-300 transition-colors"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+
+          <div className="order-3 md:order-2 flex flex-col items-start md:items-end space-y-4">
             <div className="w-full md:max-w-md">
               <h3 className="text-sm font-semibold text-neutral-300 mb-2 font-mono">Join the Newsletter</h3>
               <p className="text-xs text-neutral-500 mb-4">Get updates on new research logs and projects.</p>
@@ -48,7 +61,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <nav className="flex flex-wrap gap-x-5 gap-y-2 mb-6" aria-label="Footer navigation">
+        <nav className="hidden md:flex flex-wrap gap-x-5 gap-y-2 mb-6" aria-label="Footer navigation desktop">
           {footerLinks.map((link) => (
             <Link
               key={link.href}
@@ -66,7 +79,6 @@ export default function Footer() {
           <p className="text-xs text-neutral-600">
             © {new Date().getFullYear()} Zero Abstraction. All rights reserved.
           </p>
-          <p className="text-xs text-neutral-700 font-mono">v0.2.0</p>
         </div>
       </div>
     </footer>

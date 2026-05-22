@@ -10,6 +10,9 @@ import MDXContent from "@/components/mdx/MDXContent";
 import { extractTOC, nestTOC } from "@/lib/toc";
 import TableOfContents from "@/components/TableOfContents";
 import { generateProjectMetadata } from "@/lib/metadata";
+import ProjectLayout from "@/components/ProjectLayout";
+import matter from "gray-matter";
+import { splitMDXContent } from "@/lib/mdx/split";
 
 export const revalidate = 300;
 
@@ -51,6 +54,11 @@ export default async function ProjectPage({
     tags: project.tags,
     limit: 3,
   });
+
+  const { data, content: mdxBody } = matter(project.content ?? "");
+  const abstract = data.abstract ?? undefined;
+  const previewSections = typeof data.previewSections === 'number' ? data.previewSections : 2;
+  const { previewMDX, remainingMDX } = splitMDXContent(mdxBody, previewSections);
 
   return (
     <div className="relative">
@@ -119,50 +127,20 @@ export default async function ProjectPage({
         </div>
       </div>
 
-      {/* Body */}
-      <main className="mx-auto max-w-screen-xl px-6 py-14">
-        <div className="flex flex-col lg:flex-row gap-12 items-start justify-center">
-          {/* TOC sidebar on the left */}
-          {toc.length > 0 && (
-            <aside className="sticky top-28 hidden lg:block w-[220px] shrink-0 self-start">
-              <TableOfContents entries={toc} />
-            </aside>
-          )}
-
-          <article className="min-w-0 flex-1 max-w-[820px]">
-            <div className="prose prose-neutral prose-invert max-w-none prose-headings:scroll-mt-28">
-              {project.content ? (
-                <MDXContent source={project.content} />
-              ) : (
-                <p className="text-neutral-500">
-                  This project doesn’t have a long-form write-up yet.
-                </p>
-              )}
-            </div>
-          </article>
-
-          {/* Side metadata panel (future-proof for gallery/metrics) */}
-          <aside className="hidden xl:block w-[320px] shrink-0">
-            <div className="sticky top-28 rounded-2xl border border-neutral-800 bg-neutral-900/30 p-6">
-              <p className="font-mono text-[11px] uppercase tracking-widest text-neutral-500">
-                Metadata
-              </p>
-              <dl className="mt-5 space-y-4 text-sm">
-                <div>
-                  <dt className="text-neutral-500">Slug</dt>
-                  <dd className="font-mono text-neutral-200">{project.slug}</dd>
-                </div>
-                <div>
-                  <dt className="text-neutral-500">Featured</dt>
-                  <dd className="text-neutral-200">{project.featured ? 'Yes' : 'No'}</dd>
-                </div>
-              </dl>
-            </div>
-          </aside>
-        </div>
-
-        <RelatedProjects projects={relatedProjects} />
-      </main>
+      <ProjectLayout
+        project={{ slug: project.slug, featured: project.featured }}
+        toc={toc}
+        abstract={abstract}
+        previewContent={
+          project.content ? (
+            <MDXContent source={previewMDX} />
+          ) : (
+            <p className="text-neutral-500">This project doesn’t have a long-form write-up yet.</p>
+          )
+        }
+        remainingContent={remainingMDX ? <MDXContent source={remainingMDX} /> : null}
+        relatedContent={<RelatedProjects projects={relatedProjects} />}
+      />
     </div>
   );
 }

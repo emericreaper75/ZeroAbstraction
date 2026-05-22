@@ -9,6 +9,7 @@ import AstrophysicsBg from '@/components/backgrounds/astrophysics-bg';
 import PhysicsBg from '@/components/backgrounds/physics-bg';
 import ResearchBg from '@/components/backgrounds/research-bg';
 import { contentPostToLegacyPost } from '@/lib/public/legacy-post-adapter';
+import ComingSoonBanner from '@/components/ComingSoonBanner';
 
 type Props = { params: Promise<{ category: string }> };
 
@@ -105,9 +106,16 @@ export default async function CategoryPage({ params }: Props) {
                   showCategory={false}
                 />
               ))}
+              {posts.length < 6 && (
+                <ComingSoonBanner count={6 - posts.length} category={category} />
+              )}
             </div>
           ) : (
-            <p className="text-sm text-neutral-500">No articles in this category yet.</p>
+            <div style={{ minHeight: 'calc(100vh - 64px - 200px)' }} className="flex items-center justify-center">
+              <div className="w-full grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                <ComingSoonBanner count={6} category={category} />
+              </div>
+            </div>
           )}
         </div>
       </div>

@@ -22,13 +22,7 @@ export default async function PublicLayout({
         }}
       />
 
-      {/* Skip navigation link for WCAG 2.1 AA */}
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-md focus:bg-cyan-500 focus:px-4 focus:py-2 focus:text-zinc-950 focus:font-semibold focus:text-sm"
-      >
-        Skip to main content
-      </a>
+
 
       <DistractionFreeProvider>
         <div className="min-h-screen bg-neutral-950 text-neutral-300">

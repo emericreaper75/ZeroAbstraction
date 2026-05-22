@@ -5,6 +5,7 @@ import { getProjects } from "@/lib/projects/get-projects";
 import ProjectsBg from "@/components/backgrounds/projects-bg";
 import PageHeader from "@/components/page-header";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/animations/fade-in";
+import ComingSoonBanner from "@/components/ComingSoonBanner";
 
 export const revalidate = 300;
 
@@ -30,8 +31,10 @@ export default async function ProjectsPage() {
 
           {projects.length === 0 ? (
             <FadeIn delay={0.2}>
-              <div className="mt-12 rounded-2xl border border-neutral-800 bg-neutral-900/40 p-8 text-neutral-400">
-                No published projects found.
+              <div className="mt-12 rounded-2xl border border-neutral-800 bg-neutral-900/40 p-8 text-neutral-400" style={{ minHeight: 'calc(100vh - 64px - 200px)' }}>
+                <div className="w-full grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                  <ComingSoonBanner count={6} category="projects" />
+                </div>
               </div>
             </FadeIn>
           ) : (
@@ -59,7 +62,7 @@ export default async function ProjectsPage() {
                             key={tag}
                             className="rounded-full border border-neutral-700 px-3 py-1 text-xs text-neutral-300"
                           >
-                            {tag}
+                            {tag.replace(/^"|"$/g, '')}
                           </span>
                         ))}
                       </div>
@@ -67,6 +70,11 @@ export default async function ProjectsPage() {
                   </Link>
                 </StaggerItem>
               ))}
+              {projects.length < 6 && (
+                <StaggerItem className="h-full">
+                  <ComingSoonBanner count={6 - projects.length} category="projects" />
+                </StaggerItem>
+              )}
             </StaggerContainer>
           )}
         </div>

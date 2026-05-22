@@ -53,6 +53,9 @@ export default function RootLayout({
       className={`dark ${inter.variable} ${ibmPlexSerif.variable} ${jetbrainsMono.variable} ${ibmPlexMono.variable}`}
     >
       <body className="min-h-screen bg-neutral-950 text-neutral-300 antialiased">
+        <a href="#main-content" className="skip-link">
+          Skip to main content
+        </a>
         <SkeletonProvider>
           {children}
         </SkeletonProvider>

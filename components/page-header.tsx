@@ -58,7 +58,7 @@ export default function PageHeader({
       <h1 className="font-serif text-4xl font-bold text-white sm:text-5xl mt-2 relative inline-block">
         {title}
       </h1>
-      <div className={`mt-2 h-[3px] w-[60px] rounded-sm ${cn.underline}`} />
+      <div className="mt-2 h-[3px] w-[60px] rounded-sm" style={{ backgroundColor: 'var(--color-brand-primary)', boxShadow: 'var(--shadow-brand)' }} />
 
       <p className="mt-4 text-base leading-relaxed text-zinc-400">
         {subtitle}

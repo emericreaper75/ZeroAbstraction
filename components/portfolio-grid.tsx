@@ -106,7 +106,7 @@ export default function PortfolioGrid({
                         variant="outline"
                         className="border-zinc-800 text-[10px] font-mono text-zinc-500"
                       >
-                        {tag}
+                        {tag.replace(/^"|"$/g, '')}
                       </Badge>
                     ))}
                 </div>

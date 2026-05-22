@@ -39,6 +39,29 @@
     --bg-base: #050810;
     --bg-surface: #06090f;
 
+    /* ZeroAbstraction Extended Token System */
+    --color-brand-primary: #00c9e0;
+    --color-cat-electronics: #00c9e0;
+    --color-cat-astrophysics: #a78bfa;
+    --color-cat-physics-math: #34d399;
+    --color-cat-research: #fbbf24;
+    --color-cat-communications: #f472b6;
+    --surface-base: #080810;
+    --surface-01: #0f0f1a;
+    --surface-02: #161624;
+    --surface-03: #1e1e30;
+    --border-subtle: rgba(255,255,255,0.06);
+    --border-default: rgba(255,255,255,0.10);
+    --border-emphasis: rgba(255,255,255,0.20);
+    --border-brand: rgba(0,201,224,0.40);
+    --text-primary: #f0f0f4;
+    --text-secondary: #a0a0b8;
+    --text-tertiary: #7070a0;
+    --color-success: #22c55e;
+    --color-warning: #f59e0b;
+    --color-error: #ef4444;
+    --shadow-brand: 0 0 20px rgba(0,201,224,0.15);
+
     /* Chart colors */
     --chart-1: 195 80% 55%;
     --chart-2: 270 70% 60%;
@@ -108,7 +131,9 @@
 
   /* WCAG focus visibility */
   *:focus-visible {
-    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+    outline: 2px solid var(--color-brand-primary);
+    outline-offset: 2px;
+    border-radius: 4px;
   }
 }
 
@@ -372,4 +397,57 @@ pre::-webkit-scrollbar-thumb {
   );
   animation: shimmer 2s infinite;
   content: '';
+}
+
+.timeline-track {
+  position: relative;
+}
+.timeline-track::before {
+  content: '';
+  position: absolute;
+  left: 10px;
+  top: 24px;
+  bottom: 24px;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, var(--border-default) 10%, var(--border-default) 90%, transparent);
+}
+
+.timeline-filter-btn[data-active="true"] {
+  color: var(--color-brand-primary);
+  background: rgba(0,201,224,0.08);
+  border-color: rgba(0,201,224,0.20);
+  transition: color 150ms, background 150ms, border-color 150ms;
+}
+
+.ghost-btn {
+  border: 1.5px solid var(--border-emphasis);
+  color: var(--text-primary);
+  transition: border-color 150ms, background 150ms;
+}
+.ghost-btn:hover {
+  border-color: var(--border-brand);
+  background: var(--surface-01);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .starfield, .starfield canvas, [class*="particle"], [class*="starfield"] {
+    display: none !important;
+  }
+}
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 8px;
+  background: var(--color-brand-primary);
+  color: var(--text-inverse, #080810);
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  z-index: 9999;
+  text-decoration: none;
+  transition: top 0.1s;
+}
+.skip-link:focus {
+  top: 8px;
 }

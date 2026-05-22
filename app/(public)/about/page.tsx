@@ -3,7 +3,7 @@ import { FadeIn, StaggerContainer, StaggerItem } from "@/components/animations/f
 
 export default function AboutPage() {
   return (
-    <main className="relative min-h-screen bg-black">
+    <main className="relative min-h-screen bg-base">
       <div className="container mx-auto px-6 pt-32 pb-24">
         <FadeIn>
           <PageHeader 
@@ -14,7 +14,22 @@ export default function AboutPage() {
           />
         </FadeIn>
       </div>
-      
+      <section className="container mx-auto px-6 py-24 border-t border-neutral-900 bg-[var(--surface-01)]">
+        <div className="max-w-3xl">
+          <FadeIn>
+            <h2 className="text-3xl font-serif font-bold text-white mb-6">Revanth</h2>
+            <p className="text-zinc-400 leading-relaxed mb-8 text-lg">
+              ECE student at JNTUA College of Engineering, Ananthapuramu. Researching signal processing, astrophysics, and embedded systems. Published research across electronics and astrophysics domains.
+            </p>
+            <div className="flex flex-col gap-3 text-sm font-mono text-zinc-500">
+              <p><span className="text-cyan-400 font-semibold mr-2">Institution:</span> JNTUA College of Engineering, Ananthapuramu</p>
+              <p><span className="text-cyan-400 font-semibold mr-2">Focus Areas:</span> Signal Processing, Astrophysics, Embedded Systems</p>
+              <p><span className="text-cyan-400 font-semibold mr-2">Key Project:</span> <a href="/projects" className="hover:text-cyan-400 underline decoration-zinc-700 underline-offset-4 transition-colors">View Research Projects</a></p>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
       <section className="container mx-auto px-6 py-24 border-t border-neutral-900">
         <div className="grid lg:grid-cols-2 gap-16 items-start">
           <FadeIn>
@@ -32,7 +47,10 @@ export default function AboutPage() {
             </div>
           </FadeIn>
           <FadeIn delay={0.2}>
-            <div className="bg-zinc-900/50 p-8 rounded-xl border border-zinc-800 backdrop-blur-sm">
+            <div 
+              className="p-8 rounded-xl backdrop-blur-sm"
+              style={{ background: 'var(--surface-02)', border: '1px solid var(--border-default)', borderTop: '3px solid var(--color-brand-primary)' }}
+            >
               <h3 className="text-xl font-mono text-cyan-400 mb-6 uppercase tracking-widest text-sm">Design Philosophy</h3>
               <ul className="space-y-6 text-zinc-300">
                 <li className="flex items-start gap-4">

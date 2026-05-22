@@ -47,3 +47,25 @@ tree-to-be-implemented.md
 
 # agents
 .agents/
+
+# ai memory
+.ai/
+
+# IDE / Editor configs
+.vscode/
+
+# local diagnostic and compiler files
+tsc_errors.txt
+.eslintcache
+*.log
+
+# local documentation, reports, and prompts
+*_report.md
+*report.md
+*_REPORT.md
+*REPORT.md
+agent_handoff_*.md
+focus_mode_transition.md
+improvement and implementation.md
+ZeroAbstraction_GoogleStitch_Prompts.md
+

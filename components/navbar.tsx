@@ -205,10 +205,12 @@ export default function Navbar() {
           {/* Blog Dropdown */}
           <div className="relative overflow-visible">
             <button
+              aria-expanded={isBlogOpen}
+              aria-label="Toggle blog categories menu"
               onClick={() =>
                 setIsBlogOpen(!isBlogOpen)
               }
-              className={`flex items-center gap-1 rounded-md px-3 py-2 text-sm font-mono transition-colors ${
+              className={`flex items-center justify-center min-h-[44px] md:min-h-0 gap-1 rounded-md px-3 py-2 text-sm font-mono transition-colors ${
                 isBlogActive
                   ? 'bg-cyan-500/10 text-cyan-400'
                   : 'text-zinc-400 hover:bg-zinc-800/50 hover:text-cyan-400'
@@ -253,7 +255,7 @@ export default function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className={`rounded-md px-3 py-2 text-sm font-mono transition-colors ${
+              className={`flex items-center min-h-[44px] md:min-h-0 rounded-md px-3 py-2 text-sm font-mono transition-colors ${
                 isActive(link.href)
                   ? 'bg-cyan-500/10 text-cyan-400'
                   : 'text-zinc-400 hover:bg-zinc-800/50 hover:text-cyan-400'
@@ -273,12 +275,8 @@ export default function Navbar() {
             variant="ghost"
             size="icon"
             onClick={toggleTheme}
-            aria-label={
-              isDark
-                ? 'Switch to light mode'
-                : 'Switch to dark mode'
-            }
-            className="h-9 w-9 border border-zinc-800 bg-zinc-900/50 text-zinc-400 hover:border-cyan-500/50 hover:text-cyan-400"
+            aria-label="Toggle color theme"
+            className="h-[44px] w-[44px] md:h-9 md:w-9 border border-zinc-800 bg-zinc-900/50 text-zinc-400 hover:border-cyan-500/50 hover:text-cyan-400"
           >
             {isDark ? (
               <Sun
@@ -297,7 +295,7 @@ export default function Navbar() {
           <Button
             variant="ghost"
             size="icon"
-            className="h-9 w-9 shrink-0 border border-zinc-800 bg-zinc-900/50 text-zinc-400 hover:text-cyan-400 md:hidden"
+            className="h-[44px] w-[44px] md:h-9 md:w-9 shrink-0 border border-zinc-800 bg-zinc-900/50 text-zinc-400 hover:text-cyan-400 md:hidden"
             onClick={() =>
               setIsMobileMenuOpen(
                 !isMobileMenuOpen
@@ -335,7 +333,7 @@ export default function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className={`rounded-md px-3 py-2.5 text-sm font-mono transition-colors ${
+              className={`flex items-center min-h-[44px] rounded-md px-3 py-2.5 text-sm font-mono transition-colors ${
                 isActive(link.href)
                   ? 'bg-cyan-500/10 text-cyan-400'
                   : 'text-zinc-400 hover:bg-zinc-800/50 hover:text-cyan-400'
@@ -351,7 +349,7 @@ export default function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className={`rounded-md px-3 py-2.5 text-sm font-mono transition-colors ${
+              className={`flex items-center min-h-[44px] rounded-md px-3 py-2.5 text-sm font-mono transition-colors ${
                 isActive(link.href)
                   ? 'bg-cyan-500/10 text-cyan-400'
                   : 'text-zinc-400 hover:bg-zinc-800/50 hover:text-cyan-400'

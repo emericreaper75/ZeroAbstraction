@@ -41,7 +41,7 @@ export default function ProjectCard({ project }: Props) {
                 key={t}
                 className="rounded border border-neutral-800 bg-neutral-800/60 px-2 py-0.5 font-mono text-[11px] text-neutral-400"
               >
-                {t}
+                {t.replace(/^"|"$/g, '')}
               </span>
             ))}
           </div>

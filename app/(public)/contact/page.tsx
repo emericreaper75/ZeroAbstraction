@@ -1,9 +1,10 @@
 import PageHeader from "@/components/page-header";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/animations/fade-in";
+import ContactForm from "@/components/ContactForm";
 
 export default function ContactPage() {
   return (
-    <main className="relative min-h-screen bg-black">
+    <main className="relative min-h-screen bg-base">
       <div className="container mx-auto px-6 pt-32 pb-24">
         <FadeIn>
           <PageHeader 
@@ -45,7 +46,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <p className="text-sm text-zinc-500 font-mono uppercase tracking-wider mb-1">Social</p>
-                    <a href="https://twitter.com/zeroabstraction" target="_blank" rel="noreferrer" className="text-zinc-300 hover:text-white transition-colors">@zeroabstraction</a>
+                    <a href="https://twitter.com/zeroabstraction" target="_blank" rel="noreferrer" className="text-zinc-300 hover:text-white transition-colors">X (Twitter) / @zeroabstraction</a>
                   </div>
                 </div>
               </StaggerItem>
@@ -57,7 +58,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <p className="text-sm text-zinc-500 font-mono uppercase tracking-wider mb-1">Location</p>
-                    <span className="text-zinc-300">Cambridge, UK (Remote Worldwide)</span>
+                    <span className="text-zinc-300">Anantapur, India (Remote Available)</span>
                   </div>
                 </div>
               </StaggerItem>
@@ -76,33 +77,7 @@ export default function ContactPage() {
           <FadeIn delay={0.2}>
             <div className="bg-zinc-900/50 p-8 rounded-xl border border-zinc-800 backdrop-blur-sm shadow-2xl">
               <h3 className="text-xl font-mono text-cyan-400 mb-6 uppercase tracking-widest text-sm">Send a Message</h3>
-              <form className="space-y-6">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-zinc-400 mb-2">Name</label>
-                  <input type="text" id="name" className="w-full bg-zinc-950/50 border border-zinc-800 rounded-lg px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-colors" placeholder="Your name" />
-                </div>
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-zinc-400 mb-2">Email</label>
-                  <input type="email" id="email" className="w-full bg-zinc-950/50 border border-zinc-800 rounded-lg px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-colors" placeholder="you@example.com" />
-                </div>
-                <div>
-                  <label htmlFor="subject" className="block text-sm font-medium text-zinc-400 mb-2">Subject</label>
-                  <select id="subject" className="w-full bg-zinc-950/50 border border-zinc-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-colors appearance-none">
-                    <option>General Inquiry</option>
-                    <option>Technical Collaboration</option>
-                    <option>Consulting Request</option>
-                    <option>Content Feedback</option>
-                  </select>
-                </div>
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-zinc-400 mb-2">Message</label>
-                  <textarea id="message" rows={5} className="w-full bg-zinc-950/50 border border-zinc-800 rounded-lg px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-colors" placeholder="How can I help you?"></textarea>
-                </div>
-                <button type="button" className="w-full bg-cyan-500 hover:bg-cyan-400 text-black font-semibold py-3 px-6 rounded-lg transition-colors flex justify-center items-center gap-2">
-                  Send Message
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
-                </button>
-              </form>
+              <ContactForm />
             </div>
           </FadeIn>
         </div>

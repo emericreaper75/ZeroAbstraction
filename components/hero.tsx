@@ -224,6 +224,14 @@ export default function Hero() {
       <div className="container mx-auto px-6 relative z-10 grid lg:grid-cols-2 gap-12 items-center pt-20">
         {/* Left Column */}
         <div className="max-w-2xl">
+          <div className="author-block flex items-center gap-3 mb-6">
+            <div className="author-avatar flex items-center justify-center w-10 h-10 rounded-full bg-[var(--surface-02)] border border-[var(--border-brand)] text-[var(--color-brand-primary)] font-bold text-sm" aria-hidden="true">R</div>
+            <div className="author-info flex flex-col">
+              <span className="author-name text-sm font-semibold text-white">Revanth</span>
+              <span className="author-descriptor text-xs text-zinc-400">ECE Engineer · Signal Processing · Astrophysics</span>
+            </div>
+          </div>
+
           <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full border border-sky-900/50 bg-sky-950/30 mb-6">
             <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
             <span className="text-xs font-mono uppercase tracking-wide text-cyan-400">
@@ -251,7 +259,7 @@ export default function Hero() {
             </Link>
             <Link 
               href="/projects" 
-              className="px-6 py-3 rounded-md border border-zinc-700 bg-zinc-900/50 hover:bg-zinc-800 text-zinc-200 font-medium transition-colors duration-200"
+              className="ghost-btn px-6 py-3 rounded-md font-medium"
             >
               View Projects
             </Link>
