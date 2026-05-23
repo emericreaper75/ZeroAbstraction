@@ -57,7 +57,7 @@ export default function TimelineFilter() {
               <StaggerItem>
                 <TimelineItem
                   entry={entry}
-                  isLast={i === filtered.length - 1}
+
                 />
               </StaggerItem>
             </React.Fragment>

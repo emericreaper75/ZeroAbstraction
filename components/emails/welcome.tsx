@@ -23,7 +23,7 @@ export default function WelcomeEmail() {
               Welcome to Zero Abstraction
             </Heading>
             <Text className="text-zinc-400 text-base leading-relaxed mb-6">
-              Thanks for subscribing to the newsletter! You'll now receive updates on my latest engineering projects, research logs, and technical deep-dives into First-Principles engineering.
+              Thanks for subscribing to the newsletter! You&apos;ll now receive updates on my latest engineering projects, research logs, and technical deep-dives into First-Principles engineering.
             </Text>
             <Text className="text-zinc-400 text-base leading-relaxed mb-6">
               If you want to check out some of my interactive projects, start here:
@@ -35,7 +35,7 @@ export default function WelcomeEmail() {
               Explore Projects
             </Link>
             <Text className="text-zinc-600 text-sm mt-10 border-t border-zinc-800 pt-6">
-              If you didn't request this, you can safely ignore this email.
+              If you didn&apos;t request this, you can safely ignore this email.
             </Text>
           </Container>
         </Body>

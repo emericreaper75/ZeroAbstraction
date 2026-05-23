@@ -69,7 +69,7 @@ export default function ContactPage() {
               <Surface variant="glass" padding="md" className="mt-12">
                 <h4 className="text-white font-semibold mb-2">Response Time SLA</h4>
                 <p className="text-sm text-zinc-400">
-                  I aim to respond to all technical inquiries within 48 hours. For consulting requests, please include "Consulting" in the subject line or message.
+                  I aim to respond to all technical inquiries within 48 hours. For consulting requests, please include &quot;Consulting&quot; in the subject line or message.
                 </p>
               </Surface>
             </FadeIn>

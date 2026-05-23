@@ -14,7 +14,7 @@ export default function MediaUploadPage() {
   const [uploadState, setUploadState] = useState<UploadState>("idle");
   const [preview, setPreview] = useState<FilePreview | null>(null);
   const [progress, setProgress] = useState(0);
-  const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFiles = useCallback((files: FileList | null) => {
@@ -50,7 +50,6 @@ export default function MediaUploadPage() {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(interval);
-          setUploadedUrl(URL.createObjectURL(preview.file));
           setUploadState("success");
           return 100;
         }
@@ -63,7 +62,6 @@ export default function MediaUploadPage() {
     if (preview) URL.revokeObjectURL(preview.objectUrl);
     setPreview(null);
     setProgress(0);
-    setUploadedUrl(null);
     setUploadState("idle");
   };
 

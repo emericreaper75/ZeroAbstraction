@@ -34,9 +34,9 @@ export default function NewsletterForm({ className }: { className?: string }) {
       setStatus("success");
       setMessage(data.message);
       setEmail("");
-    } catch (err: any) {
+    } catch (err) {
       setStatus("error");
-      setMessage(err.message || "An error occurred. Please try again.");
+      setMessage(err instanceof Error ? err.message : "An error occurred. Please try again.");
     }
   };
 

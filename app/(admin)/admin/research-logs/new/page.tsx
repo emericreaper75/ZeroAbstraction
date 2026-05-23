@@ -120,6 +120,18 @@ export default function NewResearchLogPage() {
           />
         </div>
 
+        <div className="flex items-center gap-6">
+          <label className="flex items-center gap-2 font-label text-[10px] uppercase text-zinc-300 tracking-widest cursor-pointer">
+            <input
+              type="checkbox"
+              name="featured"
+              value="true"
+              className="w-4 h-4 bg-[#111111] border-zinc-700 rounded text-cyan-500 focus:ring-cyan-500/20 focus:ring-offset-0 focus:ring-2"
+            />
+            Featured Research Log
+          </label>
+        </div>
+
         <input type="hidden" name="published" value="false" />
       </form>
 

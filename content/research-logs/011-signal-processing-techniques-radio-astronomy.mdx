@@ -1,0 +1,23 @@
+---
+title: "Research Log #011 — Signal Processing Techniques Used in Radio Astronomy"
+date: "2026-05-23"
+description: "Reviewing digital spectrometer architectures on FPGAs, analyzing polyphase filter bank (PFB) algorithms for clean sub-channel division."
+tags: ["dsp","spectrometer","radio-astronomy","fpga"]
+category: "research-logs"
+slug: "signal-processing-techniques-radio-astronomy"
+published: true
+---
+## Spectrometer Architecture
+
+Radio telescopes capture extremely wideband signals containing weak astronomical sources. To analyze these signals, digital backends must divide the spectrum into thousands of narrow channels. 
+
+This log analyzes the design of an FPGA spectrometer processing $2 , 	ext{GHz}$ of instantaneous bandwidth.
+
+## The Polyphase Filter Bank (PFB)
+
+While a standard FFT is computationally cheap, it exhibits high spectral leakage (sidelobes). To minimize this, we implement a **Polyphase Filter Bank (PFB)**:
+1. The wideband signal is split into multiple parallel sub-channels using a polyphase FIR filter.
+2. An FFT is applied to the filtered outputs.
+
+The FIR filter applies a Kaiser window to each channel, suppressing sidelobes by over $60 , 	ext{dB}$ compared to a raw FFT, preventing strong RF signals from blinding nearby astronomical observations.
+    

@@ -27,7 +27,7 @@ const components = {
   h2: makeHeading(2),
   h3: makeHeading(3),
   h4: makeHeading(4),
-  img: (props: any) => <LightboxImage {...props} />,
+  img: (props: React.ComponentPropsWithoutRef<'img'>) => <LightboxImage {...props} />,
   pre: ({ children, ...props }: React.HTMLAttributes<HTMLPreElement> & { children?: React.ReactNode }) => {
     const codeEl = (children as React.ReactElement)?.props;
     const rawCode = codeEl?.children ?? '';

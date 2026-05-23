@@ -136,6 +136,7 @@ export default function ProjectLayout({
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.15, ease: EASE }}
+            id="article-content"
             className={cn(
               'min-w-0 transition-all duration-500 relative',
               isDistractionFree ? 'pt-24 text-[1.0625rem]' : 'pt-16'
@@ -201,7 +202,7 @@ export default function ProjectLayout({
             initial={{ opacity: 0 }} 
             animate={{ opacity: 1 }} 
             transition={{ delay: 0.2 }}
-            className="hidden lg:block sticky top-28 w-[240px] shrink-0 self-start"
+            className="hidden lg:!block sticky top-28 w-[240px] shrink-0 self-start space-y-8"
           >
             <TableOfContents entries={toc} />
           </motion.aside>

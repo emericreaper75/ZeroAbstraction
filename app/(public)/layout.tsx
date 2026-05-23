@@ -1,7 +1,7 @@
 import React from 'react';
 import Navbar from '@/components/navbar';
 import Footer from '@/components/Footer';
-import { headers } from 'next/headers';
+
 import { DistractionFreeProvider } from '@/components/DistractionFreeProvider';
 import { generateWebSiteJsonLd } from '@/lib/jsonld';
 import { Breadcrumbs } from '@/components/ui/breadcrumbs';

@@ -1,0 +1,31 @@
+---
+title: "Research Log #004 — Limits of Shannon Capacity in Deep Space Communication"
+date: "2026-05-23"
+description: "An analytical exploration of the Shannon-Hartley theorem under extremely low signal-to-noise ratios, analyzing LDPC performance boundaries in deep space telemetry links."
+tags: ["shannon-limit","telemetry","coding-theory","deep-space"]
+category: "research-logs"
+slug: "limits-shannon-capacity-deep-space-communication"
+published: true
+---
+## Context
+
+This research log evaluates the theoretical boundaries of error-free data transmission over a Gaussian channel when transmitting across planetary distances. The goal is to constrain the minimum energy per bit required for deep space probes.
+
+## Theoretical Framework
+
+The **Shannon-Hartley Theorem** defines the absolute channel capacity $C$:
+
+$$
+C = B log_2 left( 1 + rac{S}{N} ight)
+$$
+
+For deep space telemetry, the received signal power $S$ is extremely low, placing the link in the **power-limited regime** where $rac{S}{N} 	o 0$. By taking the limit, we find the minimum signal-to-noise spectral density ratio required for error-free communication:
+
+$$
+rac{E_b}{N_0} > ln(2) approx -1.59 , 	ext{dB}
+$$
+
+## Analytical Observations
+
+Modern LDPC codes get within $0.1 , 	ext{dB}$ of this Shannon limit. However, reaching this efficiency requires long block lengths, introducing latency that must be optimized for real-time telemetry systems.
+    

@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
+
 import { prisma } from "@/lib/db/prisma";
 import EditResearchLogClient from "@/components/admin/edit-research-log-client";
 
@@ -23,6 +23,7 @@ export default async function EditResearchLogPage({
         content: log.content ?? "",
         tags: log.tags,
         entryNumber: log.entryNumber,
+        featured: log.featured,
         published: log.published,
         updatedAt: log.updatedAt.toISOString(),
       }}

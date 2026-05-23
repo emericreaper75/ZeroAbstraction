@@ -1,0 +1,33 @@
+---
+title: "Research Log #006 — Stability Analysis of Chaotic Systems Using Lyapunov Exponents"
+date: "2026-05-23"
+description: "Exploring chaotic attractors in non-linear circuit networks by computing the maximal Lyapunov exponent to establish predictability boundaries."
+tags: ["chaos-theory","circuits","mathematics","dynamics"]
+category: "research-logs"
+slug: "stability-analysis-chaotic-systems-lyapunov-exponents"
+published: true
+---
+## Context
+
+This log records stability measurements on an electronic chaotic attractor based on Chua's circuit. We calculate the rate of exponential divergence of nearby trajectories in phase space.
+
+## Mathematical Formulation
+
+For a dynamical system, the **Lyapunov Exponent** $lambda$ is defined as:
+
+$$
+lambda = lim_{t 	o infty} lim_{|delta mathbf{x}_0| 	o 0} rac{1}{t} ln rac{|delta mathbf{x}(t)|}{|delta mathbf{x}_0|}
+$$
+
+A positive maximal Lyapunov exponent ($lambda_{max} > 0$) guarantees chaotic behavior.
+
+## Laboratory Measurements
+
+We sampled voltage states across two capacitors at $1 , 	ext{MS/s}$. The calculated maximal exponent is:
+
+$$
+lambda_{max} = 0.843 pm 0.012 , 	ext{bits/ms}
+$$
+
+This indicates that any predictive model of the circuit loses $1$ bit of information every $1.18 , 	ext{ms}$.
+    

@@ -16,5 +16,10 @@ export type HomepageSection =
       type: "featuredProjects";
       title: string;
       projects: Project[];
+    }
+  | {
+      type: "featuredResearchLogs";
+      title: string;
+      posts: PublicPostCard[];
     };
 

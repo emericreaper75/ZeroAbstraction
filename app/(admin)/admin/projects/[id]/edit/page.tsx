@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db/prisma";
-import Link from "next/link";
+
 import EditProjectClient from "@/components/admin/edit-project-client";
 
 export default async function EditProjectPage({

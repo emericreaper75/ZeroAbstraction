@@ -89,9 +89,11 @@ export default async function ProjectsPage() {
                 </StaggerItem>
               ))}
               {projects.length < 6 && (
-                <StaggerItem className="h-full">
-                  <ComingSoonBanner count={6 - projects.length} category="projects" />
-                </StaggerItem>
+                Array.from({ length: 6 - projects.length }).map((_, i) => (
+                  <StaggerItem key={`coming-soon-${i}`} className="h-full">
+                    <ComingSoonBanner count={1} category="projects" />
+                  </StaggerItem>
+                ))
               )}
             </StaggerContainer>
           )}

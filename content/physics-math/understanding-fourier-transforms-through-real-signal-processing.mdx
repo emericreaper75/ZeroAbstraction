@@ -1,0 +1,30 @@
+---
+title: "Understanding Fourier Transforms Through Real Signal Processing"
+date: "2026-05-23"
+description: "Demystifying the continuous and discrete Fourier transforms. Explore the visual representation of converting time-domain observations into frequency-domain spectrums."
+tags: ["fourier","mathematics","dsp","signal-processing"]
+category: "physics-math"
+slug: "understanding-fourier-transforms-through-real-signal-processing"
+published: true
+---
+## The Language of Frequencies
+
+At its core, the **Fourier Transform** is a mathematical tool that decomposes a complex signal into its constituent sinusoidal waves. It allows us to view a time-domain wave $x(t)$ in the frequency-domain $X(f)$.
+
+The continuous-time Fourier transform is defined as:
+
+$$
+X(f) = int_{-infty}^{infty} x(t) e^{-i 2 pi f t} dt
+$$
+
+In practical digital signal processing, we deal with discrete, sampled data using the **Discrete Fourier Transform (DFT)**:
+
+$$
+X[k] = sum_{n=0}^{N-1} x[n] e^{-i rac{2 pi}{N} k n}
+$$
+
+### Applications in Real Engineering
+- **Noise Filtering**: Easily identify high-frequency noise spikes in a sensor feed and damp them out in the frequency domain.
+- **Audio Compression**: MP3 and AAC compression algorithms discard frequencies that the human ear cannot easily perceive, saving storage space.
+- **Spectral Analysis**: Determine the composition of distant stars by decomposing their electromagnetic spectrum.
+    

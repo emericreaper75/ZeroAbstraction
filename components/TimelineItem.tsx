@@ -77,9 +77,9 @@ const contentTypeLabels: Record<string, string> = {
   research: 'Research Log',
 };
 
-type Props = { entry: TimelineEntry; isLast?: boolean };
+type Props = { entry: TimelineEntry };
 
-export default function TimelineItem({ entry, isLast = false }: Props) {
+export default function TimelineItem({ entry }: Props) {
   const cn = categoryConfigs[entry.category] ?? defaultConfig;
 
   return (

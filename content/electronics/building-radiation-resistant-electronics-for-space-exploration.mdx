@@ -1,0 +1,23 @@
+---
+title: "Building Radiation-Resistant Electronics for Space Exploration"
+date: "2026-05-23"
+description: "Architecting space-grade circuitry. Explore hardware mitigation against single-event upsets (SEUs) and total ionizing dose (TID) degradation."
+tags: ["aerospace","radiation","electronics","space-grade"]
+category: "electronics"
+slug: "building-radiation-resistant-electronics-for-space-exploration"
+published: true
+---
+## Architecting for the Cosmic Void
+
+Outside of Earth's protective magnetosphere, electronics are bombarded by high-energy cosmic rays, solar protons, and trapped radiation belts. Without shielding and specific architecture, these particles destroy digital components.
+
+### Types of Radiation Hazards
+1. **Total Ionizing Dose (TID)**: The cumulative exposure to radiation over a mission. This degrades oxide layers, eventually causing permanent leaks or chip failure.
+2. **Single-Event Effects (SEE)**: Instantaneous disruptions caused by a single heavy particle.
+   - **Single-Event Upsets (SEU)**: A particle flips a bit in memory.
+   - **Single-Event Latchup (SEL)**: A particle triggers a short-circuit, potentially destroying the component.
+
+### Mitigation Strategies
+- **Triple Modular Redundancy (TMR)**: Implement three identical microprocessors that execute the same instructions simultaneously, using a voting circuit to select the majority result.
+- **Silicon-on-Insulator (SOI)**: Building transistors on a thin layer of insulating material to prevent charge buildup and latchups.
+    

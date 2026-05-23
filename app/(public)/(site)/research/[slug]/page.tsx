@@ -5,7 +5,8 @@ import { extractTOC, nestTOC } from '@/lib/toc';
 import ArticleLayout from '@/components/ArticleLayout';
 import MDXContent from '@/components/mdx/MDXContent';
 import { generateArticleJsonLd, generateBreadcrumbJsonLd } from '@/lib/jsonld';
-import RelatedPosts from '@/components/related/RelatedPosts';
+import { getRelatedNodes } from '@/lib/graph/engine';
+import ContentEcosystemView from '@/components/graph/ContentEcosystemView';
 import matter from 'gray-matter';
 import { splitMDXContent } from '@/lib/mdx/split';
 import readingTime from 'reading-time';
@@ -43,15 +44,7 @@ export default async function ResearchLogDetailPage({ params }: Props) {
 
   const toc = nestTOC(extractTOC(log.content ?? ''));
   
-  const relatedLogs = await prisma.researchLog.findMany({
-    where: {
-      published: true,
-      id: { not: log.id },
-      tags: { hasSome: log.tags },
-    },
-    orderBy: { createdAt: 'desc' },
-    take: 4,
-  });
+  const relatedNodes = await getRelatedNodes(`research:${log.slug}`, 4);
 
   // Map to legacy Post structure
   const post = {
@@ -66,17 +59,7 @@ export default async function ResearchLogDetailPage({ params }: Props) {
     published: log.published,
   };
 
-  const relatedPosts = relatedLogs.map((rl) => ({
-    title: rl.title,
-    slug: rl.slug,
-    description: rl.abstract ?? '',
-    category: 'research',
-    tags: rl.tags,
-    date: rl.createdAt.toISOString(),
-    readingTime: readingTime(rl.content ?? '').text,
-    content: rl.content ?? '',
-    published: rl.published,
-  }));
+
 
   const articleJsonLd = generateArticleJsonLd(post, 'research');
   const breadcrumbJsonLd = generateBreadcrumbJsonLd([
@@ -107,7 +90,7 @@ export default async function ResearchLogDetailPage({ params }: Props) {
         abstract={abstract}
         previewContent={<MDXContent source={previewMDX} />}
         remainingContent={remainingMDX ? <MDXContent source={remainingMDX} /> : null}
-        relatedContent={relatedPosts.length > 0 ? <RelatedPosts posts={relatedPosts} /> : null}
+        relatedContent={relatedNodes.length > 0 ? <ContentEcosystemView relatedNodes={relatedNodes} /> : null}
       />
     </>
   );

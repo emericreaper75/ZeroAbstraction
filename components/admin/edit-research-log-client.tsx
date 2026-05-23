@@ -23,6 +23,7 @@ interface Props {
     content: string;
     tags: string[];
     entryNumber: number;
+    featured: boolean;
     published: boolean;
     updatedAt: string;
   };
@@ -161,6 +162,18 @@ export default function EditResearchLogClient({ logId, defaultValues }: Props) {
                 <span className="font-label text-[10px] uppercase tracking-widest text-zinc-400">
                   {defaultValues.published ? "Published" : "Draft"}
                 </span>
+              </div>
+              <div className="pt-4 border-t border-zinc-800">
+                <label className="flex items-center gap-2 font-label text-[10px] uppercase text-zinc-300 tracking-widest cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="featured"
+                    value="true"
+                    defaultChecked={defaultValues.featured}
+                    className="w-4 h-4 bg-[#111111] border-zinc-700 rounded text-cyan-500 focus:ring-cyan-500/20 focus:ring-offset-0 focus:ring-2"
+                  />
+                  Featured Research Log
+                </label>
               </div>
               <div className="pt-4 border-t border-zinc-800">
                 <Link

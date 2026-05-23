@@ -1,3 +1,5 @@
+'use client';
+
 import React from "react";
 import Link from "next/link";
 import { ArrowRight, Code2 } from "lucide-react";
@@ -58,52 +60,55 @@ export default function PortfolioGrid({ projects }: PortfolioGridProps) {
         >
           {projects.map((project) => (
             <StaggerItem key={project.id}>
-              <Surface variant="floating" interactive padding="lg" asChild className="h-full flex flex-col group">
-                <Link href={`/projects/${project.slug}`}>
-                  <div className="mb-4 flex items-center justify-between">
-                    <Badge
-                      variant="outline"
-                      className="border-zinc-700 text-[10px] font-mono uppercase tracking-wider text-cyan-400"
+              <Surface variant="floating" interactive padding="lg" className="h-full flex flex-col group relative">
+                <div className="relative z-20 mb-4 flex items-center justify-between">
+                  <Badge
+                    variant="outline"
+                    className="border-zinc-700 text-[10px] font-mono uppercase tracking-wider text-cyan-400"
+                  >
+                    Featured
+                  </Badge>
+
+                  {project.githubUrl && (
+                    <a
+                      href={project.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-zinc-500 transition-colors hover:text-zinc-300 relative z-20"
+                      aria-label={`${project.title} source code`}
+                      onClick={(e) => e.stopPropagation()}
                     >
-                      Featured
-                    </Badge>
+                      <Code2 className="h-4 w-4" aria-hidden="true" />
+                    </a>
+                  )}
+                </div>
 
-                    {project.githubUrl && (
-                      <a
-                        href={project.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-zinc-500 transition-colors hover:text-zinc-300 relative z-20"
-                        aria-label={`${project.title} source code`}
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <Code2 className="h-4 w-4" aria-hidden="true" />
-                      </a>
-                    )}
-                  </div>
-
+                <Link
+                  href={`/projects/${project.slug}`}
+                  className="block before:absolute before:inset-0 before:content-['']"
+                >
                   <h3 className="mb-2 text-lg font-serif font-semibold text-zinc-100 transition-colors group-hover:text-cyan-400">
                     {project.title}
                   </h3>
-
-                  <p className="mb-4 flex-grow text-sm leading-relaxed text-zinc-500 line-clamp-3">
-                    {project.description}
-                  </p>
-
-                  {project.tags.length > 0 && (
-                    <div className="flex flex-wrap gap-1.5 mt-auto">
-                      {project.tags.slice(0, 3).map((tag) => (
-                        <Badge
-                          key={tag}
-                          variant="outline"
-                          className="border-zinc-800 text-[10px] font-mono text-zinc-500"
-                        >
-                          {tag.replace(/^"|"$/g, "")}
-                        </Badge>
-                      ))}
-                    </div>
-                  )}
                 </Link>
+
+                <p className="mb-4 flex-grow text-sm leading-relaxed text-zinc-500 line-clamp-3">
+                  {project.description}
+                </p>
+
+                {project.tags.length > 0 && (
+                  <div className="relative z-20 flex flex-wrap gap-1.5 mt-auto">
+                    {project.tags.slice(0, 3).map((tag) => (
+                      <Badge
+                        key={tag}
+                        variant="outline"
+                        className="border-zinc-800 text-[10px] font-mono text-zinc-500"
+                      >
+                        {tag.replace(/^"|"$/g, "")}
+                      </Badge>
+                    ))}
+                  </div>
+                )}
               </Surface>
             </StaggerItem>
           ))}

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/db/prisma";
-import { deleteContentPost, toggleContentPostPublish } from "@/actions/content-post-actions";
+import { toggleContentPostPublish } from "@/actions/content-post-actions";
 
 export const metadata = { title: "ZeroAbstraction | Posts" };
 

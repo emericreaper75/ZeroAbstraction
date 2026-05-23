@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/db/prisma";
-import { deleteProject, toggleProjectPublish } from "@/actions/project-actions";
+import { toggleProjectPublish } from "@/actions/project-actions";
 
 export const metadata = { title: "ZeroAbstraction | Projects" };
 

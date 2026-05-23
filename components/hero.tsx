@@ -221,7 +221,7 @@ export default function Hero() {
       {/* Bottom fade */}
       <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-base to-transparent z-0" />
 
-      <div className="container mx-auto px-6 relative z-10 grid lg:grid-cols-2 gap-12 items-center pt-20">
+      <div className="container mx-auto px-6 relative z-10 grid lg:grid-cols-2 gap-12 items-center pt-12 lg:pt-20">
         {/* Left Column */}
         <div className="max-w-2xl">
           <div className="author-block flex items-center gap-3 mb-6">
@@ -239,7 +239,7 @@ export default function Hero() {
             </span>
           </div>
           
-          <h1 className="text-5xl md:text-7xl font-bold font-serif mb-6 tracking-tight">
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold font-serif mb-6 tracking-tight">
             <span className="text-white">Zero</span>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400">
               Abstraction
@@ -251,34 +251,34 @@ export default function Hero() {
           </p>
           
           {/* Primary CTAs */}
-          <div className="flex flex-wrap gap-4 mb-8">
+          <div className="flex flex-col md:!flex-row gap-4 mb-8 w-full">
             <Link 
               href="/blog" 
-              className="px-6 py-3 rounded-md bg-cyan-500 hover:bg-cyan-400 text-zinc-950 font-semibold transition-all duration-200 shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:shadow-[0_0_28px_rgba(34,211,238,0.5)]"
+              className="w-full md:!w-auto inline-flex justify-center items-center px-6 py-3 rounded-md bg-cyan-500 hover:bg-cyan-400 text-zinc-950 font-semibold transition-all duration-200 shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:shadow-[0_0_28px_rgba(34,211,238,0.5)]"
             >
               Browse Blog
             </Link>
             <Link 
               href="/projects" 
-              className="ghost-btn px-6 py-3 rounded-md font-medium"
+              className="w-full md:!w-auto inline-flex justify-center items-center ghost-btn px-6 py-3 rounded-md font-medium"
             >
               View Projects
             </Link>
           </div>
 
 
-          <div className="pt-8 border-t border-zinc-800 flex items-center gap-8 text-sm text-zinc-500 font-mono">
+          <div className="pt-8 border-t border-zinc-800 flex flex-wrap sm:flex-nowrap items-center justify-between sm:justify-start gap-4 sm:gap-8 text-sm text-zinc-400 font-mono">
             <div className="flex flex-col">
               <span className="text-zinc-300 font-semibold text-xl mb-1 mt-1">12+</span>
-              <span className="uppercase text-[10px] tracking-wider">Articles</span>
+              <span className="uppercase text-xs tracking-wider">Articles</span>
             </div>
             <div className="flex flex-col">
               <span className="text-zinc-300 font-semibold text-xl mb-1 mt-1">4</span>
-              <span className="uppercase text-[10px] tracking-wider">Domains</span>
+              <span className="uppercase text-xs tracking-wider">Domains</span>
             </div>
             <div className="flex flex-col">
               <span className="text-zinc-300 font-semibold text-xl mb-1 mt-1">6+</span>
-              <span className="uppercase text-[10px] tracking-wider">Projects</span>
+              <span className="uppercase text-xs tracking-wider">Projects</span>
             </div>
           </div>
         </div>

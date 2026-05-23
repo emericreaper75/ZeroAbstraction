@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Fuse from "fuse.js";
 import { useDebouncedValue } from "@/components/hooks/useDebouncedValue";
 
@@ -18,8 +18,17 @@ type State =
   | { status: "loading"; items: SearchResultItem[]; error?: undefined }
   | { status: "error"; items: SearchResultItem[]; error: string };
 
-let searchIndex: any[] | null = null;
-let indexFetchPromise: Promise<any[]> | null = null;
+type SearchIndexItem = {
+  id: string;
+  category: string;
+  title: string;
+  description: string;
+  url: string;
+  tags: string[];
+};
+
+let searchIndex: SearchIndexItem[] | null = null;
+let indexFetchPromise: Promise<SearchIndexItem[]> | null = null;
 
 async function getSearchIndex() {
   if (searchIndex) return searchIndex;
@@ -78,7 +87,7 @@ export function useInstantSearch(opts: {
         }));
 
         setState({ status: "idle", items: mappedResults });
-      } catch (err) {
+      } catch {
         if (!isSubscribed) return;
         setState({
           status: "error",

@@ -4,10 +4,12 @@ import React, {
   useState,
   useEffect,
   useCallback,
+  useRef,
 } from 'react';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import {
   Menu,
@@ -18,6 +20,7 @@ import {
 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
+import { Surface } from '@/components/ui/surface';
 import SearchModal from '@/components/SearchModal';
 import { useDistractionFree } from '@/components/DistractionFreeProvider';
 
@@ -51,6 +54,7 @@ export default function Navbar() {
     useState(false);
 
   const [mounted, setMounted] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const pathname = usePathname();
   const isHomepage = pathname === '/';
@@ -71,6 +75,16 @@ export default function Navbar() {
         'scroll',
         handleScroll
       );
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   useEffect(() => {
@@ -104,24 +118,39 @@ export default function Navbar() {
   useEffect(() => {
     if (!isMobileMenuOpen) return;
 
-    const handleEscape = (
-      e: KeyboardEvent
-    ) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setIsMobileMenuOpen(false);
+        return;
+      }
+
+      if (e.key === 'Tab' && menuRef.current) {
+        const focusableElements = menuRef.current.querySelectorAll(
+          'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        );
+        
+        if (focusableElements.length === 0) return;
+
+        const firstElement = focusableElements[0] as HTMLElement;
+        const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            lastElement.focus();
+            e.preventDefault();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            firstElement.focus();
+            e.preventDefault();
+          }
+        }
       }
     };
 
-    document.addEventListener(
-      'keydown',
-      handleEscape
-    );
+    document.addEventListener('keydown', handleKeyDown);
 
-    return () =>
-      document.removeEventListener(
-        'keydown',
-        handleEscape
-      );
+    return () => document.removeEventListener('keydown', handleKeyDown);
   }, [isMobileMenuOpen]);
 
   useEffect(() => {
@@ -209,7 +238,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="max-md:hidden flex flex-1 items-center justify-center gap-1 overflow-visible px-4">
+        <div className="hidden md:!flex flex-1 items-center justify-center gap-1 overflow-visible px-4">
           {/* Blog Dropdown */}
           <div className="relative overflow-visible">
             <button
@@ -220,7 +249,7 @@ export default function Navbar() {
               }
               className={`flex items-center justify-center min-h-[44px] md:min-h-0 gap-1 rounded-md px-3 py-2 text-sm font-mono transition-colors ${isBlogActive
                   ? 'bg-cyan-500/10 text-cyan-400'
-                  : 'text-zinc-400 hover:bg-zinc-800/50 hover:text-cyan-400'
+                  : 'text-zinc-300 hover:bg-zinc-800/50 hover:text-cyan-400'
                 }`}
             >
               Blog
@@ -244,7 +273,7 @@ export default function Navbar() {
                         category.href
                       )
                           ? 'bg-cyan-500/10 text-cyan-400'
-                          : 'text-zinc-400 hover:bg-zinc-800/50 hover:text-cyan-400'
+                          : 'text-zinc-300 hover:bg-zinc-800/50 hover:text-cyan-400'
                         }`}
                     >
                       {category.name}
@@ -262,7 +291,7 @@ export default function Navbar() {
               href={link.href}
               className={`flex items-center min-h-[44px] md:min-h-0 rounded-md px-3 py-2 text-sm font-mono transition-colors ${isActive(link.href)
                   ? 'bg-cyan-500/10 text-cyan-400'
-                  : 'text-zinc-400 hover:bg-zinc-800/50 hover:text-cyan-400'
+                  : 'text-zinc-300 hover:bg-zinc-800/50 hover:text-cyan-400'
                 }`}
             >
               {link.name}
@@ -309,6 +338,8 @@ export default function Navbar() {
                 !isMobileMenuOpen
               )
             }
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="mobile-menu"
             aria-label={
               isMobileMenuOpen
                 ? 'Close menu'
@@ -316,57 +347,95 @@ export default function Navbar() {
             }
           >
             {isMobileMenuOpen ? (
-              <X className="h-4 w-4" />
+              <X className="h-4 w-4" aria-hidden="true" />
             ) : (
-              <Menu className="h-4 w-4" />
+              <Menu className="h-4 w-4" aria-hidden="true" />
             )}
           </Button>
         </div>
       </nav>
 
       {/* Mobile Navigation */}
-      <div
-        className={`overflow-hidden transition-all duration-300 ease-in-out md:hidden ${isMobileMenuOpen
-            ? 'max-h-[32rem] border-b border-zinc-800 bg-[#050810]/95 backdrop-blur-md'
-            : 'max-h-0'
-          }`}
-      >
-        <div className="flex flex-col space-y-1 px-6 py-4">
-          <div className="px-3 py-2 text-xs uppercase tracking-wider text-zinc-500">
-            Blog Categories
-          </div>
-
-          {blogCategories.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 top-16 z-40 bg-[#050810]/80 backdrop-blur-sm md:hidden"
               onClick={() => setIsMobileMenuOpen(false)}
-              className={`flex items-center min-h-[44px] rounded-md px-3 py-2.5 text-sm font-mono transition-colors ${isActive(link.href)
-                  ? 'bg-cyan-500/10 text-cyan-400'
-                  : 'text-zinc-400 hover:bg-zinc-800/50 hover:text-cyan-400'
-                }`}
+              aria-hidden="true"
+            />
+            <motion.div
+              id="mobile-menu"
+              ref={menuRef}
+              initial={{ opacity: 0, x: 20, scale: 0.95 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              exit={{ opacity: 0, x: 20, scale: 0.95 }}
+              transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="absolute right-4 top-[72px] w-64 z-50 md:hidden origin-top-right"
             >
-              {link.name}
-            </Link>
-          ))}
+              <Surface variant="glass" padding="none" className="flex flex-col shadow-2xl rounded-2xl border border-zinc-800/80 max-h-[calc(100vh-88px)] overflow-y-auto overscroll-contain !bg-[#050810]/95">
+                <div className="flex flex-col px-4 py-4 space-y-1">
+                  <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-zinc-600">
+                    Navigation
+                  </div>
 
-          <div className="my-2 border-t border-zinc-800" />
+                  <Link
+                    href="/"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`flex items-center min-h-[44px] rounded-md px-3 py-2 text-sm font-mono transition-colors ${pathname === '/'
+                        ? 'bg-cyan-500/10 text-cyan-400'
+                        : 'text-zinc-400 hover:bg-zinc-800/50 hover:text-cyan-400'
+                      }`}
+                  >
+                    Home
+                  </Link>
 
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              onClick={() => setIsMobileMenuOpen(false)}
-              className={`flex items-center min-h-[44px] rounded-md px-3 py-2.5 text-sm font-mono transition-colors ${isActive(link.href)
-                  ? 'bg-cyan-500/10 text-cyan-400'
-                  : 'text-zinc-400 hover:bg-zinc-800/50 hover:text-cyan-400'
-                }`}
-            >
-              {link.name}
-            </Link>
-          ))}
-        </div>
-      </div>
+                  <Link
+                    href="/blog"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`flex items-center min-h-[44px] rounded-md px-3 py-2 text-sm font-mono transition-colors ${isBlogActive
+                        ? 'bg-cyan-500/10 text-cyan-400'
+                        : 'text-zinc-400 hover:bg-zinc-800/50 hover:text-cyan-400'
+                      }`}
+                  >
+                    Blog
+                  </Link>
+
+                  {navLinks.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={`flex items-center min-h-[44px] rounded-md px-3 py-2 text-sm font-mono transition-colors ${isActive(link.href)
+                          ? 'bg-cyan-500/10 text-cyan-400'
+                          : 'text-zinc-400 hover:bg-zinc-800/50 hover:text-cyan-400'
+                        }`}
+                    >
+                      {link.name}
+                    </Link>
+                  ))}
+
+                  <div className="my-2 border-t border-zinc-800/50" />
+
+                  <button
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true, metaKey: true }));
+                    }}
+                    className="flex items-center min-h-[44px] w-full rounded-md px-3 py-2 text-sm font-mono transition-colors text-zinc-400 hover:bg-zinc-800/50 hover:text-cyan-400 text-left"
+                  >
+                    Search
+                  </button>
+                </div>
+              </Surface>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

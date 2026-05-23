@@ -61,7 +61,7 @@ export default function ContactForm() {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500));
       setIsSuccess(true);
-    } catch (err) {
+    } catch {
       setSubmitError(true);
     } finally {
       setIsSubmitting(false);
@@ -73,7 +73,7 @@ export default function ContactForm() {
       <div className="bg-cyan-500/10 border border-cyan-500/30 rounded-xl p-8 text-center text-cyan-400">
         <svg className="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
         <h3 className="text-xl font-bold mb-2 text-white">Message received</h3>
-        <p>I'll respond within 48 hours.</p>
+        <p>I&apos;ll respond within 48 hours.</p>
       </div>
     );
   }

@@ -1,0 +1,21 @@
+---
+title: "Research Log #008 — Radiation-Hardened Electronics for Space Missions"
+date: "2026-05-23"
+description: "Evaluating silicon-on-insulator (SOI) transistor structures under simulated proton beam exposure to determine single-event latchup thresholds."
+tags: ["radiation","aerospace","semiconductors","electronics"]
+category: "research-logs"
+slug: "radiation-hardened-electronics-space-missions"
+published: true
+---
+## Setup
+
+We exposed a test chip built on a custom $180 , 	ext{nm}$ Silicon-on-Insulator (SOI) process to a $70 , 	ext{MeV}$ proton flux at the local medical cyclotron facility, simulating intense orbital radiation environments.
+
+## Measurements and Latchup Immunity
+
+Standard bulk silicon CMOS chips are highly vulnerable to Single-Event Latchup (SEL)—a parasitic thyristor structure is triggered by an incoming ion, short-circuiting VDD to ground. 
+
+In our SOI design, the presence of the buried oxide (BOX) isolation layer prevents parasitic structures from forming. The test results were excellent:
+- **Cumulative Dose**: Up to $150 , 	ext{krad(Si)}$ with no significant leakage current degradation.
+- **SEL Events**: $0$ events recorded during a $10$-hour continuous beam exposure, confirming complete latchup immunity.
+    

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Search, X } from "lucide-react";
 
@@ -62,9 +62,11 @@ export default function SearchModal() {
   });
 
   const hasResults = items.length > 0;
-  const hint = useMemo(() => {
+  const [hint, setHint] = useState("Ctrl K");
+
+  useEffect(() => {
     const isMac = typeof navigator !== "undefined" && navigator.platform.toLowerCase().includes("mac");
-    return isMac ? "⌘K" : "Ctrl K";
+    setHint(isMac ? "⌘K" : "Ctrl K");
   }, []);
 
   useEffect(() => {
@@ -110,7 +112,7 @@ export default function SearchModal() {
       {/* Desktop search button — text + shortcut hint */}
       <Button
         variant="ghost"
-        className="hidden md:inline-flex items-center gap-2 border border-zinc-800 bg-zinc-900/40 text-zinc-400 hover:text-cyan-400 hover:border-cyan-500/50 transition-all duration-300"
+        className="hidden md:!flex items-center gap-2 border border-zinc-800 bg-zinc-900/40 text-zinc-400 hover:text-cyan-400 hover:border-cyan-500/50 transition-all duration-300"
         onClick={openModal}
         aria-label="Search"
       >
@@ -142,7 +144,7 @@ export default function SearchModal() {
             if (e.target === e.currentTarget) close();
           }}
         >
-          <Surface variant="glass" padding="none" className="w-full max-w-2xl overflow-hidden shadow-2xl">
+          <Surface variant="glass" padding="none" className="w-full max-w-2xl overflow-hidden shadow-2xl !bg-[#050810]/95">
             <div className="flex items-center gap-2 border-b border-zinc-800/50 px-4 py-3 bg-zinc-900/40">
               <Search className="h-4 w-4 text-cyan-400" aria-hidden="true" />
               <Input

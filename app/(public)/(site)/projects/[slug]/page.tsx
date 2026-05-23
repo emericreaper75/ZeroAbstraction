@@ -2,13 +2,10 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
 import { getProjectBySlug } from "@/lib/projects/get-project-by-slug";
-import { getRelatedProjects } from "@/lib/projects/get-related-projects";
-import RelatedProjects from "@/components/related/RelatedProjects";
-import Link from "next/link";
-import { ArrowUpRight, Code2 } from "lucide-react";
+import { getRelatedNodes } from "@/lib/graph/engine";
+import ContentEcosystemView from "@/components/graph/ContentEcosystemView";
 import MDXContent from "@/components/mdx/MDXContent";
 import { extractTOC, nestTOC } from "@/lib/toc";
-import TableOfContents from "@/components/TableOfContents";
 import { generateProjectMetadata } from "@/lib/metadata";
 import ProjectLayout from "@/components/ProjectLayout";
 import matter from "gray-matter";
@@ -49,11 +46,7 @@ export default async function ProjectPage({
 
   const toc = project.content ? nestTOC(extractTOC(project.content)) : [];
 
-  const relatedProjects = await getRelatedProjects({
-    projectId: project.id,
-    tags: project.tags,
-    limit: 3,
-  });
+  const relatedNodes = await getRelatedNodes(`project:${project.slug}`, 4);
 
   const { data, content: mdxBody } = matter(project.content ?? "");
   const abstract = data.abstract ?? undefined;
@@ -82,7 +75,7 @@ export default async function ProjectPage({
           )
         }
         remainingContent={remainingMDX ? <MDXContent source={remainingMDX} /> : null}
-        relatedContent={<RelatedProjects projects={relatedProjects} />}
+        relatedContent={relatedNodes.length > 0 ? <ContentEcosystemView relatedNodes={relatedNodes} /> : null}
       />
     </div>
   );

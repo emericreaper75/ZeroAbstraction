@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/db/prisma";
-import { deleteResearchLog, toggleResearchLogPublish } from "@/actions/research-log-actions";
+import { toggleResearchLogPublish } from "@/actions/research-log-actions";
 
 export const metadata = { title: "ZeroAbstraction | Research Logs" };
 

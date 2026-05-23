@@ -23,9 +23,19 @@ const categoryLabels: Record<string, string> = {
 
 type FeaturedPostsProps = {
   posts: PublicPostCard[];
+  title?: string;
+  subtitle?: string;
+  viewAllLink?: string;
+  viewAllText?: string;
 };
 
-export default function FeaturedPosts({ posts }: FeaturedPostsProps) {
+export default function FeaturedPosts({
+  posts,
+  title = "Featured Articles",
+  subtitle = "Latest Research",
+  viewAllLink = "/blog",
+  viewAllText = "View all articles",
+}: FeaturedPostsProps) {
   if (posts.length === 0) return null;
 
   return (
@@ -34,17 +44,17 @@ export default function FeaturedPosts({ posts }: FeaturedPostsProps) {
         <div className="mb-12 flex items-end justify-between">
           <div>
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-zinc-500 mb-2">
-              Latest Research
+              {subtitle}
             </p>
             <h2 id="featured-heading" className="text-3xl font-serif font-bold text-zinc-100">
-              Featured Articles
+              {title}
             </h2>
           </div>
           <Link
-            href="/blog"
+            href={viewAllLink}
             className="hidden sm:inline-flex items-center gap-2 text-sm font-mono text-zinc-500 hover:text-cyan-400 transition-colors"
           >
-            View all
+            {viewAllText.replace(" articles", "")}
             <ArrowRight className="w-4 h-4" aria-hidden="true" />
           </Link>
         </div>
@@ -124,10 +134,10 @@ export default function FeaturedPosts({ posts }: FeaturedPostsProps) {
         {/* Mobile "view all" link */}
         <div className="mt-8 text-center sm:hidden">
           <Link
-            href="/blog"
+            href={viewAllLink}
             className="inline-flex items-center gap-2 text-sm font-mono text-zinc-500 hover:text-cyan-400 transition-colors"
           >
-            View all articles
+            {viewAllText}
             <ArrowRight className="w-4 h-4" aria-hidden="true" />
           </Link>
         </div>

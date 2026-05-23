@@ -16,7 +16,7 @@ function getHeadingText(node: React.ReactNode): string {
     return node.map(getHeadingText).join('');
   }
   if (typeof node === 'object' && 'props' in node) {
-    return getHeadingText((node as any).props.children);
+    return getHeadingText((node as React.ReactElement).props.children);
   }
   return '';
 }

@@ -80,7 +80,7 @@ export default function DomainCards() {
                   <p className="text-sm text-zinc-500 leading-relaxed mb-6 flex-grow">
                     {domain.description}
                   </p>
-                  <div className="flex items-center text-xs font-mono font-medium uppercase tracking-wider text-zinc-500 group-hover:text-cyan-400 transition-colors">
+                  <div className="flex items-center text-sm font-mono font-medium uppercase tracking-wider text-zinc-500 group-hover:text-cyan-400 transition-colors">
                     <span>Explore domain</span>
                     <svg
                       className="w-4 h-4 ml-2 transform transition-transform duration-300 group-hover:translate-x-1"

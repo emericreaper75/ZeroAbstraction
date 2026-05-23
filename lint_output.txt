@@ -1,0 +1,96 @@
+
+> zero-abstraction-blog@0.1.0 lint
+> next lint
+
+
+./app/(admin)/admin/media/page.tsx
+120:19  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./app/(admin)/admin/media/upload/page.tsx
+17:10  Error: 'uploadedUrl' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+131:17  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./app/(admin)/admin/posts/page.tsx
+3:10  Error: 'deleteContentPost' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/(admin)/admin/projects/[id]/edit/page.tsx
+3:8  Error: 'Link' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/(admin)/admin/projects/page.tsx
+3:10  Error: 'deleteProject' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/(admin)/admin/research-logs/[id]/edit/page.tsx
+2:8  Error: 'Link' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/(admin)/admin/research-logs/page.tsx
+3:10  Error: 'deleteResearchLog' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/(public)/(site)/[category]/page.tsx
+99:33  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/(public)/(site)/projects/[slug]/page.tsx
+7:8  Error: 'Link' is defined but never used.  @typescript-eslint/no-unused-vars
+8:10  Error: 'ArrowUpRight' is defined but never used.  @typescript-eslint/no-unused-vars
+8:24  Error: 'Code2' is defined but never used.  @typescript-eslint/no-unused-vars
+11:8  Error: 'TableOfContents' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/(public)/contact/page.tsx
+72:120  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+72:131  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+
+./app/(public)/layout.tsx
+4:10  Error: 'headers' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/layout.tsx
+58:9  Warning: Custom fonts not added in `pages/_document.js` will only load for a single page. This is discouraged. See: https://nextjs.org/docs/messages/no-page-custom-font  @next/next/no-page-custom-font
+
+./components/ContactForm.tsx
+64:14  Error: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
+76:13  Error: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
+
+./components/MDXRenderer.tsx
+30:16  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./components/PageSkeleton.tsx
+217:10  Error: 'CategorySkeleton' is defined but never used.  @typescript-eslint/no-unused-vars
+858:32  Error: 'type' is defined but never used.  @typescript-eslint/no-unused-vars
+899:35  Error: 'type' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./components/TimelineItem.tsx
+82:47  Error: 'isLast' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./components/emails/welcome.tsx
+26:60  Error: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
+38:26  Error: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
+
+./components/graph/RelatedNodeCard.tsx
+2:10  Error: 'ContentNode' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./components/hooks/useInstantSearch.ts
+1:21  Error: 'useMemo' is defined but never used.  @typescript-eslint/no-unused-vars
+21:18  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+22:32  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+81:16  Error: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./components/mdx/HeadingWithAnchor.tsx
+19:36  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./components/newsletter-form.tsx
+37:19  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./components/ui/Skeleton.tsx
+3:11  Error: An interface declaring no members is equivalent to its supertype.  @typescript-eslint/no-empty-object-type
+
+./components/ui/lightbox-image.tsx
+6:43  Error: 'onDrag' is defined but never used.  @typescript-eslint/no-unused-vars
+6:51  Error: 'onDragStart' is defined but never used.  @typescript-eslint/no-unused-vars
+6:64  Error: 'onDragEnd' is defined but never used.  @typescript-eslint/no-unused-vars
+6:75  Error: 'onAnimationStart' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./lib/graph/engine.ts
+3:23  Error: 'RelationType' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./lib/graph/types.ts
+15:9  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/basic-features/eslint#disabling-rules

@@ -7,7 +7,8 @@ import { extractTOC, nestTOC } from '@/lib/toc';
 import ArticleLayout from '@/components/ArticleLayout';
 import MDXContent from '@/components/mdx/MDXContent';
 import { generateArticleJsonLd, generateBreadcrumbJsonLd } from '@/lib/jsonld';
-import RelatedPosts from '@/components/related/RelatedPosts';
+import { getRelatedNodes } from '@/lib/graph/engine';
+import ContentEcosystemView from '@/components/graph/ContentEcosystemView';
 import { contentPostToLegacyPost } from '@/lib/public/legacy-post-adapter';
 import matter from 'gray-matter';
 import { splitMDXContent } from '@/lib/mdx/split';
@@ -51,23 +52,13 @@ export default async function ArticlePage({ params }: Props) {
   if (!post) notFound();
 
   const toc = nestTOC(extractTOC(post.content ?? ""));
-  const relatedPosts = await prisma.contentPost.findMany({
-    where: {
-      published: true,
-      id: { not: post.id },
-      tags: { hasSome: post.tags },
-    },
-    orderBy: { createdAt: 'desc' },
-    take: 4,
-  });
+  const relatedNodes = await getRelatedNodes(`post:${post.slug}`, 4);
 
   const legacyPost = contentPostToLegacyPost({
     post,
     routeCategory: params.category,
   });
-  const relatedLegacy = relatedPosts.map((p) =>
-    contentPostToLegacyPost({ post: p, routeCategory: CATEGORY_ENUM_TO_ROUTE[p.category] })
-  );
+
 
   const articleJsonLd = generateArticleJsonLd(legacyPost, params.category);
   const breadcrumbJsonLd = generateBreadcrumbJsonLd([
@@ -98,7 +89,7 @@ export default async function ArticlePage({ params }: Props) {
         abstract={abstract}
         previewContent={<MDXContent source={previewMDX} />}
         remainingContent={remainingMDX ? <MDXContent source={remainingMDX} /> : null}
-        relatedContent={<RelatedPosts posts={relatedLegacy} />}
+        relatedContent={relatedNodes.length > 0 ? <ContentEcosystemView relatedNodes={relatedNodes} /> : null}
       />
     </>
   );

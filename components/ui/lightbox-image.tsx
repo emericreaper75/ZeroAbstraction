@@ -3,7 +3,9 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export function LightboxImage({ src, alt, onDrag, onDragStart, onDragEnd, onAnimationStart, ...props }: React.ImgHTMLAttributes<HTMLImageElement>) {
+export function LightboxImage({ src, alt, ...props }: React.ImgHTMLAttributes<HTMLImageElement>) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { onDrag, onDragStart, onDragEnd, onAnimationStart, ...restProps } = props;
   const [isOpen, setIsOpen] = useState(false);
 
   if (!src) return null;
@@ -16,7 +18,7 @@ export function LightboxImage({ src, alt, onDrag, onDragStart, onDragEnd, onAnim
         className="cursor-zoom-in rounded-lg shadow-md my-8 w-full object-cover transition-opacity hover:opacity-90"
         onClick={() => setIsOpen(true)}
         layoutId={`img-${src}`}
-        {...props}
+        {...restProps}
       />
       <AnimatePresence>
         {isOpen && (

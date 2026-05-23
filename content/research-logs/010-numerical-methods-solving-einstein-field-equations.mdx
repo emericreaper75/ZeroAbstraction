@@ -1,0 +1,30 @@
+---
+title: "Research Log #010 — Numerical Methods for Solving Einstein Field Equations"
+date: "2026-05-23"
+description: "Implementing numerical relativity solvers using ADM formulations to compute spacetime metrics during binary black hole mergers."
+tags: ["numerical-relativity","black-holes","computational-physics","physics"]
+category: "research-logs"
+slug: "numerical-methods-solving-einstein-field-equations"
+published: true
+---
+## Mathematical Challenge
+
+Einstein's Field Equations are a system of ten highly coupled, non-linear partial differential equations. Solving them analytically is impossible for general dynamic systems like merging black holes. We must formulate them numerically.
+
+## The ADM (3+1) Formalism
+
+We slice 4D spacetime into a family of 3D spatial hypersurfaces parameterized by coordinate time $t$. The spacetime metric is decomposed as:
+
+$$
+ds^2 = -(alpha^2 - eta_i eta^i) dt^2 + 2 eta_i dt dx^i + gamma_{ij} dx^i dx^j
+$$
+
+where:
+- $alpha$ is the lapse function, regulating coordinate time relative to proper time.
+- $eta^i$ is the shift vector, describing coordinate drift along the hypersurfaces.
+- $gamma_{ij}$ is the spatial 3-metric.
+
+## Computational Results
+
+Using a finite-difference solver with adaptive mesh refinement, we successfully simulated the metric evolution of a symmetric binary black hole system through inspiral, merger, and ringdown phases.
+    

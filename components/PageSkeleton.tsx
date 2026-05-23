@@ -213,10 +213,6 @@ function ListSkeleton({ type }: { type: "blog" | "projects" }) {
   );
 }
 
-// Category details page skeleton (fallback for single category layouts)
-function CategorySkeleton() {
-  return <ListSkeleton type="blog" />;
-}
 
 // About page skeleton
 function AboutSkeleton() {
@@ -855,7 +851,7 @@ function AdminEditPostSkeleton() {
 }
 
 // Delete Warning Confirmation Skeleton
-function AdminDeleteSkeleton({ type }: { type: "Post" | "Project" | "Research Log" }) {
+function AdminDeleteSkeleton() {
   return (
     <div className="flex-1 overflow-y-auto custom-scrollbar bg-[#0a0a0a] relative">
       <div className="relative z-10 p-12 max-w-7xl">
@@ -896,7 +892,7 @@ function AdminDeleteSkeleton({ type }: { type: "Post" | "Project" | "Research Lo
 }
 
 // Revisions History Skeleton
-function AdminRevisionsSkeleton({ type }: { type: "Post" | "Project" }) {
+function AdminRevisionsSkeleton() {
   return (
     <div className="flex-1 overflow-y-auto custom-scrollbar bg-[#0a0a0a] p-12">
       <div className="max-w-5xl">
@@ -1585,9 +1581,9 @@ export function PageSkeleton({ pathname }: { pathname: string }) {
     } else if (pathname.startsWith("/admin/posts/") && pathname.endsWith("/edit")) {
       content = <AdminEditPostSkeleton />;
     } else if (pathname.startsWith("/admin/posts/") && pathname.endsWith("/delete")) {
-      content = <AdminDeleteSkeleton type="Post" />;
+      content = <AdminDeleteSkeleton />;
     } else if (pathname.startsWith("/admin/posts/") && pathname.endsWith("/revisions")) {
-      content = <AdminRevisionsSkeleton type="Post" />;
+      content = <AdminRevisionsSkeleton />;
     } else if (pathname === "/admin/projects") {
       content = <AdminProjectsListSkeleton />;
     } else if (pathname === "/admin/projects/new") {
@@ -1595,9 +1591,9 @@ export function PageSkeleton({ pathname }: { pathname: string }) {
     } else if (pathname.startsWith("/admin/projects/") && pathname.endsWith("/edit")) {
       content = <AdminEditProjectSkeleton />;
     } else if (pathname.startsWith("/admin/projects/") && pathname.endsWith("/delete")) {
-      content = <AdminDeleteSkeleton type="Project" />;
+      content = <AdminDeleteSkeleton />;
     } else if (pathname.startsWith("/admin/projects/") && pathname.endsWith("/revisions")) {
-      content = <AdminRevisionsSkeleton type="Project" />;
+      content = <AdminRevisionsSkeleton />;
     } else if (pathname === "/admin/research-logs") {
       content = <AdminResearchLogsListSkeleton />;
     } else if (pathname === "/admin/research-logs/new") {
@@ -1605,7 +1601,7 @@ export function PageSkeleton({ pathname }: { pathname: string }) {
     } else if (pathname.startsWith("/admin/research-logs/") && pathname.endsWith("/edit")) {
       content = <AdminEditResearchLogSkeleton />;
     } else if (pathname.startsWith("/admin/research-logs/") && pathname.endsWith("/delete")) {
-      content = <AdminDeleteSkeleton type="Research Log" />;
+      content = <AdminDeleteSkeleton />;
     } else if (pathname === "/admin/media") {
       content = <AdminMediaSkeleton />;
     } else if (pathname === "/admin/media/upload") {

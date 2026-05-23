@@ -38,8 +38,27 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ZeroAbstraction",
-  description: "Portfolio Platform",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://zero-abstraction.dev'),
+  title: {
+    default: "ZeroAbstraction | First-Principles Engineering",
+    template: "%s | ZeroAbstraction"
+  },
+  description: "Exploring first-principles engineering across aerospace, embedded systems, and astrophysics.",
+  authors: [{ name: "ZeroAbstraction" }],
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "/",
+    siteName: "ZeroAbstraction",
+    title: "ZeroAbstraction | First-Principles Engineering",
+    description: "Exploring first-principles engineering across aerospace, embedded systems, and astrophysics.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "ZeroAbstraction",
+    description: "First-Principles Engineering",
+    creator: "@zeroabstraction"
+  }
 };
 
 export default function RootLayout({

@@ -22,6 +22,7 @@ export async function createResearchLog(
   const tagsRaw = formData.get("tags")?.toString() ?? "";
   const entryNumberRaw = formData.get("entryNumber")?.toString() ?? "0";
   const publishedRaw = formData.get("published");
+  const featuredRaw = formData.get("featured");
 
   if (!title) return { error: "Title is required." };
   if (!series) return { error: "Research series is required." };
@@ -34,6 +35,7 @@ export async function createResearchLog(
   const slug = slugify(title);
   const entryNumber = parseInt(entryNumberRaw, 10) || 0;
   const published = publishedRaw === "true";
+  const featured = featuredRaw === "true";
 
   try {
     await prisma.researchLog.create({
@@ -46,6 +48,7 @@ export async function createResearchLog(
         tags,
         entryNumber,
         published,
+        featured,
       },
     });
   } catch (e: unknown) {
@@ -77,6 +80,7 @@ export async function updateResearchLog(
   const content = formData.get("content")?.toString() ?? "";
   const tagsRaw = formData.get("tags")?.toString() ?? "";
   const publishedRaw = formData.get("published");
+  const featuredRaw = formData.get("featured");
 
   if (!title) return { error: "Title is required." };
   if (!series) return { error: "Research series is required." };
@@ -86,6 +90,7 @@ export async function updateResearchLog(
     .map((t) => t.trim())
     .filter(Boolean);
   const published = publishedRaw === "true";
+  const featured = featuredRaw === "true";
 
   try {
     await prisma.researchLog.update({
@@ -97,6 +102,7 @@ export async function updateResearchLog(
         content: content || null,
         tags,
         published,
+        featured,
         updatedAt: new Date(),
       },
     });
