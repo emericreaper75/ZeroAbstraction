@@ -54,6 +54,9 @@ export default function EditPostClient({ postId, slug, defaultValues }: Props) {
           <h1 className="text-3xl font-bold tracking-tighter text-on-surface">Edit Post</h1>
         </div>
         <div className="flex items-center gap-6">
+          <Link href="/admin/posts" className="px-6 py-2 border border-zinc-700 text-zinc-300 font-label text-[10px] uppercase tracking-widest hover:bg-zinc-800 transition-all duration-200">
+            Cancel
+          </Link>
           <Link href={`/admin/posts/${slug}/revisions`} className="font-label text-[10px] tracking-widest uppercase text-zinc-400 hover:text-[#c9c6c5] transition-colors duration-200">
             Revision History
           </Link>

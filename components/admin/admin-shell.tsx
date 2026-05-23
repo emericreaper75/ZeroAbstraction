@@ -43,26 +43,20 @@ export default function AdminShell({
 
         {/* Vertical Nav Links */}
         <nav className="flex-1 px-4 space-y-1">
-          {NAV_ITEMS.map(({ href, label, icon }) =>
-            isActive(href) ? (
-              <span
-                key={href}
-                className="flex items-center gap-3 px-3 py-2 sidebar-active rounded-lg"
-              >
-                <span className="material-symbols-outlined text-xl">{icon}</span>
-                <span className="font-label text-sm uppercase tracking-wider">{label}</span>
-              </span>
-            ) : (
-              <Link
-                key={href}
-                href={href}
-                className="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:text-[#c9c6c5] transition-colors duration-200 group"
-              >
-                <span className="material-symbols-outlined text-xl">{icon}</span>
-                <span className="font-label text-sm uppercase tracking-wider">{label}</span>
-              </Link>
-            )
-          )}
+          {NAV_ITEMS.map(({ href, label, icon }) => (
+            <Link
+              key={href}
+              href={href}
+              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors duration-200 group ${
+                isActive(href)
+                  ? "sidebar-active text-white"
+                  : "text-on-surface-variant hover:text-[#c9c6c5]"
+              }`}
+            >
+              <span className="material-symbols-outlined text-xl">{icon}</span>
+              <span className="font-label text-sm uppercase tracking-wider">{label}</span>
+            </Link>
+          ))}
         </nav>
 
         {/* Sidebar Footer / User Profile */}

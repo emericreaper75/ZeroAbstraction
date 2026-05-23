@@ -44,6 +44,9 @@ export default function EditResearchLogClient({ logId, defaultValues }: Props) {
           <h1 className="text-3xl font-headline font-bold text-on-surface tracking-tight">Edit Research Log</h1>
         </div>
         <div className="flex items-center gap-4">
+          <Link href="/admin/research-logs" className="px-6 py-2 border border-zinc-700 text-zinc-300 font-label text-[10px] uppercase tracking-widest hover:bg-zinc-800 transition-all duration-200">
+            Cancel
+          </Link>
           <button form="edit-log-form" name="published" value="false" type="submit" className="px-6 py-2 border border-zinc-700 font-label text-[10px] uppercase tracking-widest text-zinc-300 hover:bg-zinc-800 transition-all">
             Save Draft
           </button>

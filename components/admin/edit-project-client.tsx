@@ -37,6 +37,9 @@ export default function EditProjectClient({ projectId, defaultValues }: Props) {
           <h1 className="text-3xl font-headline font-bold text-on-surface tracking-tight">Edit Project</h1>
         </div>
         <div className="flex items-center gap-6">
+          <Link href="/admin/projects" className="px-6 py-2 border border-zinc-700 text-zinc-300 font-label text-[10px] uppercase tracking-widest hover:bg-zinc-800 transition-all duration-200">
+            Cancel
+          </Link>
           <Link href={`/admin/projects/${projectId}/revisions`} className="font-label text-[10px] tracking-widest uppercase text-zinc-500 hover:text-[#c9c6c5] transition-colors">
             Revision History
           </Link>

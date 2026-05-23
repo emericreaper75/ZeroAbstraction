@@ -131,24 +131,24 @@ export default async function AdminResearchLogsPage({
                       </Link>
                     </td>
                     <td className="py-4 px-4">
-                      <span className="bg-zinc-800 text-[10px] font-label text-zinc-400 px-2 py-0.5 rounded uppercase tracking-tighter">{log.series}</span>
+                      <span className="bg-zinc-800 text-[10px] font-label text-zinc-400 px-2 py-0.5 rounded uppercase tracking-tighter whitespace-nowrap">{log.series}</span>
                     </td>
                     <td className="py-4 px-4"><StatusBadge published={log.published} /></td>
                     <td className="py-4 px-4 font-label text-xs text-zinc-500">
                       {log.published ? log.updatedAt.toISOString().slice(0, 10).replace(/-/g, ".") : "----.--.--"}
                     </td>
                     <td className="py-4 px-4 text-right">
-                      <div className="flex justify-end gap-3 text-zinc-500">
-                        <Link href={`/admin/research-logs/${log.id}/edit`} className="hover:text-zinc-100 transition-colors">
+                      <div className="flex justify-end gap-2 text-zinc-400">
+                        <Link href={`/admin/research-logs/${log.id}/edit`} className="p-1.5 hover:text-white hover:bg-zinc-800 border border-transparent hover:border-zinc-700 rounded transition-all duration-150 flex items-center justify-center" title="Edit Research Log">
                           <span className="material-symbols-outlined text-sm">edit</span>
                         </Link>
                         <form action={toggleResearchLogPublish} className="inline">
                           <input type="hidden" name="id" value={log.id} />
-                          <button type="submit" className="hover:text-zinc-100 transition-colors">
+                          <button type="submit" className="p-1.5 hover:text-white hover:bg-zinc-800 border border-transparent hover:border-zinc-700 rounded transition-all duration-150 flex items-center justify-center" title={log.published ? "Unpublish" : "Publish"}>
                             <span className="material-symbols-outlined text-sm">{log.published ? "unpublished" : "publish"}</span>
                           </button>
                         </form>
-                        <Link href={`/admin/research-logs/${log.id}/delete`} className="hover:text-[#ffb4ab] transition-colors">
+                        <Link href={`/admin/research-logs/${log.id}/delete`} className="p-1.5 hover:text-[#ffb4ab] hover:bg-red-950/20 border border-transparent hover:border-red-900/30 rounded transition-all duration-150 flex items-center justify-center" title="Delete Research Log">
                           <span className="material-symbols-outlined text-sm">delete</span>
                         </Link>
                       </div>

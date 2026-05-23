@@ -120,7 +120,7 @@ export default async function AdminProjectsPage({
                       <div className="flex flex-wrap gap-1">
                         {proj.tags.slice(0, 2).map((tag) => (
                           <span key={tag} className="bg-zinc-800 text-[10px] font-label text-zinc-400 px-2 py-0.5 rounded uppercase tracking-tighter">
-                            {tag}
+                            {tag.replace(/"/g, "")}
                           </span>
                         ))}
                         {proj.tags.length > 2 && (
@@ -140,18 +140,18 @@ export default async function AdminProjectsPage({
                       {proj.createdAt.toISOString().slice(0, 10).replace(/-/g, ".")}
                     </td>
                     <td className="py-4 px-4 text-right">
-                      <div className="flex justify-end gap-3 text-zinc-500">
-                        <Link href={`/admin/projects/${proj.id}/edit`} className="hover:text-zinc-100 transition-colors">
+                      <div className="flex justify-end gap-2 text-zinc-400">
+                        <Link href={`/admin/projects/${proj.id}/edit`} className="p-1.5 hover:text-white hover:bg-zinc-800 border border-transparent hover:border-zinc-700 rounded transition-all duration-150 flex items-center justify-center" title="Edit Project">
                           <span className="material-symbols-outlined text-sm">edit</span>
                         </Link>
                         <form action={toggleProjectPublish} className="inline">
                           <input type="hidden" name="id" value={proj.id} />
                           <input type="hidden" name="published" value={String(proj.published)} />
-                          <button type="submit" className="hover:text-zinc-100 transition-colors" title={proj.published ? "Unpublish" : "Publish"}>
+                          <button type="submit" className="p-1.5 hover:text-white hover:bg-zinc-800 border border-transparent hover:border-zinc-700 rounded transition-all duration-150 flex items-center justify-center" title={proj.published ? "Unpublish" : "Publish"}>
                             <span className="material-symbols-outlined text-sm">{proj.published ? "unpublished" : "publish"}</span>
                           </button>
                         </form>
-                        <Link href={`/admin/projects/${proj.id}/delete`} className="hover:text-[#ffb4ab] transition-colors">
+                        <Link href={`/admin/projects/${proj.id}/delete`} className="p-1.5 hover:text-[#ffb4ab] hover:bg-red-950/20 border border-transparent hover:border-red-900/30 rounded transition-all duration-150 flex items-center justify-center" title="Delete Project">
                           <span className="material-symbols-outlined text-sm">delete</span>
                         </Link>
                       </div>

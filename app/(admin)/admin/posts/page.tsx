@@ -135,17 +135,17 @@ export default async function AdminPostsPage({
                       {post.published ? post.updatedAt.toISOString().slice(0, 10).replace(/-/g, ".") : "----.--.--"}
                     </td>
                     <td className="py-4 px-4 text-right">
-                      <div className="flex justify-end gap-3 text-zinc-500">
-                        <Link href={`/admin/posts/${post.slug}/edit`} className="hover:text-zinc-100 transition-colors">
+                      <div className="flex justify-end gap-2 text-zinc-400">
+                        <Link href={`/admin/posts/${post.slug}/edit`} className="p-1.5 hover:text-white hover:bg-zinc-800 border border-transparent hover:border-zinc-700 rounded transition-all duration-150 flex items-center justify-center" title="Edit Post">
                           <span className="material-symbols-outlined text-sm">edit</span>
                         </Link>
                         <form action={toggleContentPostPublish} className="inline">
                           <input type="hidden" name="id" value={post.id} />
-                          <button type="submit" className="hover:text-zinc-100 transition-colors" title={post.published ? "Unpublish" : "Publish"}>
+                          <button type="submit" className="p-1.5 hover:text-white hover:bg-zinc-800 border border-transparent hover:border-zinc-700 rounded transition-all duration-150 flex items-center justify-center" title={post.published ? "Unpublish" : "Publish"}>
                             <span className="material-symbols-outlined text-sm">{post.published ? "unpublished" : "publish"}</span>
                           </button>
                         </form>
-                        <Link href={`/admin/posts/${post.slug}/delete`} className="hover:text-[#ffb4ab] transition-colors">
+                        <Link href={`/admin/posts/${post.slug}/delete`} className="p-1.5 hover:text-[#ffb4ab] hover:bg-red-950/20 border border-transparent hover:border-red-900/30 rounded transition-all duration-150 flex items-center justify-center" title="Delete Post">
                           <span className="material-symbols-outlined text-sm">delete</span>
                         </Link>
                       </div>

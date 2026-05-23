@@ -19,12 +19,8 @@ export default function NewPostPage() {
       {/* Header */}
       <header className="h-24 px-12 flex justify-between items-center sticky top-0 bg-[#0a0a0a]/90 backdrop-blur-md z-30 border-b border-outline-variant/30">
         <div className="flex flex-col">
-          <nav className="flex items-center gap-2 mb-2">
-            <span className="font-label text-xs text-zinc-500 uppercase tracking-widest">Admin</span>
-            <span className="material-symbols-outlined text-zinc-600 text-sm">chevron_right</span>
-            <span className="font-label text-xs text-zinc-500 uppercase tracking-widest">Posts</span>
-            <span className="material-symbols-outlined text-zinc-600 text-sm">chevron_right</span>
-            <span className="font-label text-xs text-[#c9c6c5] uppercase tracking-widest">New Post</span>
+          <nav className="font-label text-[10px] tracking-widest text-zinc-500 uppercase mb-1">
+            Admin / Posts / <span className="text-[#c9c6c5]">New Post</span>
           </nav>
           <h1 className="text-[36px] font-black font-headline tracking-tighter text-on-surface">New Post</h1>
         </div>
