@@ -42,7 +42,7 @@ export default async function AdminMediaPage({
   return (
     <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
       {/* Header */}
-      <header className="w-full pt-12 px-12 pb-8 flex justify-between items-end">
+      <header className="w-full pt-12 px-4 md:px-12 pb-8 flex justify-between items-end gap-4">
         <div>
           <nav className="mb-2">
             <span className="font-label text-xs tracking-widest text-zinc-500 uppercase">Admin / Media</span>
@@ -51,7 +51,7 @@ export default async function AdminMediaPage({
         </div>
         <Link
           href="/admin/media/upload"
-          className="flex items-center gap-2 bg-zinc-200 hover:bg-white text-zinc-950 px-5 py-2.5 rounded-sm transition-all font-label text-xs uppercase font-bold tracking-widest"
+          className="flex items-center gap-2 bg-zinc-200 hover:bg-white text-zinc-950 px-5 py-2.5 rounded-sm transition-all font-label text-xs uppercase font-bold tracking-widest shrink-0"
         >
           <span className="material-symbols-outlined text-sm">upload</span>
           Upload
@@ -59,8 +59,8 @@ export default async function AdminMediaPage({
       </header>
 
       {/* Controls */}
-      <section className="px-12 mb-8 flex justify-between items-center gap-6">
-        <div className="flex-1 max-w-md relative">
+      <section className="px-4 md:px-12 mb-8 flex flex-col md:flex-row md:justify-between md:items-center gap-4 md:gap-6">
+        <div className="w-full md:max-w-md relative">
           <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 text-sm">search</span>
           <input
             className="w-full bg-[#111111] border border-zinc-700 text-zinc-300 text-xs px-10 py-2.5 focus:outline-none focus:border-zinc-300 transition-all font-body"
@@ -68,23 +68,25 @@ export default async function AdminMediaPage({
             defaultValue={q}
           />
         </div>
-        <nav className="flex gap-6 border-b border-zinc-800">
-          {tabs.map(({ key, label }) => (
-            <Link
-              key={key}
-              href={`/admin/media?type=${key}`}
-              className={`pb-2 px-1 text-xs font-label uppercase tracking-widest border-b-2 transition-colors ${
-                typeFilter === key ? "text-zinc-100 border-zinc-100" : "text-zinc-500 hover:text-zinc-300 border-transparent"
-              }`}
-            >
-              {label}
-            </Link>
-          ))}
-        </nav>
+        <div className="w-full md:w-auto overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden -mx-4 px-4 md:mx-0 md:px-0">
+          <nav className="flex gap-6 border-b border-zinc-800 flex-nowrap min-w-max">
+            {tabs.map(({ key, label }) => (
+              <Link
+                key={key}
+                href={`/admin/media?type=${key}`}
+                className={`pb-2 px-1 text-xs font-label uppercase tracking-widest border-b-2 transition-colors whitespace-nowrap ${
+                  typeFilter === key ? "text-zinc-100 border-zinc-100" : "text-zinc-500 hover:text-zinc-300 border-transparent"
+                }`}
+              >
+                {label}
+              </Link>
+            ))}
+          </nav>
+        </div>
       </section>
 
       {/* Upload Dropzone */}
-      <section className="px-12 mb-8">
+      <section className="px-4 md:px-12 mb-8">
         <Link href="/admin/media/upload">
           <div className="custom-dashed-border p-8 flex flex-col items-center gap-4 cursor-pointer hover:border-zinc-500 transition-all group">
             <span className="material-symbols-outlined text-4xl text-zinc-600 group-hover:text-zinc-400 transition-colors">cloud_upload</span>
@@ -100,13 +102,13 @@ export default async function AdminMediaPage({
       </section>
 
       {/* Stats */}
-      <div className="px-12 mb-6 flex items-center gap-8">
+      <div className="px-4 md:px-12 mb-6 flex items-center gap-8">
         <span className="font-label text-[10px] uppercase tracking-widest text-zinc-500">{totalCount} Total Assets</span>
         <span className="font-label text-[10px] uppercase tracking-widest text-zinc-600">{imageCount} Images · {videoCount} Videos</span>
       </div>
 
       {/* Media Grid */}
-      <section className="flex-1 px-12 overflow-y-auto custom-scrollbar">
+      <section className="flex-1 px-4 md:px-12 overflow-y-auto custom-scrollbar">
         {assets.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-48 gap-4">
             <span className="material-symbols-outlined text-4xl text-zinc-700">image</span>

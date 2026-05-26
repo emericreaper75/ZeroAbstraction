@@ -122,7 +122,7 @@ export default function ContentPostForm({
               ? (e) => autosaveState.setDraft({ ...d, title: e.target.value })
               : undefined
           }
-          className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-4 py-3 text-sm text-white outline-none transition focus:border-zinc-500"
+          className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-4 py-3.5 text-sm text-white outline-none transition focus:border-zinc-500"
         />
       </div>
 
@@ -139,7 +139,7 @@ export default function ContentPostForm({
                   autosaveState.setDraft({ ...d, description: e.target.value })
               : undefined
           }
-          className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-4 py-3 text-sm text-white outline-none transition focus:border-zinc-500"
+          className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-4 py-3.5 text-sm text-white outline-none transition focus:border-zinc-500"
         />
       </div>
 
@@ -158,7 +158,7 @@ export default function ContentPostForm({
                   })
               : undefined
           }
-          className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-4 py-3 text-sm text-white outline-none transition focus:border-zinc-500"
+          className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-4 py-3.5 text-sm text-white outline-none transition focus:border-zinc-500"
         >
           {CATEGORY_OPTIONS.map((o) => (
             <option key={o.value} value={o.value}>
@@ -180,7 +180,7 @@ export default function ContentPostForm({
               ? (e) => autosaveState.setDraft({ ...d, content: e.target.value })
               : undefined
           }
-          className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-4 py-3 font-mono text-sm text-white outline-none transition focus:border-zinc-500"
+          className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-4 py-3.5 font-mono text-sm text-white outline-none transition focus:border-zinc-500"
         />
       </div>
 
@@ -204,7 +204,7 @@ export default function ContentPostForm({
               : undefined
           }
           placeholder="Next.js, Prisma, TypeScript"
-          className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-4 py-3 text-sm text-white outline-none transition focus:border-zinc-500"
+          className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-4 py-3.5 text-sm text-white outline-none transition focus:border-zinc-500"
         />
       </div>
 
@@ -222,7 +222,7 @@ export default function ContentPostForm({
                     autosaveState.setDraft({ ...d, thumbnail: e.target.value })
                 : undefined
             }
-            className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-4 py-3 text-sm text-white outline-none transition focus:border-zinc-500"
+            className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-4 py-3.5 text-sm text-white outline-none transition focus:border-zinc-500"
           />
         </div>
 
@@ -239,7 +239,7 @@ export default function ContentPostForm({
                     autosaveState.setDraft({ ...d, thumbnailAlt: e.target.value })
                 : undefined
             }
-            className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-4 py-3 text-sm text-white outline-none transition focus:border-zinc-500"
+            className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-4 py-3.5 text-sm text-white outline-none transition focus:border-zinc-500"
           />
         </div>
       </div>

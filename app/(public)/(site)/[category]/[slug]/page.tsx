@@ -71,6 +71,24 @@ export default async function ArticlePage({ params }: Props) {
   const abstract = data.abstract ?? undefined;
   const previewSections = typeof data.previewSections === 'number' ? data.previewSections : 2;
 
+  // Reading continuity — extracted from frontmatter
+  const series = typeof data.series === 'string' ? data.series : undefined;
+  const nextPost = data.nextPost && typeof data.nextPost === 'object'
+    ? (data.nextPost as { title: string; slug: string; category: string; readingTime?: string })
+    : undefined;
+
+  // Related slugs — same-category posts for the 'Also in domain' reading continuity widget
+  const sameCategoryPosts = await prisma.contentPost.findMany({
+    where: { published: true, category: categoryEnum, NOT: { slug: post.slug } },
+    orderBy: { createdAt: 'desc' },
+    take: 3,
+    select: { title: true, slug: true },
+  });
+  const relatedSlugs = sameCategoryPosts.map((p) => ({
+    title: p.title,
+    href: `/${params.category}/${p.slug}`,
+  }));
+
   const { previewMDX, remainingMDX } = splitMDXContent(mdxBody, previewSections);
 
   return (
@@ -90,6 +108,9 @@ export default async function ArticlePage({ params }: Props) {
         previewContent={<MDXContent source={previewMDX} />}
         remainingContent={remainingMDX ? <MDXContent source={remainingMDX} /> : null}
         relatedContent={relatedNodes.length > 0 ? <ContentEcosystemView relatedNodes={relatedNodes} /> : null}
+        series={series}
+        nextPost={nextPost}
+        relatedSlugs={relatedSlugs}
       />
     </>
   );

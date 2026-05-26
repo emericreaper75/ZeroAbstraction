@@ -17,12 +17,12 @@ export default function NewPostPage() {
       <div className="cinematic-glow" />
 
       {/* Header */}
-      <header className="h-24 px-12 flex justify-between items-center sticky top-0 bg-[#0a0a0a]/90 backdrop-blur-md z-30 border-b border-outline-variant/30">
+      <header className="h-auto min-h-24 py-4 md:py-0 md:h-24 px-4 md:px-12 flex flex-col sm:flex-row justify-between items-start sm:items-center sticky top-0 bg-[#0a0a0a]/90 backdrop-blur-md z-30 border-b border-outline-variant/30 gap-4">
         <div className="flex flex-col">
           <nav className="font-label text-[10px] tracking-widest text-zinc-500 uppercase mb-1">
             Admin / Posts / <span className="text-[#c9c6c5]">New Post</span>
           </nav>
-          <h1 className="text-[36px] font-black font-headline tracking-tighter text-on-surface">New Post</h1>
+          <h1 className="text-2xl md:text-[36px] font-black font-headline tracking-tighter text-on-surface">New Post</h1>
         </div>
         <div className="flex items-center gap-4">
           <Link href="/admin/posts" className="px-6 py-2 border border-zinc-700 text-zinc-300 font-label text-xs uppercase tracking-widest hover:bg-zinc-800 transition-all">
@@ -42,14 +42,14 @@ export default function NewPostPage() {
       </header>
 
       {state.error && (
-        <div className="mx-12 mt-4 px-4 py-3 bg-red-900/30 border border-red-800 text-red-300 font-label text-xs uppercase tracking-widest">
+        <div className="mx-4 md:mx-12 mt-4 px-4 py-3 bg-red-900/30 border border-red-800 text-red-300 font-label text-xs uppercase tracking-widest">
           {state.error}
         </div>
       )}
 
       {/* Form */}
-      <form id="new-post-form" ref={formRef} action={formAction}>
-        <section className="px-12 py-8 max-w-5xl space-y-8">
+      <form id="new-post-form" ref={formRef} action={formAction} className="flex-1 overflow-y-auto custom-scrollbar">
+        <section className="px-4 pt-6 pb-20 md:px-12 md:pt-8 md:pb-24 max-w-5xl space-y-8">
           {/* Title */}
           <div className="flex flex-col gap-2">
             <label className="font-label text-[10px] uppercase text-zinc-500 tracking-widest">Post Title</label>
@@ -108,24 +108,24 @@ export default function NewPostPage() {
           </div>
 
           {/* MDX Editor */}
-          <div className="flex flex-col">
-            <div className="flex gap-8 mb-[2px] border-b border-zinc-800">
-              <button type="button" className="px-8 py-3 font-label text-xs uppercase tracking-widest text-[#c9c6c5] border-b-2 border-[#c9c6c5]">Write</button>
-              <button type="button" className="px-8 py-3 font-label text-xs uppercase tracking-widest text-zinc-500 hover:text-zinc-300 transition-colors">Preview</button>
-            </div>
-            <div className="relative bg-[#0d0d0d] border border-zinc-700 min-h-[520px]">
-              <div className="absolute top-4 right-6 flex gap-4 text-zinc-600">
-                <span className="material-symbols-outlined text-lg cursor-pointer hover:text-zinc-300">format_bold</span>
-                <span className="material-symbols-outlined text-lg cursor-pointer hover:text-zinc-300">code</span>
-                <span className="material-symbols-outlined text-lg cursor-pointer hover:text-zinc-300">image</span>
-                <span className="material-symbols-outlined text-lg cursor-pointer hover:text-zinc-300">table_chart</span>
+          <div className="flex flex-col border border-zinc-700 bg-[#0d0d0d]">
+            <div className="flex items-center justify-between border-b border-zinc-800 bg-[#111111] px-4 py-2 flex-wrap gap-2">
+              <div className="flex gap-1">
+                <button type="button" className="px-4 py-1.5 bg-[#0d0d0d] border border-zinc-700 font-label text-[9px] uppercase tracking-widest text-zinc-200">Write</button>
+                <button type="button" className="px-4 py-1.5 text-zinc-600 hover:text-zinc-400 font-label text-[9px] uppercase tracking-widest transition-colors">Preview</button>
               </div>
-              <textarea
-                name="content"
-                className="w-full h-full min-h-[520px] bg-transparent p-8 font-label text-sm leading-relaxed text-zinc-400 focus:outline-none resize-none"
-                placeholder="# Post Title&#10;&#10;Start writing your MDX content here..."
-              />
+              <div className="flex items-center gap-4 text-zinc-500 overflow-x-auto scrollbar-none py-0.5">
+                <span className="material-symbols-outlined text-base cursor-pointer hover:text-zinc-300">format_bold</span>
+                <span className="material-symbols-outlined text-base cursor-pointer hover:text-zinc-300">code</span>
+                <span className="material-symbols-outlined text-base cursor-pointer hover:text-zinc-300">image</span>
+                <span className="material-symbols-outlined text-base cursor-pointer hover:text-zinc-300">table_chart</span>
+              </div>
             </div>
+            <textarea
+              name="content"
+              className="w-full min-h-[320px] md:min-h-[520px] bg-transparent p-4 md:p-8 font-label text-sm leading-relaxed text-zinc-400 focus:outline-none resize-none"
+              placeholder="# Post Title&#10;&#10;Start writing your MDX content here..."
+            />
           </div>
 
           {/* Hidden fields */}
@@ -136,7 +136,7 @@ export default function NewPostPage() {
       </form>
 
       {/* Status Bar */}
-      <footer className="fixed bottom-0 left-[240px] right-0 bg-surface-container-lowest border-t border-zinc-800 px-6 h-8 flex items-center justify-between z-30">
+      <footer className="fixed bottom-0 left-0 lg:left-[240px] right-0 bg-surface-container-lowest border-t border-zinc-800 px-4 md:px-6 h-8 flex items-center justify-between z-30">
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-2">
             <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />

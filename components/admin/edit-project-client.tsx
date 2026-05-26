@@ -29,31 +29,31 @@ export default function EditProjectClient({ projectId, defaultValues }: Props) {
   return (
     <div className="flex-1 flex flex-col min-w-0 overflow-hidden bg-[#0a0a0a]">
       {/* Top Header */}
-      <header className="flex justify-between items-center h-20 px-12 border-b border-outline-variant sticky top-0 bg-[#0a0a0a]/90 backdrop-blur-md z-30">
+      <header className="flex flex-col md:flex-row justify-between items-start md:items-center h-auto min-h-20 py-4 md:py-0 md:h-20 px-4 md:px-12 border-b border-outline-variant sticky top-0 bg-[#0a0a0a]/90 backdrop-blur-md z-30 gap-4">
         <div className="flex flex-col">
           <nav className="font-label text-[10px] tracking-widest text-zinc-500 uppercase mb-1">
             Admin / Projects / <span className="text-[#c9c6c5]">Edit</span>
           </nav>
-          <h1 className="text-3xl font-headline font-bold text-on-surface tracking-tight">Edit Project</h1>
+          <h1 className="text-2xl md:text-3xl font-headline font-bold text-on-surface tracking-tight">Edit Project</h1>
         </div>
-        <div className="flex items-center gap-6">
-          <Link href="/admin/projects" className="px-6 py-2 border border-zinc-700 text-zinc-300 font-label text-[10px] uppercase tracking-widest hover:bg-zinc-800 transition-all duration-200">
+        <div className="flex flex-wrap items-center gap-3 md:gap-6">
+          <Link href="/admin/projects" className="px-4 md:px-6 py-2 border border-zinc-700 text-zinc-300 font-label text-[10px] uppercase tracking-widest hover:bg-zinc-800 transition-all duration-200">
             Cancel
           </Link>
           <Link href={`/admin/projects/${projectId}/revisions`} className="font-label text-[10px] tracking-widest uppercase text-zinc-500 hover:text-[#c9c6c5] transition-colors">
             Revision History
           </Link>
-          <button form="edit-project-form" name="published" value="false" type="submit" className="px-6 py-2 border border-zinc-700 font-label text-[10px] uppercase tracking-widest text-zinc-300 hover:bg-zinc-800 transition-all">
+          <button form="edit-project-form" name="published" value="false" type="submit" className="px-4 md:px-6 py-2 border border-zinc-700 font-label text-[10px] uppercase tracking-widest text-zinc-300 hover:bg-zinc-800 transition-all">
             Save Draft
           </button>
-          <button form="edit-project-form" name="published" value="true" type="submit" disabled={isPending} className="px-6 py-2 bg-zinc-300 text-black font-bold font-label text-[10px] uppercase tracking-widest hover:bg-white transition-all disabled:opacity-50">
+          <button form="edit-project-form" name="published" value="true" type="submit" disabled={isPending} className="px-4 md:px-6 py-2 bg-zinc-300 text-black font-bold font-label text-[10px] uppercase tracking-widest hover:bg-white transition-all disabled:opacity-50">
             {isPending ? "Saving..." : "Update"}
           </button>
         </div>
       </header>
 
       {/* Status bar */}
-      <div className="px-12 py-3 bg-[#111111] border-b border-zinc-800 flex items-center justify-between">
+      <div className="px-4 md:px-12 py-3 bg-[#111111] border-b border-zinc-800 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className={`w-2 h-2 rounded-full ${defaultValues.published ? "bg-emerald-500" : "bg-amber-500"}`} />
           <span className="font-label text-[10px] uppercase tracking-widest text-zinc-400">
@@ -63,28 +63,28 @@ export default function EditProjectClient({ projectId, defaultValues }: Props) {
       </div>
 
       {state.error && (
-        <div className="mx-12 mt-4 px-4 py-3 bg-red-900/30 border border-red-800 text-red-300 font-label text-xs uppercase tracking-widest">
+        <div className="mx-4 md:mx-12 mt-4 px-4 py-3 bg-red-900/30 border border-red-800 text-red-300 font-label text-xs uppercase tracking-widest">
           {state.error}
         </div>
       )}
 
       {/* Form */}
       <form id="edit-project-form" action={formAction} className="flex-1 overflow-y-auto custom-scrollbar">
-        <div className="px-12 py-12 grid grid-cols-12 gap-12">
+        <div className="px-4 pt-6 pb-20 md:px-12 md:pt-12 md:pb-24 grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-12">
           {/* Left column (8/12) */}
-          <div className="col-span-8 space-y-8">
+          <div className="col-span-1 md:col-span-8 space-y-8">
             <div>
               <label className="font-label text-[10px] uppercase tracking-widest text-zinc-500 mb-2 block">Project Title</label>
               <input
                 name="title"
                 defaultValue={defaultValues.title}
                 required
-                className="w-full bg-transparent border-b border-outline-variant py-4 text-3xl font-headline font-bold text-on-surface focus:border-[#c9c6c5] focus:outline-none transition-all"
+                className="w-full bg-transparent border-b border-outline-variant py-4 text-2xl md:text-3xl font-headline font-bold text-on-surface focus:border-[#c9c6c5] focus:outline-none transition-all"
                 type="text"
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div>
                 <label className="font-label text-[10px] uppercase tracking-widest text-zinc-500 mb-2 block">GitHub URL</label>
                 <div className="flex items-center bg-surface-container-lowest border border-outline-variant px-3">
@@ -136,7 +136,7 @@ export default function EditProjectClient({ projectId, defaultValues }: Props) {
               <textarea
                 name="content"
                 defaultValue={defaultValues.content}
-                className="w-full min-h-[420px] p-6 bg-[#0d0d0d] border border-outline-variant font-label text-sm leading-loose text-zinc-400 focus:outline-none focus:border-zinc-300 resize-none custom-scrollbar"
+                className="w-full min-h-[300px] md:min-h-[420px] p-4 md:p-6 bg-[#0d0d0d] border border-outline-variant font-label text-sm leading-loose text-zinc-400 focus:outline-none focus:border-zinc-300 resize-none custom-scrollbar"
               />
             </div>
 
@@ -145,7 +145,7 @@ export default function EditProjectClient({ projectId, defaultValues }: Props) {
           </div>
 
           {/* Right metadata card (4/12) */}
-          <aside className="col-span-4 space-y-6 sticky top-28 h-fit">
+          <aside className="col-span-1 md:col-span-4 space-y-6 sticky top-28 h-fit">
             <div className="bg-[#111111] border border-zinc-700 p-6 space-y-6">
               <div>
                 <span className="text-[11px] text-zinc-400 font-label uppercase tracking-tighter mb-2 block">Status & Visibility</span>

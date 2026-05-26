@@ -19,10 +19,10 @@ export default function SkeletonProvider({
     setIsLoading(true);
     setActivePathname(pathname);
 
-    // Keep skeleton loading visible for exactly 1.0 second (1000ms)
+    // Keep skeleton loading visible for exactly 1ms
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 1000);
+    }, 10);
 
     return () => clearTimeout(timer);
   }, [pathname]);

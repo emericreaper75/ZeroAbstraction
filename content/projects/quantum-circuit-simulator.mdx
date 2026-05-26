@@ -131,6 +131,24 @@ def solovay_kitaev(
 
 Circuit depth is further optimised by applying gate commutation rules: gates acting on disjoint qubits commute and can be parallelised, reducing circuit depth while maintaining unitarity.
 
+<SystemArchitecture>
+<ArchitectureSidebar colSpan={5}>
+<InfrastructureOverview>
+**Primary Language:** Python 3.10
+**Accelerators:** NVIDIA CUDA 12.0
+**Core Libraries:** CuPy, NumPy
+**Visualisation:** Plotly
+</InfrastructureOverview>
+
+<TechStack className="my-6">
+  <TechCategory name="Compute Backend">
+    <TechItem name="CuPy" role="GPU Array Operations" />
+    <TechItem name="NumPy" role="CPU Fallback" />
+  </TechCategory>
+</TechStack>
+</ArchitectureSidebar>
+
+<ArchitectureContent colSpan={7}>
 ## GPU Backend with CUDA/CuPy
 
 ```
@@ -152,6 +170,8 @@ Circuit depth is further optimised by applying gate commutation rules: gates act
 ```
 
 The core gate application kernel reshapes the $2^n$-dimensional state vector into a $2^{n-1} \times 2$ matrix (splitting along the target qubit axis), applies the $2 \times 2$ gate matrix via batch matrix multiplication, and reshapes back:
+</ArchitectureContent>
+</SystemArchitecture>
 
 ```python
 import cupy as cp
@@ -225,13 +245,18 @@ The density matrix transformation is applied by converting the state vector to a
 
 All benchmarks use random circuits of depth 20 with alternating layers of single-qubit (Hadamard + rotation) and two-qubit (CNOT) gates. Measured on Intel i7-12700K + NVIDIA RTX 3080 (10 GB VRAM). Times are averaged over 10 runs.
 
-| Qubits | NumPy (ms) | CuPy (ms) | Speedup |
-|---|---|---|---|
-| 10 | $2.1$ | $1.8$ | $1.2\times$ |
-| 12 | $8.4$ | $3.2$ | $2.6\times$ |
-| 14 | $34$ | $7.1$ | $4.8\times$ |
-| 16 | $140$ | $18$ | $7.8\times$ |
-| 18 | $810$ | $65$ | $12.5\times$ |
+<OptimizationOutcome 
+  title="18-Qubit State Vector Simulation" 
+  before="810ms (NumPy CPU)" 
+  after="65ms (CuPy GPU)">
+  By transferring the state vector to VRAM and parallelizing the tensor contraction across CUDA cores, we achieve an order-of-magnitude reduction in execution time for large circuits.
+</OptimizationOutcome>
+
+<MetricsGrid>
+  <MetricCard name="10 Qubits" value="1.8ms" trend="up" trendValue="1.2x" />
+  <MetricCard name="14 Qubits" value="7.1ms" trend="up" trendValue="4.8x" />
+  <MetricCard name="18 Qubits" value="65ms" trend="up" trendValue="12.5x" />
+</MetricsGrid>
 
 Below 12 qubits, GPU overhead (kernel launch latency, host-device transfers) negates the parallelism benefit. The crossover point is around $n = 11$–$12$ qubits.
 
@@ -247,10 +272,16 @@ The north pole ($\vec{r} = \hat{z}$) represents $|0\rangle$; the south pole repr
 
 The visualisation renders a unit sphere in Plotly's `Scatter3d` mode, with the state vector plotted as an arrow from the origin to $\vec{r}$. Gate trajectories are animated as arcs on the sphere surface.
 
-## Known Limitations
+## Known Limitations & Tradeoffs
 
-- **Memory wall:** At $\sim 28$ qubits on a 16 GB GPU, the state vector alone consumes all available VRAM. Beyond this, out-of-core or distributed simulation is required.
-- **No tensor network backend:** Tensor network methods (MPS, PEPS) enable approximate simulation of much larger circuits for low-entanglement states. This is planned for v2.0.
+<Challenge variant="architecture" title="The Memory Wall">
+At $\sim 28$ qubits on a 16 GB GPU, the state vector alone consumes all available VRAM. Because state-vector simulation requires tracking $2^n$ complex amplitudes, memory grows exponentially. Beyond this, out-of-core or distributed simulation across multiple GPUs is required.
+</Challenge>
+
+<Tradeoff optionA="State Vector (Current)" optionB="Tensor Networks (v2.0)">
+Currently, the simulator uses explicit state vectors, guaranteeing exact amplitudes but limiting circuit width to ~28 qubits. Future versions will implement Matrix Product States (MPS) to simulate much larger circuits (100+ qubits), at the cost of being approximate and limited to low-entanglement circuits.
+</Tradeoff>
+
 - **Single-qubit noise only:** The current noise model applies channels independently to each qubit. Correlated noise (crosstalk) and two-qubit gate errors are not yet implemented.
 - **No error correction:** Logical qubit simulation with stabiliser codes is out of scope for the current version.
 

@@ -12,6 +12,10 @@ import { TOCNode } from '@/lib/toc';
 import { Surface } from '@/components/ui/surface';
 import { AmbientLight } from '@/components/backgrounds/ambient-light';
 import { ArrowUpRight, Code2 } from 'lucide-react';
+import TagExplorer from '@/components/tag-explorer';
+import TimelineMiniRail from '@/components/timeline-mini-rail';
+import { FootnoteProvider } from '@/components/mdx/footnotes';
+import type { TimelineEntry } from '@/lib/timeline';
 
 type Props = {
   project: {
@@ -28,6 +32,8 @@ type Props = {
   previewContent: React.ReactNode;
   remainingContent: React.ReactNode | null;
   relatedContent?: React.ReactNode;
+  /** Timeline entries related to this project by tag matching */
+  timelineEntries?: TimelineEntry[];
 };
 
 /** Lightweight fade-up — avoids expensive layout recalculations */
@@ -44,6 +50,7 @@ export default function ProjectLayout({
   previewContent,
   remainingContent,
   relatedContent,
+  timelineEntries,
 }: Props) {
   const { isDistractionFree } = useDistractionFree();
 
@@ -151,28 +158,35 @@ export default function ProjectLayout({
 
             {/* Abstract */}
             {abstract && !isDistractionFree && (
-              <Surface variant="glass" padding="md" className="mb-10">
+              <Surface variant="glass" padding="md" className="mb-6">
                 <h3 className="text-zinc-500 font-mono text-xs uppercase tracking-widest mb-3">Abstract</h3>
                 <p className="text-zinc-300 text-lg leading-relaxed font-light">{abstract}</p>
               </Surface>
             )}
 
-            <div className={cn(
-              "prose prose-invert prose-za prose-headings:scroll-mt-28 prose-p:text-zinc-300 prose-li:text-zinc-300 prose-strong:text-white prose-headings:text-white transition-all duration-500 mx-auto",
-              isDistractionFree ? "max-w-none" : ""
-            )}>
-              {previewContent}
+            {/* Tag explorer — topic navigation */}
+            {!isDistractionFree && project.tags && project.tags.length > 0 && (
+              <TagExplorer tags={project.tags} />
+            )}
 
-              {isDistractionFree && remainingContent && (
-                <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.7, ease: EASE }}
-                >
-                  {remainingContent}
-                </motion.div>
-              )}
-            </div>
+            <FootnoteProvider>
+              <div className={cn(
+                "prose prose-invert prose-za prose-headings:scroll-mt-28 prose-p:text-zinc-300 prose-li:text-zinc-300 prose-strong:text-white prose-headings:text-white transition-all duration-500 mx-auto",
+                isDistractionFree ? "max-w-none" : ""
+              )}>
+                {previewContent}
+
+                {isDistractionFree && remainingContent && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.7, ease: EASE }}
+                  >
+                    {remainingContent}
+                  </motion.div>
+                )}
+              </div>
+            </FootnoteProvider>
 
             {!isDistractionFree && remainingContent && (
               <div className="relative h-48 -mt-24 bg-gradient-to-t from-base via-base/90 to-transparent flex flex-col items-center justify-end pb-4 z-10 pointer-events-none">
@@ -205,6 +219,11 @@ export default function ProjectLayout({
             className="hidden lg:!block sticky top-28 w-[240px] shrink-0 self-start space-y-8"
           >
             <TableOfContents entries={toc} />
+
+            {/* Timeline mini-rail — project-related milestones */}
+            {timelineEntries && timelineEntries.length > 0 && (
+              <TimelineMiniRail entries={timelineEntries} heading="Related Milestones" />
+            )}
           </motion.aside>
         )}
       </div>

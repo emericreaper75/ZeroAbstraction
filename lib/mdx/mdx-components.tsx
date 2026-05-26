@@ -2,8 +2,20 @@ import React from 'react';
 import CopyButton from '@/components/CopyButton';
 import HeadingWithAnchor from '@/components/mdx/HeadingWithAnchor';
 import { Surface } from '@/components/ui/surface';
+import { Figure } from '@/components/mdx/figure';
+import { Equation } from '@/components/mdx/equation';
+import { Footnote, FootnoteList } from '@/components/mdx/footnotes';
+import { Sidenote } from '@/components/mdx/sidenote';
+import { CodeAnnotation, AnnotationBubble } from '@/components/mdx/code-annotation';
+import { LightboxImage } from '@/components/ui/lightbox-image';
 
-/** Extract language label from className like "language-typescript" → "TS" or "typescript" */
+// Case Study Components
+import { TechStack, TechCategory, TechItem } from '@/components/mdx/case-study/tech-stack';
+import { Challenge, Tradeoff, OptimizationOutcome } from '@/components/mdx/case-study/narrative-blocks';
+import { SystemArchitecture, ArchitectureContent, ArchitectureSidebar, InfrastructureOverview } from '@/components/mdx/case-study/architecture-section';
+import { MetricsGrid, MetricCard } from '@/components/mdx/case-study/metrics-grid';
+
+/** Extract language label from className like "language-typescript" → "TS" */
 function getLangLabel(className?: string): string | null {
   if (!className) return null;
   const match = className.match(/language-(\w+)/);
@@ -21,40 +33,60 @@ function getLangLabel(className?: string): string | null {
 }
 
 export const mdxComponents = {
+  // ─── Headings ───────────────────────────────────────────────────────────────
   h1: (props: React.HTMLAttributes<HTMLHeadingElement>) => <HeadingWithAnchor level={1} {...props} />,
   h2: (props: React.HTMLAttributes<HTMLHeadingElement>) => <HeadingWithAnchor level={2} {...props} />,
   h3: (props: React.HTMLAttributes<HTMLHeadingElement>) => <HeadingWithAnchor level={3} {...props} />,
   h4: (props: React.HTMLAttributes<HTMLHeadingElement>) => <HeadingWithAnchor level={4} {...props} />,
 
-  // Code block with language badge + copy button
-  pre: ({ children, ...props }: React.HTMLAttributes<HTMLPreElement>) => {
+  // ─── Images → Lightbox ──────────────────────────────────────────────────────
+  img: (props: React.ImgHTMLAttributes<HTMLImageElement>) => (
+    <LightboxImage
+      src={props.src}
+      alt={props.alt}
+      caption={props.title}
+    />
+  ),
+
+  // ─── Code Blocks ────────────────────────────────────────────────────────────
+  pre: ({ children, ...props }: React.HTMLAttributes<HTMLPreElement> & { 'data-raw-code'?: string }) => {
     const codeEl = (children as React.ReactElement)?.props;
-    const rawCode: string = typeof codeEl?.children === 'string' ? codeEl.children : '';
     const langLabel = getLangLabel(codeEl?.className);
+    const rawCode = props['data-raw-code'] || '';
+
     return (
-      <div className="group relative my-8">
-        {/* Language badge top-left */}
-        {langLabel && (
-          <span className="absolute left-3 top-3 z-10 rounded border border-zinc-700/60 bg-zinc-800/80 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-zinc-400 select-none pointer-events-none">
-            {langLabel}
-          </span>
-        )}
-        {/* Copy button top-right */}
-        <CopyButton code={rawCode} />
-        <Surface variant="elevated" padding="none" className="overflow-hidden">
+      <div className="group relative my-10 w-full max-w-full overflow-hidden rounded-xl border border-white/[0.08] bg-gradient-to-b from-[#0a0a0f] to-[#05050a] shadow-[0_8px_30px_rgb(0,0,0,0.5)]">
+        {/* Subtle top highlight for depth */}
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.12] to-transparent pointer-events-none" />
+
+        {/* Header */}
+        <div className="flex items-center justify-between px-5 py-3 bg-white/[0.02] border-b border-white/[0.08] select-none backdrop-blur-sm">
+          <div className="flex items-center gap-2.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400/80 shadow-[0_0_8px_rgba(34,211,238,0.4)]" />
+            <span className="font-mono text-[11px] font-medium tracking-[0.15em] text-zinc-400 uppercase">
+              {langLabel || 'TEXT'}
+            </span>
+          </div>
+          <CopyButton code={rawCode} />
+        </div>
+
+        {/* Scrollable code area */}
+        <div
+          className="overflow-x-auto w-full [scrollbar-width:thin] scrollbar-hide"
+          style={{ WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
+        >
           <pre
-            className={`overflow-x-auto font-mono text-[13px] leading-relaxed text-zinc-200 ${langLabel ? 'pt-10 pb-5 px-5' : 'p-5'}`}
-            style={{ WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
+            className="font-mono text-[13px] sm:text-[14px] leading-[1.75] text-zinc-200 px-6 py-6 min-w-full block"
             {...props}
           >
             {children}
           </pre>
-        </Surface>
+        </div>
       </div>
     );
   },
 
-  // Premium blockquote
+  // ─── Blockquote ─────────────────────────────────────────────────────────────
   blockquote: ({ children }: React.HTMLAttributes<HTMLElement>) => (
     <blockquote className="my-8 border-l-2 border-cyan-500/40 bg-cyan-500/5 py-4 pl-5 pr-4 text-zinc-300 italic leading-relaxed rounded-r-lg">
       <div className="not-italic font-mono text-[10px] uppercase tracking-widest text-cyan-500/70 mb-2">Note</div>
@@ -62,7 +94,7 @@ export const mdxComponents = {
     </blockquote>
   ),
 
-  // Horizontal rule
+  // ─── Horizontal Rule ─────────────────────────────────────────────────────────
   hr: () => (
     <div className="my-12 flex items-center gap-4">
       <div className="flex-1 h-px bg-gradient-to-r from-transparent via-zinc-700 to-transparent" />
@@ -71,7 +103,7 @@ export const mdxComponents = {
     </div>
   ),
 
-  // Premium table styling with mobile scroll support
+  // ─── Tables ──────────────────────────────────────────────────────────────────
   table: ({ children }: React.HTMLAttributes<HTMLTableElement>) => (
     <div className="my-8 w-full overflow-x-auto rounded-xl" style={{ WebkitOverflowScrolling: 'touch' } as React.CSSProperties}>
       <Surface variant="glass" padding="none" className="overflow-hidden">
@@ -96,5 +128,27 @@ export const mdxComponents = {
   td: ({ children }: React.HTMLAttributes<HTMLTableCellElement>) => (
     <td className="px-5 py-3 text-zinc-300 leading-relaxed">{children}</td>
   ),
-};
 
+  // ─── Reading Systems — available in all MDX articles ──────────────────────
+  Figure,
+  Equation,
+  Footnote,
+  FootnoteList,
+  Sidenote,
+  CodeAnnotation,
+  AnnotationBubble,
+
+  // ─── Case Study Systems ──────────────────────────────────────────────────────
+  TechStack,
+  TechCategory,
+  TechItem,
+  Challenge,
+  Tradeoff,
+  OptimizationOutcome,
+  SystemArchitecture,
+  ArchitectureContent,
+  ArchitectureSidebar,
+  InfrastructureOverview,
+  MetricsGrid,
+  MetricCard,
+};

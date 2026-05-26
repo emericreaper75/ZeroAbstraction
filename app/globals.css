@@ -206,7 +206,7 @@ pre::-webkit-scrollbar-track {
 }
 
 pre::-webkit-scrollbar-thumb {
-  background: hsl(220 16% 22%);
+  background: rgba(255, 255, 255, 0.08);
   border-radius: 3px;
 }
 
@@ -216,9 +216,9 @@ pre::-webkit-scrollbar-thumb {
   color: inherit;
 }
 
-/* Shiki */
+/* Shiki — matched to code block wrapper surface */
 .shiki {
-  background: hsl(220 16% 10%) !important;
+  background: hsl(222 20% 7%) !important;
 }
 
 /* Utility Surfaces */
@@ -285,34 +285,79 @@ pre::-webkit-scrollbar-thumb {
   letter-spacing: var(--letter-spacing-heading);
 }
 
+.prose-za ul, .prose-za ol {
+  margin-bottom: var(--spacing-block);
+  padding-left: 1.5rem;
+}
+
+.prose-za li {
+  margin-bottom: calc(var(--spacing-block) * 0.25);
+}
+
 .prose-za code {
-  color: #22d3ee;
-  background-color: rgba(34, 211, 238, 0.1);
-  padding: 0.2em 0.4em;
+  color: rgba(34, 211, 238, 0.85);
+  background-color: rgba(34, 211, 238, 0.07);
+  padding: 0.18em 0.42em;
   border-radius: 0.25rem;
   font-size: 0.85em;
+  word-break: break-word;
+  border: 1px solid rgba(34, 211, 238, 0.08);
 }
 
 .prose-za pre {
-  background-color: #0d1117 !important;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+  background-color: transparent !important;
+  overflow: visible;
+  padding: 0;
+  border-radius: 0;
+  border: none;
+  margin: 0;
+  line-height: 1.75;
+}
+
+/* Editorial prose↔code transition breathing */
+.prose-za > div.group {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.prose-za pre code {
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+  font-size: 0.875em;
+  color: #e5e7eb;
+  white-space: pre;
+  word-break: normal;
+  word-wrap: normal;
 }
 
 /* Mobile code font size */
 @media (max-width: 640px) {
   .prose-za code {
-    font-size: 0.78em;
+    font-size: 0.8em;
   }
   .prose-za pre code {
-    font-size: 0.75em;
+    font-size: 0.8em;
   }
 }
 
 /* Table responsive wrapper */
 .prose-za table {
-  min-width: max-content;
   width: 100%;
+  border-collapse: collapse;
+  margin-top: var(--spacing-block);
+  margin-bottom: var(--spacing-block);
+}
+
+.prose-za th, .prose-za td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: left;
+}
+
+.prose-za th {
+  background-color: rgba(255, 255, 255, 0.05);
+  font-weight: 600;
 }
 
 
@@ -413,8 +458,22 @@ select.appearance-none {
 
 /* Admin masonry grid */
 .masonry-grid {
-  column-count: 3;
-  column-gap: 1.5rem;
+  column-count: 1;
+  column-gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .masonry-grid {
+    column-count: 2;
+    column-gap: 1.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .masonry-grid {
+    column-count: 3;
+    column-gap: 1.5rem;
+  }
 }
 
 .masonry-item {
@@ -505,4 +564,307 @@ select.appearance-none {
 }
 .skip-link:focus {
   top: 8px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   READING SYSTEM CSS — Publication-Grade Editorial Components
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── CSS Counters: global resets per article ──────────────────────── */
+.prose-za {
+  counter-reset: equation figure;
+}
+
+/* ── Equation System ──────────────────────────────────────────────── */
+.equation-block {
+  position: relative;
+  padding: 0.25rem 0;
+}
+
+/* Enhanced KaTeX display block — more breathing room */
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 1.75rem 1.25rem;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 !important; /* Let .equation-block control margin */
+}
+
+/* Equation horizontal scroll container */
+.equation-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.06) transparent;
+}
+
+.equation-scroll::-webkit-scrollbar {
+  height: 3px;
+}
+
+.equation-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.08);
+  border-radius: 2px;
+}
+
+/* Inline KaTeX — ensure it doesn't overflow on mobile */
+.katex {
+  font-size: 1em !important;
+  line-height: 1.6;
+}
+
+@media (max-width: 640px) {
+  .katex-display {
+    padding: 1.25rem 0.5rem;
+    font-size: 0.9em;
+  }
+}
+
+/* ── Figure System ────────────────────────────────────────────────── */
+figure {
+  margin: 0;
+}
+
+figcaption {
+  font-size: 0.8125rem;
+  color: #71717a; /* zinc-500 */
+  line-height: 1.6;
+  margin-top: 0.625rem;
+}
+
+/* Clear inset float on mobile */
+@media (max-width: 768px) {
+  figure.inset-figure {
+    float: none !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+
+/* Full-bleed figure breakout — only within article prose */
+.prose-za figure.figure-full {
+  margin-left: -2rem;
+  margin-right: -2rem;
+}
+
+@media (min-width: 640px) {
+  .prose-za figure.figure-full {
+    margin-left: -3rem;
+    margin-right: -3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .prose-za figure.figure-full {
+    margin-left: -5rem;
+    margin-right: -5rem;
+  }
+}
+
+/* ── Code Line Highlighting (Shiki compatible) ────────────────────── */
+
+/* Highlighted line — amber focus */
+.prose-za .line--highlighted,
+[data-highlighted-line] {
+  background-color: rgba(251, 191, 36, 0.06);
+  border-left: 2px solid rgba(251, 191, 36, 0.4);
+  margin-left: -1.5rem;
+  padding-left: calc(1.5rem - 2px);
+  display: block;
+  transition: background-color 200ms;
+}
+
+/* Dimmed lines when focus is active */
+.prose-za .line--dimmed {
+  opacity: 0.35;
+  transition: opacity 200ms;
+}
+
+/* Shiki highlighted lines (rehype-pretty-code built-in) */
+[data-highlighted-line] {
+  background-color: rgba(251, 191, 36, 0.05) !important;
+}
+
+/* Shiki highlighted words */
+[data-highlighted-chars] {
+  background-color: rgba(34, 211, 238, 0.12);
+  border-radius: 3px;
+  padding: 1px 3px;
+  border: 1px solid rgba(34, 211, 238, 0.15);
+}
+
+/* ── Sidenote System ──────────────────────────────────────────────── */
+
+/* Container for the absolute-positioned sidenote */
+.sidenote-container {
+  position: static; /* inline in flow */
+}
+
+.sidenote-aside {
+  position: absolute;
+  right: -280px;
+  width: 240px;
+  top: 0;
+  padding: 0.5rem 0.75rem;
+  border-left: 1px solid rgba(255,255,255,0.06);
+  margin-top: -0.25rem;
+}
+
+/* Only activate absolute layout at 1440px+ to avoid overflow */
+@media (max-width: 1439px) {
+  .sidenote-aside {
+    position: static;
+    right: auto;
+    width: auto;
+    border-left: none;
+    padding: 0;
+  }
+
+  .sidenote-container {
+    display: none !important; /* hidden at <2xl; mobile version handles it */
+  }
+}
+
+/* ── Footnote System ──────────────────────────────────────────────── */
+
+/* Inline citation reference */
+.footnote-ref {
+  font-feature-settings: "tnum";
+  vertical-align: super;
+  line-height: 1;
+}
+
+/* Smooth scroll target offset for footnote entries */
+[id^="fn-"] {
+  scroll-margin-top: 7rem;
+}
+
+/* Smooth scroll target for inline backlink */
+[id^="fnref-"] {
+  scroll-margin-top: 7rem;
+}
+
+/* Footnote list entry hover */
+#footnotes li:target {
+  background-color: rgba(34, 211, 238, 0.04);
+  border-radius: 0.375rem;
+  outline: 1px solid rgba(34, 211, 238, 0.12);
+  outline-offset: 4px;
+}
+
+/* ── Reading Continuity ───────────────────────────────────────────── */
+
+/* "Next →" arrow hover translate handled inline via Tailwind group */
+
+/* ── Prose Overrides for Reading Systems ──────────────────────────── */
+
+/* Ensure figure inside prose doesn't get prose max-width clipping */
+.prose-za figure {
+  max-width: none;
+}
+
+/* Prevent KaTeX from inheriting prose italic */
+.prose-za .katex {
+  font-style: normal;
+}
+
+/* Equation block inside prose */
+.prose-za .equation-block {
+  margin-top: 1.75rem;
+  margin-bottom: 1.75rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   TIMELINE EXPERIENCE SYSTEMS CSS
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── Timeline Filter Active Button States ─────────────────────────── */
+
+/* data-active="true" gets category-aware cyan accent by default */
+.timeline-filter-btn[data-active="true"] {
+  background-color: rgba(34, 211, 238, 0.07);
+  border-color: rgba(34, 211, 238, 0.3);
+  color: rgba(34, 211, 238, 0.9);
+}
+
+/* ── Timeline Search Input ──────────────────────────────────────────── */
+
+input[type="search"]::-webkit-search-cancel-button {
+  display: none; /* We use our own clear button */
+}
+
+/* ── Timeline Track ─────────────────────────────────────────────────── */
+
+/* The vertical connecting line on the left of all timeline items */
+.timeline-track {
+  position: relative;
+}
+
+.timeline-track::before {
+  content: '';
+  position: absolute;
+  left: 7px;           /* aligns with centre of 16px dot (4px margin) */
+  top: 6px;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.07) 0%,
+    rgba(255,255,255,0.04) 70%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+/* ── Timeline Item Card: category left-border accent on hover ─────── */
+
+/* Smooth expand for the description text */
+.timeline-entry-desc {
+  transition: max-height 300ms ease, opacity 200ms ease;
+}
+
+/* ── Timeline Year Milestone ─────────────────────────────────────────── */
+
+.timeline-year-separator {
+  z-index: 2;
+  background: transparent;
+}
+
+/* ── Reduced Motion: disable all timeline slide-in animations ──────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .timeline-track *,
+  .timeline-track::before {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ── Tag Explorer pills ─────────────────────────────────────────────── */
+
+/* Keep pill row from overflowing on very narrow screens */
+[aria-label="Browse by topic"] > div {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── Timeline Mini-Rail ─────────────────────────────────────────────── */
+
+/* Hover dot brightens — handled by Tailwind opacity utility in component */
+
+/* Ensure mini-rail doesn't overflow sidebar at 240px */
+[aria-label="Related research timeline"] {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* ── Research Connections section ───────────────────────────────────── */
+
+/* Ensure the Related Work section doesn't add excessive top margin on mobile */
+@media (max-width: 768px) {
+  section[aria-label="Research connections"] {
+    margin-top: 3rem;
+    padding-top: 2rem;
+  }
 }

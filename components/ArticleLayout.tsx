@@ -16,6 +16,14 @@ import MobileTOC from '@/components/MobileTOC';
 import { AmbientLight } from '@/components/backgrounds/ambient-light';
 import { Surface } from '@/components/ui/surface';
 import { Clock } from 'lucide-react';
+import { FootnoteProvider } from '@/components/mdx/footnotes';
+import ReadingContinuity from '@/components/reading-continuity';
+import TagExplorer from '@/components/tag-explorer';
+import TimelineMiniRail from '@/components/timeline-mini-rail';
+import { timelineEntries } from '@/lib/timeline';
+
+// Most-recent 2 timeline entries used as sidebar fallback (static — no runtime cost)
+const recentTimelineEntries = timelineEntries.slice(0, 2);
 
 type Props = {
   post: Post;
@@ -31,6 +39,22 @@ type Props = {
     title: string;
     href?: string;
     contentType?: string;
+  }>;
+  /** Series name if this post belongs to a research series */
+  series?: string;
+  /** Next post in the same series or category */
+  nextPost?: {
+    title: string;
+    slug: string;
+    category: string;
+    readingTime?: string;
+    description?: string;
+  };
+  /** Related posts for the reading continuity panel */
+  relatedSlugs?: Array<{
+    title: string;
+    href: string;
+    readingTime?: string;
   }>;
 };
 
@@ -56,6 +80,9 @@ export default function ArticleLayout({
   remainingContent,
   relatedContent,
   timelineEntries: relatedTimeline,
+  series,
+  nextPost,
+  relatedSlugs,
 }: Props) {
   const { isDistractionFree } = useDistractionFree();
   const ambientColor = categoryColors[post.category] || "cyan";
@@ -132,7 +159,7 @@ export default function ArticleLayout({
             transition={{ duration: 0.5, delay: 0.15, ease: EASE }}
             id="article-content"
             className={cn(
-              'min-w-0 transition-all duration-500 relative',
+              'min-w-0 transition-all duration-500 relative overflow-visible',
               isDistractionFree ? 'pt-24 text-[1.0625rem]' : 'pt-16'
             )}
           >
@@ -145,28 +172,36 @@ export default function ArticleLayout({
 
             {/* Abstract */}
             {abstract && !isDistractionFree && (
-              <Surface variant="glass" padding="md" className="mb-10">
+              <Surface variant="glass" padding="md" className="mb-6">
                 <h3 className="text-zinc-500 font-mono text-xs uppercase tracking-widest mb-3">Abstract</h3>
                 <p className="text-zinc-300 text-lg leading-relaxed font-light">{abstract}</p>
               </Surface>
             )}
 
-            <div className={cn(
-              "prose prose-invert prose-za prose-headings:scroll-mt-28 prose-p:text-zinc-300 prose-li:text-zinc-300 prose-strong:text-white prose-headings:text-white transition-all duration-500 mx-auto",
-              isDistractionFree ? "max-w-none" : ""
-            )}>
-              {previewContent}
+            {/* Tag explorer — topic navigation pills */}
+            {!isDistractionFree && post.tags && post.tags.length > 0 && (
+              <TagExplorer tags={post.tags} category={post.category} />
+            )}
 
-              {isDistractionFree && remainingContent && (
-                <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.7, ease: EASE }}
-                >
-                  {remainingContent}
-                </motion.div>
-              )}
-            </div>
+            {/* Wrap prose content in FootnoteProvider to collect inline <Footnote> registrations */}
+            <FootnoteProvider>
+              <div className={cn(
+                "prose prose-invert prose-za prose-headings:scroll-mt-28 prose-p:text-zinc-300 prose-li:text-zinc-300 prose-strong:text-white prose-headings:text-white transition-all duration-500 mx-auto",
+                isDistractionFree ? "max-w-none" : ""
+              )}>
+                {previewContent}
+
+                {isDistractionFree && remainingContent && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.7, ease: EASE }}
+                  >
+                    {remainingContent}
+                  </motion.div>
+                )}
+              </div>
+            </FootnoteProvider>
 
             {!isDistractionFree && remainingContent && (
               <div className="relative h-48 -mt-24 bg-gradient-to-t from-base via-base/90 to-transparent flex flex-col items-center justify-end pb-4 z-10 pointer-events-none">
@@ -208,7 +243,7 @@ export default function ArticleLayout({
                     Timeline
                   </p>
                   <Link
-                    href="/timeline"
+                    href={`/timeline#${relatedTimeline[0].id}`}
                     className="font-mono text-[10px] text-zinc-600 hover:text-cyan-400 transition-colors uppercase tracking-wider"
                   >
                     View all
@@ -216,25 +251,40 @@ export default function ArticleLayout({
                 </div>
                 <div className="space-y-3">
                   {relatedTimeline.slice(0, 3).map((entry) => (
-                    <div key={entry.id} className="rounded-lg border border-zinc-800/50 bg-zinc-900/30 p-3">
-                      <p className="font-mono text-[10px] text-zinc-600 mb-1">
+                    <Link
+                      key={entry.id}
+                      href={`/timeline#${entry.id}`}
+                      className="group block rounded-lg border border-zinc-800/50 bg-zinc-900/30 p-3 hover:border-zinc-700/60 hover:bg-zinc-900/50 transition-all duration-200"
+                    >
+                      <p className="font-mono text-[9px] text-zinc-700 mb-1">
                         <Clock className="inline w-3 h-3 mr-1" aria-hidden="true" />
                         {new Date(entry.date).getFullYear()}
+                        {entry.contentType && (
+                          <span className="ml-2 text-zinc-800">{entry.contentType}</span>
+                        )}
                       </p>
-                      {entry.href ? (
-                        <Link
-                          href={entry.href}
-                          className="text-xs text-zinc-400 hover:text-cyan-400 transition-colors leading-snug line-clamp-2"
-                        >
-                          {entry.title}
-                        </Link>
-                      ) : (
-                        <p className="text-xs text-zinc-500 leading-snug line-clamp-2">{entry.title}</p>
-                      )}
-                    </div>
+                      <p className="text-xs text-zinc-500 group-hover:text-zinc-300 transition-colors leading-snug line-clamp-2">
+                        {entry.title}
+                      </p>
+                    </Link>
                   ))}
                 </div>
               </div>
+            )}
+
+            {/* Timeline mini-rail — uses passed entries or falls back to 2 most-recent global entries */}
+            {(!relatedTimeline || relatedTimeline.length === 0) && (
+              <TimelineMiniRail entries={recentTimelineEntries} heading="Research Timeline" />
+            )}
+
+            {/* Reading continuity — next in series or related reads */}
+            {(series || nextPost || (relatedSlugs && relatedSlugs.length > 0)) && (
+              <ReadingContinuity
+                category={post.category}
+                series={series}
+                nextPost={nextPost}
+                relatedSlugs={relatedSlugs}
+              />
             )}
           </motion.aside>
         )}

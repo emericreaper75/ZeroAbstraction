@@ -9,7 +9,7 @@ export default function AdminTable({
 }: AdminTableProps) {
   return (
     <div className="overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900">
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto scrollbar-hide">
         <table className="min-w-full divide-y divide-zinc-800">
           <thead className="bg-zinc-950/50">
             <tr>

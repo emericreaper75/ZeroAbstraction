@@ -46,7 +46,7 @@ export default async function AdminProjectsPage({
   return (
     <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
       {/* Header */}
-      <header className="w-full pt-12 px-12 pb-8 flex justify-between items-end">
+      <header className="w-full pt-12 px-4 md:px-12 pb-8 flex justify-between items-end gap-4">
         <div>
           <nav className="mb-2">
             <span className="font-label text-xs tracking-widest text-zinc-500 uppercase">Admin / Projects</span>
@@ -55,7 +55,7 @@ export default async function AdminProjectsPage({
         </div>
         <Link
           href="/admin/projects/new"
-          className="flex items-center gap-2 bg-zinc-200 hover:bg-white text-zinc-950 px-5 py-2.5 rounded-sm transition-all duration-200 font-label text-xs uppercase font-bold tracking-widest"
+          className="flex items-center gap-2 bg-zinc-200 hover:bg-white text-zinc-950 px-5 py-2.5 rounded-sm transition-all duration-200 font-label text-xs uppercase font-bold tracking-widest shrink-0"
         >
           <span className="material-symbols-outlined text-sm">add</span>
           New Project
@@ -63,8 +63,8 @@ export default async function AdminProjectsPage({
       </header>
 
       {/* Controls */}
-      <section className="px-12 mb-8 flex justify-between items-center gap-6">
-        <form className="flex-1 max-w-md relative">
+      <section className="px-4 md:px-12 mb-8 flex flex-col md:flex-row md:justify-between md:items-center gap-4 md:gap-6">
+        <form className="w-full md:max-w-md relative">
           <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 text-sm">search</span>
           <input
             name="q"
@@ -74,24 +74,26 @@ export default async function AdminProjectsPage({
             type="text"
           />
         </form>
-        <nav className="flex gap-6 border-b border-zinc-800">
-          {tabs.map(({ key, label }) => (
-            <Link
-              key={key}
-              href={`/admin/projects?status=${key}`}
-              className={`pb-2 px-1 text-xs font-label uppercase tracking-widest border-b-2 transition-colors ${
-                status === key ? "text-zinc-100 border-zinc-100" : "text-zinc-500 hover:text-zinc-300 border-transparent"
-              }`}
-            >
-              {label}
-            </Link>
-          ))}
-        </nav>
+        <div className="w-full md:w-auto overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden -mx-4 px-4 md:mx-0 md:px-0">
+          <nav className="flex gap-6 border-b border-zinc-800 flex-nowrap min-w-max">
+            {tabs.map(({ key, label }) => (
+              <Link
+                key={key}
+                href={`/admin/projects?status=${key}`}
+                className={`pb-2 px-1 text-xs font-label uppercase tracking-widest border-b-2 transition-colors whitespace-nowrap ${
+                  status === key ? "text-zinc-100 border-zinc-100" : "text-zinc-500 hover:text-zinc-300 border-transparent"
+                }`}
+              >
+                {label}
+              </Link>
+            ))}
+          </nav>
+        </div>
       </section>
 
       {/* Table */}
-      <section className="flex-1 px-12 overflow-y-auto custom-scrollbar">
-        <div className="w-full border-t border-zinc-800">
+      <section className="flex-1 px-4 md:px-12 overflow-y-auto custom-scrollbar">
+        <div className="w-full border-t border-zinc-800 overflow-x-auto [scrollbar-width:thin]">
           <table className="w-full text-left border-collapse">
             <thead className="sticky top-0 bg-[#0a0a0a] z-10">
               <tr className="border-b border-zinc-800">
@@ -165,7 +167,7 @@ export default async function AdminProjectsPage({
       </section>
 
       {/* Pagination */}
-      <footer className="px-12 py-8 flex justify-end">
+      <footer className="px-4 md:px-12 py-8 flex justify-end">
         <div className="flex items-center gap-1">
           <button className="w-8 h-8 flex items-center justify-center text-zinc-600 hover:text-zinc-100 transition-colors">
             <span className="material-symbols-outlined text-sm">chevron_left</span>

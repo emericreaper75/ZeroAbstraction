@@ -22,12 +22,12 @@ export default function NewResearchLogPage() {
       <div className="cinematic-glow" />
 
       {/* Header */}
-      <header className="h-24 px-12 flex justify-between items-center sticky top-0 bg-[#0a0a0a]/90 backdrop-blur-md z-30 border-b border-outline-variant/30">
+      <header className="h-auto min-h-24 py-4 md:py-0 md:h-24 px-4 md:px-12 flex flex-col sm:flex-row justify-between items-start sm:items-center sticky top-0 bg-[#0a0a0a]/90 backdrop-blur-md z-30 border-b border-outline-variant/30 gap-4">
         <div className="flex flex-col">
           <nav className="font-label text-[10px] tracking-widest text-zinc-500 uppercase mb-1">
             Admin / Research Logs / <span className="text-[#c9c6c5]">New Entry</span>
           </nav>
-          <h1 className="text-[36px] font-black font-headline tracking-tighter text-on-surface">New Research Log</h1>
+          <h1 className="text-2xl md:text-[36px] font-black font-headline tracking-tighter text-on-surface">New Research Log</h1>
         </div>
         <div className="flex items-center gap-4">
           <Link href="/admin/research-logs" className="px-6 py-2 border border-zinc-700 text-zinc-300 font-label text-xs uppercase tracking-widest hover:bg-zinc-800 transition-all">
@@ -47,12 +47,12 @@ export default function NewResearchLogPage() {
       </header>
 
       {state.error && (
-        <div className="mx-12 mt-4 px-4 py-3 bg-red-900/30 border border-red-800 text-red-300 font-label text-xs uppercase tracking-widest">
+        <div className="mx-4 md:mx-12 mt-4 px-4 py-3 bg-red-900/30 border border-red-800 text-red-300 font-label text-xs uppercase tracking-widest">
           {state.error}
         </div>
       )}
 
-      <form id="new-log-form" action={formAction} className="flex-1 overflow-y-auto custom-scrollbar px-12 py-8 max-w-5xl space-y-8">
+      <form id="new-log-form" action={formAction} className="flex-1 overflow-y-auto custom-scrollbar px-4 pt-6 pb-20 md:px-12 md:pt-8 md:pb-24 max-w-5xl space-y-8">
         {/* Title */}
         <div>
           <label className="font-label text-[10px] uppercase text-zinc-500 tracking-widest mb-2 block">Log Title</label>
@@ -64,7 +64,7 @@ export default function NewResearchLogPage() {
           />
         </div>
 
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           <div>
             <label className="font-label text-[10px] uppercase text-zinc-500 tracking-widest mb-2 block">Research Series</label>
             <select
@@ -108,14 +108,22 @@ export default function NewResearchLogPage() {
         </div>
 
         {/* MDX Editor */}
-        <div>
-          <div className="flex gap-1 mb-0">
-            <button type="button" className="px-6 py-2 bg-[#111111] border-x border-t border-zinc-700 font-label text-[10px] uppercase tracking-widest text-zinc-200">Write</button>
-            <button type="button" className="px-6 py-2 text-zinc-600 hover:text-zinc-400 font-label text-[10px] uppercase tracking-widest transition-colors">Preview</button>
+        <div className="flex flex-col border border-zinc-700 bg-[#0d0d0d]">
+          <div className="flex items-center justify-between border-b border-zinc-800 bg-[#111111] px-4 py-2 flex-wrap gap-2">
+            <div className="flex gap-1">
+              <button type="button" className="px-4 py-1.5 bg-[#0d0d0d] border border-zinc-700 font-label text-[9px] uppercase tracking-widest text-zinc-200">Write</button>
+              <button type="button" className="px-4 py-1.5 text-zinc-600 hover:text-zinc-400 font-label text-[9px] uppercase tracking-widest transition-colors">Preview</button>
+            </div>
+            <div className="flex items-center gap-4 text-zinc-500 overflow-x-auto scrollbar-none py-0.5">
+              <span className="material-symbols-outlined text-base cursor-pointer hover:text-zinc-300">format_bold</span>
+              <span className="material-symbols-outlined text-base cursor-pointer hover:text-zinc-300">code</span>
+              <span className="material-symbols-outlined text-base cursor-pointer hover:text-zinc-300">image</span>
+              <span className="material-symbols-outlined text-base cursor-pointer hover:text-zinc-300">table_chart</span>
+            </div>
           </div>
           <textarea
             name="content"
-            className="w-full min-h-[480px] bg-[#0d0d0d] border border-zinc-700 p-8 font-label text-sm leading-loose text-zinc-400 focus:outline-none resize-none custom-scrollbar"
+            className="w-full min-h-[320px] md:min-h-[480px] bg-transparent p-4 md:p-8 font-label text-sm leading-loose text-zinc-400 focus:outline-none resize-none custom-scrollbar"
             placeholder="# Research Entry&#10;&#10;Begin documenting your findings..."
           />
         </div>
@@ -136,7 +144,7 @@ export default function NewResearchLogPage() {
       </form>
 
       {/* Status Bar */}
-      <footer className="fixed bottom-0 left-[240px] right-0 bg-surface-container-lowest border-t border-zinc-800 px-6 h-8 flex items-center justify-between z-30">
+      <footer className="fixed bottom-0 left-0 lg:left-[240px] right-0 bg-surface-container-lowest border-t border-zinc-800 px-4 md:px-6 h-8 flex items-center justify-between z-30">
         <div className="flex items-center gap-2">
           <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
           <span className="font-label text-[9px] text-zinc-500 uppercase tracking-widest">Auto-save Enabled</span>

@@ -3,13 +3,21 @@ import TimelineFilter from '@/components/TimelineFilter';
 import TimelineBg from '@/components/backgrounds/timeline-bg';
 import PageHeader from '@/components/page-header';
 import { FadeIn } from '@/components/animations/fade-in';
+import { getTimelineEntriesWithValidation } from '@/lib/timeline';
+
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: 'Timeline',
   description: 'A chronological record of publications, project milestones, field campaigns, and academic achievements.',
 };
 
-export default function TimelinePage() {
+export default async function TimelinePage() {
+  // Server-side: validate all timeline entry hrefs against the live DB.
+  // Entries whose linked content does not exist (or is unpublished) will
+  // have their `href` stripped — preventing 404s on the client.
+  const validatedEntries = await getTimelineEntriesWithValidation();
+
   return (
     <div className="relative min-h-screen overflow-hidden">
       <TimelineBg />
@@ -32,7 +40,7 @@ export default function TimelinePage() {
 
           <div className="max-w-2xl w-full text-left mt-8">
             <FadeIn delay={0.2}>
-              <TimelineFilter />
+              <TimelineFilter entries={validatedEntries} />
             </FadeIn>
           </div>
         </div>
@@ -40,3 +48,4 @@ export default function TimelinePage() {
     </div>
   );
 }
+

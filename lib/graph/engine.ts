@@ -96,6 +96,7 @@ export async function getRelatedNodes(
 
   if (!sourceNode) return [];
 
+  const sourceDate = sourceNode.date ? new Date(sourceNode.date).getTime() : null;
   const scored: ScoredNode[] = [];
 
   for (const target of allNodes) {
@@ -104,35 +105,45 @@ export async function getRelatedNodes(
     let score = 0;
     const reasons: string[] = [];
 
-    // 1. Tag overlap (Weighted highly)
+    // 1. Tag overlap (weighted highly)
     const overlap = tagOverlapScore(sourceNode.tags, target.tags);
     if (overlap > 0) {
       score += overlap * 2;
       reasons.push(`Shares ${overlap} tag(s)`);
     }
 
-    // 2. Category/Domain sharing
+    // 2. Category / Domain sharing
     if (sourceNode.category === target.category && sourceNode.category !== 'all') {
       score += 1.5;
       reasons.push('Same category');
     }
 
-    // 3. Explicit Timeline Linking
+    // 3. Explicit Timeline Linking — exact URL match only
     if (sourceNode.type === 'timeline') {
       const href = (sourceNode.raw as TimelineEntry).href;
-      if (href && target.url.includes(href)) {
+      if (href && target.url === href) {
         score += 10;
         reasons.push('Directly referenced in timeline');
       }
     } else if (target.type === 'timeline') {
       const href = (target.raw as TimelineEntry).href;
-      if (href && sourceNode.url.includes(href)) {
+      if (href && sourceNode.url === href) {
         score += 10;
         reasons.push('Referenced in timeline event');
       }
     }
 
-    // 4. Temporal proximity (optional minor boost for close dates)
+    // 4. Temporal proximity — minor boost for content published close in time
+    if (sourceDate && target.date) {
+      const targetDate = new Date(target.date).getTime();
+      const diffDays = Math.abs(sourceDate - targetDate) / (1000 * 60 * 60 * 24);
+      if (diffDays <= 180) {
+        score += 1.0;
+        reasons.push('Published around the same time');
+      } else if (diffDays <= 365) {
+        score += 0.5;
+      }
+    }
 
     if (score > 0) {
       scored.push({ node: target, score, reasons });
@@ -140,7 +151,22 @@ export async function getRelatedNodes(
   }
 
   // Sort by score descending
-  return scored
-    .sort((a, b) => b.score - a.score)
-    .slice(0, limit);
+  const sorted = scored.sort((a, b) => b.score - a.score);
+
+  // Ensure type diversity: if top results are all same type as source,
+  // promote the highest-scoring different type to position 1 (if present).
+  if (sorted.length >= 2) {
+    const allSameType = sorted.slice(0, limit).every(
+      (s) => s.node.type === sourceNode.type
+    );
+    if (allSameType) {
+      const diffTypeIdx = sorted.findIndex((s) => s.node.type !== sourceNode.type);
+      if (diffTypeIdx > 0 && diffTypeIdx < sorted.length) {
+        const [diffNode] = sorted.splice(diffTypeIdx, 1);
+        sorted.splice(1, 0, diffNode);
+      }
+    }
+  }
+
+  return sorted.slice(0, limit);
 }

@@ -1,17 +1,17 @@
 import type { Metadata } from 'next';
-/* import {
+import {
   Inter,
   IBM_Plex_Serif,
   JetBrains_Mono,
   IBM_Plex_Mono,
 } from 'next/font/google';
-*/
+
 
 import 'katex/dist/katex.min.css';
 import './globals.css';
 import SkeletonProvider from '@/components/SkeletonProvider';
 
-/*
+
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
@@ -28,19 +28,19 @@ const ibmPlexSerif = IBM_Plex_Serif({
 
 
 const jetbrainsMono = JetBrains_Mono({
- subsets: ['latin'],
+  subsets: ['latin'],
   variable: '--font-jetbrains-mono',
   display: 'swap',
 });
 
 
- const ibmPlexMono = IBM_Plex_Mono({
+const ibmPlexMono = IBM_Plex_Mono({
   weight: ['400', '500', '600'],
   subsets: ['latin'],
   variable: '--font-mono',
   display: 'swap',
 });
-*/
+
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://zero-abstraction.dev'),
@@ -74,10 +74,17 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`dark`}
+      className={`dark ${ibmPlexMono.variable} ${ibmPlexSerif.variable} ${jetbrainsMono.variable} ${inter.variable}`}
     >
       <head>
-        
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+              document.documentElement.setAttribute('data-theme', window.theme);
+            `,
+          }}
+        />
       </head>
       <body className="min-h-screen bg-neutral-950 text-neutral-300 antialiased">
         <a href="#main-content" className="skip-link">

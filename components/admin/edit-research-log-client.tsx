@@ -37,28 +37,28 @@ export default function EditResearchLogClient({ logId, defaultValues }: Props) {
   return (
     <div className="flex-1 flex flex-col min-w-0 overflow-hidden bg-[#0a0a0a]">
       {/* Header */}
-      <header className="h-20 px-12 flex justify-between items-center sticky top-0 bg-[#0a0a0a]/90 backdrop-blur-md z-30 border-b border-outline-variant/30">
+      <header className="h-auto min-h-20 py-4 md:py-0 md:h-20 px-4 md:px-12 flex flex-col md:flex-row justify-between items-start md:items-center sticky top-0 bg-[#0a0a0a]/90 backdrop-blur-md z-30 border-b border-outline-variant/30 gap-4">
         <div>
           <nav className="font-label text-[10px] uppercase text-zinc-500 tracking-widest mb-1">
             Admin / Research Logs / <span className="text-[#c9c6c5]">Edit</span>
           </nav>
-          <h1 className="text-3xl font-headline font-bold text-on-surface tracking-tight">Edit Research Log</h1>
+          <h1 className="text-2xl md:text-3xl font-headline font-bold text-on-surface tracking-tight">Edit Research Log</h1>
         </div>
-        <div className="flex items-center gap-4">
-          <Link href="/admin/research-logs" className="px-6 py-2 border border-zinc-700 text-zinc-300 font-label text-[10px] uppercase tracking-widest hover:bg-zinc-800 transition-all duration-200">
+        <div className="flex flex-wrap items-center gap-3 md:gap-4">
+          <Link href="/admin/research-logs" className="px-4 md:px-6 py-2 border border-zinc-700 text-zinc-300 font-label text-[10px] uppercase tracking-widest hover:bg-zinc-800 transition-all duration-200">
             Cancel
           </Link>
-          <button form="edit-log-form" name="published" value="false" type="submit" className="px-6 py-2 border border-zinc-700 font-label text-[10px] uppercase tracking-widest text-zinc-300 hover:bg-zinc-800 transition-all">
+          <button form="edit-log-form" name="published" value="false" type="submit" className="px-4 md:px-6 py-2 border border-zinc-700 font-label text-[10px] uppercase tracking-widest text-zinc-300 hover:bg-zinc-800 transition-all">
             Save Draft
           </button>
-          <button form="edit-log-form" name="published" value="true" type="submit" disabled={isPending} className="px-6 py-2 bg-zinc-300 text-black font-bold font-label text-[10px] uppercase tracking-widest hover:bg-white transition-all disabled:opacity-50">
+          <button form="edit-log-form" name="published" value="true" type="submit" disabled={isPending} className="px-4 md:px-6 py-2 bg-zinc-300 text-black font-bold font-label text-[10px] uppercase tracking-widest hover:bg-white transition-all disabled:opacity-50">
             {isPending ? "Saving..." : "Update"}
           </button>
         </div>
       </header>
 
       {/* Status bar */}
-      <div className="px-12 py-3 bg-[#111111] border-b border-zinc-800 flex items-center gap-6">
+      <div className="px-4 md:px-12 py-3 bg-[#111111] border-b border-zinc-800 flex flex-col sm:flex-row gap-2 sm:items-center justify-between sm:gap-6">
         <div className="flex items-center gap-2">
           <div className={`w-2 h-2 rounded-full ${defaultValues.published ? "bg-emerald-500" : "bg-amber-500"}`} />
           <span className="font-label text-[10px] uppercase tracking-widest text-zinc-400">
@@ -69,15 +69,15 @@ export default function EditResearchLogClient({ logId, defaultValues }: Props) {
       </div>
 
       {state.error && (
-        <div className="mx-12 mt-4 px-4 py-3 bg-red-900/30 border border-red-800 text-red-300 font-label text-xs uppercase tracking-widest">
+        <div className="mx-4 md:mx-12 mt-4 px-4 py-3 bg-red-900/30 border border-red-800 text-red-300 font-label text-xs uppercase tracking-widest">
           {state.error}
         </div>
       )}
 
       <form id="edit-log-form" action={formAction} className="flex-1 overflow-y-auto custom-scrollbar">
-        <div className="px-12 py-12 grid grid-cols-10 gap-12">
+        <div className="px-4 pt-6 pb-20 md:px-12 md:pt-12 md:pb-24 grid grid-cols-1 md:grid-cols-10 gap-6 md:gap-12">
           {/* Main editor (7/10) */}
-          <div className="col-span-7 space-y-8">
+          <div className="col-span-1 md:col-span-7 space-y-8">
             <div>
               <label className="font-label text-[10px] uppercase text-zinc-500 tracking-widest mb-2 block">Log Title</label>
               <input
@@ -88,7 +88,7 @@ export default function EditResearchLogClient({ logId, defaultValues }: Props) {
               />
             </div>
 
-            <div className="grid grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               <div>
                 <label className="font-label text-[10px] uppercase text-zinc-500 tracking-widest mb-2 block">Series</label>
                 <select
@@ -129,21 +129,30 @@ export default function EditResearchLogClient({ logId, defaultValues }: Props) {
               />
             </div>
 
-            <div className="space-y-0">
-              <div className="flex gap-1">
-                <button type="button" className="px-6 py-2 bg-[#111111] border-x border-t border-zinc-700 font-label text-[10px] uppercase tracking-widest text-zinc-200">Write</button>
-                <button type="button" className="px-6 py-2 text-zinc-600 hover:text-zinc-400 font-label text-[10px] uppercase tracking-widest transition-colors">Preview</button>
+            {/* MDX Editor */}
+            <div className="flex flex-col border border-zinc-700 bg-[#0d0d0d]">
+              <div className="flex items-center justify-between border-b border-zinc-800 bg-[#111111] px-4 py-2 flex-wrap gap-2">
+                <div className="flex gap-1">
+                  <button type="button" className="px-4 py-1.5 bg-[#0d0d0d] border border-zinc-700 font-label text-[9px] uppercase tracking-widest text-zinc-200">Write</button>
+                  <button type="button" className="px-4 py-1.5 text-zinc-600 hover:text-zinc-400 font-label text-[9px] uppercase tracking-widest transition-colors">Preview</button>
+                </div>
+                <div className="flex items-center gap-4 text-zinc-500 overflow-x-auto scrollbar-none py-0.5">
+                  <span className="material-symbols-outlined text-base cursor-pointer hover:text-zinc-300">format_bold</span>
+                  <span className="material-symbols-outlined text-base cursor-pointer hover:text-zinc-300">code</span>
+                  <span className="material-symbols-outlined text-base cursor-pointer hover:text-zinc-300">image</span>
+                  <span className="material-symbols-outlined text-base cursor-pointer hover:text-zinc-300">table_chart</span>
+                </div>
               </div>
               <textarea
                 name="content"
                 defaultValue={defaultValues.content}
-                className="w-full min-h-[480px] bg-[#0d0d0d] border border-zinc-700 p-8 font-label text-sm leading-loose text-zinc-400 focus:outline-none resize-none custom-scrollbar"
+                className="w-full min-h-[320px] md:min-h-[480px] bg-transparent p-4 md:p-8 font-label text-sm leading-loose text-zinc-400 focus:outline-none resize-none"
               />
             </div>
           </div>
 
           {/* Right sidebar (3/10) */}
-          <aside className="col-span-3 space-y-6 sticky top-28 h-fit">
+          <aside className="col-span-1 md:col-span-3 space-y-6 sticky top-28 h-fit">
             <div className="bg-[#111111] border border-zinc-700 p-6 space-y-6">
               <div>
                 <p className="font-label text-[9px] text-zinc-500 uppercase tracking-widest mb-1">Entry ID</p>
