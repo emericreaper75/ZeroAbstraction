@@ -169,6 +169,7 @@ export async function deleteContentPost(formData: FormData) {
   });
 
   revalidatePath("/admin/posts");
+  redirect("/admin/posts");
 }
 
 export async function toggleContentPostPublish(formData: FormData) {

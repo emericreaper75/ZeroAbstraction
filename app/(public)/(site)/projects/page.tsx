@@ -9,6 +9,7 @@ import { FadeIn, StaggerContainer, StaggerItem } from "@/components/animations/f
 import ComingSoonBanner from "@/components/ComingSoonBanner";
 
 export const revalidate = 300;
+export const dynamic = "force-dynamic";
 
 export default async function ProjectsPage() {
   const projects = await getProjects();

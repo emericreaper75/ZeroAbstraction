@@ -17,10 +17,13 @@ import { AmbientLight } from '@/components/backgrounds/ambient-light';
 import { Surface } from '@/components/ui/surface';
 import { Clock } from 'lucide-react';
 import { FootnoteProvider } from '@/components/mdx/footnotes';
-import ReadingContinuity from '@/components/reading-continuity';
-import TagExplorer from '@/components/tag-explorer';
-import TimelineMiniRail from '@/components/timeline-mini-rail';
+import type { GroupedRelationships } from '@/lib/editorial/presentation/orchestration';
+import RelatedContent from '@/components/editorial/related-content';
+import SeriesNavigation from '@/components/editorial/series-navigation';
+import EngineeringContinuity from '@/components/editorial/engineering-continuity';
+import MilestoneChain from '@/components/editorial/milestone-chain';
 import { timelineEntries } from '@/lib/timeline';
+import TagExplorer from '@/components/tag-explorer';
 
 // Most-recent 2 timeline entries used as sidebar fallback (static — no runtime cost)
 const recentTimelineEntries = timelineEntries.slice(0, 2);
@@ -40,22 +43,8 @@ type Props = {
     href?: string;
     contentType?: string;
   }>;
-  /** Series name if this post belongs to a research series */
-  series?: string;
-  /** Next post in the same series or category */
-  nextPost?: {
-    title: string;
-    slug: string;
-    category: string;
-    readingTime?: string;
-    description?: string;
-  };
-  /** Related posts for the reading continuity panel */
-  relatedSlugs?: Array<{
-    title: string;
-    href: string;
-    readingTime?: string;
-  }>;
+  /** Grouped relationships data from the editorial engine */
+  groupedRelationships?: GroupedRelationships;
 };
 
 const categoryColors: Record<string, "cyan" | "violet" | "emerald" | "amber"> = {
@@ -80,9 +69,7 @@ export default function ArticleLayout({
   remainingContent,
   relatedContent,
   timelineEntries: relatedTimeline,
-  series,
-  nextPost,
-  relatedSlugs,
+  groupedRelationships,
 }: Props) {
   const { isDistractionFree } = useDistractionFree();
   const ambientColor = categoryColors[post.category] || "cyan";
@@ -212,7 +199,7 @@ export default function ArticleLayout({
             )}
           </motion.article>
 
-          {/* Related Content */}
+          {/* Related Content (Legacy injection) */}
           {relatedContent && (
              <motion.div
                initial={{ opacity: 0, y: 15 }}
@@ -221,6 +208,17 @@ export default function ArticleLayout({
                className="mt-20"
              >
                {relatedContent}
+             </motion.div>
+          )}
+
+          {/* Editorial Grouped Relationships */}
+          {groupedRelationships && (
+             <motion.div
+               initial={{ opacity: 0, y: 15 }}
+               animate={{ opacity: 1, y: 0 }}
+               transition={{ duration: 0.5, delay: 0.3, ease: EASE }}
+             >
+               <RelatedContent relationships={groupedRelationships} />
              </motion.div>
           )}
         </div>
@@ -272,18 +270,23 @@ export default function ArticleLayout({
               </div>
             )}
 
-            {/* Timeline mini-rail — uses passed entries or falls back to 2 most-recent global entries */}
-            {(!relatedTimeline || relatedTimeline.length === 0) && (
-              <TimelineMiniRail entries={recentTimelineEntries} heading="Research Timeline" />
-            )}
+            {/* Timeline chain — uses passed entries or falls back to 2 most-recent global entries */}
+            {(!relatedTimeline || relatedTimeline.length === 0) ? (
+              <MilestoneChain entries={recentTimelineEntries as any[]} heading="Research Timeline" />
+            ) : null}
 
             {/* Reading continuity — next in series or related reads */}
-            {(series || nextPost || (relatedSlugs && relatedSlugs.length > 0)) && (
-              <ReadingContinuity
+            {groupedRelationships && groupedRelationships.nextInSeries && groupedRelationships.nextInSeries.entity.series && (
+              <SeriesNavigation
                 category={post.category}
-                series={series}
-                nextPost={nextPost}
-                relatedSlugs={relatedSlugs}
+                series={groupedRelationships.nextInSeries.entity.series}
+                nextPost={groupedRelationships.nextInSeries}
+              />
+            )}
+            
+            {groupedRelationships && !groupedRelationships.nextInSeries && groupedRelationships.relatedArticles.length > 0 && (
+              <EngineeringContinuity
+                relatedArticles={groupedRelationships.relatedArticles}
               />
             )}
           </motion.aside>

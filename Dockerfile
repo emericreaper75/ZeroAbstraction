@@ -6,7 +6,11 @@ RUN apk add --no-cache libc6-compat python3 make g++
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-RUN npm ci --prefer-offline
+RUN npm config set fetch-retries 5 \
+ && npm config set fetch-retry-mintimeout 20000 \
+ && npm config set fetch-retry-maxtimeout 120000 \
+ && npm config set fetch-timeout 300000 \
+ && npm ci --prefer-offline
 
 # ── Stage 2: Build the application ─────────────────────────────────────────
 FROM node:20-alpine AS builder
@@ -17,6 +21,7 @@ COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
+ENV NEXT_FONT_IGNORE_MISSING=1
 
 RUN npm run build
 

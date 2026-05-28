@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db/prisma";
 import { requireRole } from "@/lib/authz/require-role";
 import { slugify } from "@/lib/editorial/slug";
+import { researchLogSchema } from "@/lib/validations/research-log";
 
 // ── Create ─────────────────────────────────────────────────────────────────
 
@@ -15,27 +16,34 @@ export async function createResearchLog(
 ) {
   await requireRole("EDITOR");
 
-  const title = formData.get("title")?.toString() ?? "";
-  const series = formData.get("series")?.toString() ?? "";
-  const abstract = formData.get("abstract")?.toString() ?? "";
-  const content = formData.get("content")?.toString() ?? "";
-  const tagsRaw = formData.get("tags")?.toString() ?? "";
-  const entryNumberRaw = formData.get("entryNumber")?.toString() ?? "0";
-  const publishedRaw = formData.get("published");
-  const featuredRaw = formData.get("featured");
+  const rawData = {
+    title: formData.get("title")?.toString() ?? "",
+    series: formData.get("series")?.toString() ?? "",
+    abstract: formData.get("abstract")?.toString() ?? "",
+    content: formData.get("content")?.toString() ?? "",
+    tags:
+      formData
+        .get("tags")
+        ?.toString()
+        .split(",")
+        .map((t) => t.trim())
+        .filter(Boolean) ?? [],
+    entryNumber: parseInt(formData.get("entryNumber")?.toString() ?? "0", 10) || 0,
+    published: formData.get("published") === "true",
+    featured: formData.get("featured") === "true",
+  };
 
-  if (!title) return { error: "Title is required." };
-  if (!series) return { error: "Research series is required." };
+  const validated = researchLogSchema.safeParse(rawData);
+  if (!validated.success) {
+    return {
+      error:
+        validated.error.issues[0]?.message ||
+        "Invalid form data",
+    };
+  }
 
-  const tags = tagsRaw
-    .split(",")
-    .map((t) => t.trim())
-    .filter(Boolean);
-
+  const { title, series, abstract, content, tags, entryNumber, published, featured } = validated.data;
   const slug = slugify(title);
-  const entryNumber = parseInt(entryNumberRaw, 10) || 0;
-  const published = publishedRaw === "true";
-  const featured = featuredRaw === "true";
 
   try {
     await prisma.researchLog.create({
@@ -45,10 +53,10 @@ export async function createResearchLog(
         series,
         abstract: abstract || null,
         content: content || null,
-        tags,
-        entryNumber,
-        published,
-        featured,
+        tags: tags ?? [],
+        entryNumber: entryNumber ?? 0,
+        published: published ?? false,
+        featured: featured ?? false,
       },
     });
   } catch (e: unknown) {
@@ -74,23 +82,32 @@ export async function updateResearchLog(
 ) {
   await requireRole("EDITOR");
 
-  const title = formData.get("title")?.toString() ?? "";
-  const series = formData.get("series")?.toString() ?? "";
-  const abstract = formData.get("abstract")?.toString() ?? "";
-  const content = formData.get("content")?.toString() ?? "";
-  const tagsRaw = formData.get("tags")?.toString() ?? "";
-  const publishedRaw = formData.get("published");
-  const featuredRaw = formData.get("featured");
+  const rawData = {
+    title: formData.get("title")?.toString() ?? "",
+    series: formData.get("series")?.toString() ?? "",
+    abstract: formData.get("abstract")?.toString() ?? "",
+    content: formData.get("content")?.toString() ?? "",
+    tags:
+      formData
+        .get("tags")
+        ?.toString()
+        .split(",")
+        .map((t) => t.trim())
+        .filter(Boolean) ?? [],
+    published: formData.get("published") === "true",
+    featured: formData.get("featured") === "true",
+  };
 
-  if (!title) return { error: "Title is required." };
-  if (!series) return { error: "Research series is required." };
+  const validated = researchLogSchema.safeParse(rawData);
+  if (!validated.success) {
+    return {
+      error:
+        validated.error.issues[0]?.message ||
+        "Invalid form data",
+    };
+  }
 
-  const tags = tagsRaw
-    .split(",")
-    .map((t) => t.trim())
-    .filter(Boolean);
-  const published = publishedRaw === "true";
-  const featured = featuredRaw === "true";
+  const { title, series, abstract, content, tags, published, featured } = validated.data;
 
   try {
     await prisma.researchLog.update({

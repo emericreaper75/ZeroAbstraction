@@ -10,7 +10,10 @@
     "content:index": "tsx scripts/index-content.ts",
     "search:index": "tsx scripts/build-search.ts",
     "security:audit": "npm audit --audit-level=high",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "db:seed": "tsx scripts/seed-admin.ts && tsx scripts/seed-messages.ts",
+    "db:seed-admin": "tsx scripts/seed-admin.ts",
+    "db:seed-messages": "tsx scripts/seed-messages.ts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.2",
@@ -67,5 +70,8 @@
     "tailwindcss": "^3.4.1",
     "tsx": "^4.21.0",
     "typescript": "^5"
+  },
+  "prisma": {
+    "seed": "tsx scripts/seed-admin.ts"
   }
 }

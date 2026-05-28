@@ -29,6 +29,8 @@ export function LightboxImage({ src, alt, caption, ...props }: LightboxImageProp
           className="cursor-zoom-in rounded-xl border border-white/[0.07] shadow-[0_8px_40px_rgba(0,0,0,0.4)] w-full object-cover transition-opacity duration-200 hover:opacity-90 block"
           onClick={() => setIsOpen(true)}
           layoutId={`img-${src}`}
+          loading="lazy"
+          decoding="async"
           {...restProps}
         />
         {displayCaption && (

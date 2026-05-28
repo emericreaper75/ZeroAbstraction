@@ -22,7 +22,7 @@ export default function SkeletonProvider({
     // Keep skeleton loading visible for exactly 1ms
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 10);
+    }, 100);
 
     return () => clearTimeout(timer);
   }, [pathname]);

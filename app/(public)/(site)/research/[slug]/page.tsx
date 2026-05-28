@@ -5,14 +5,18 @@ import { extractTOC, nestTOC } from '@/lib/toc';
 import ArticleLayout from '@/components/ArticleLayout';
 import MDXContent from '@/components/mdx/MDXContent';
 import { generateArticleJsonLd, generateBreadcrumbJsonLd } from '@/lib/jsonld';
-import { getRelatedNodes } from '@/lib/graph/engine';
-import ContentEcosystemView from '@/components/graph/ContentEcosystemView';
 import matter from 'gray-matter';
 import { splitMDXContent } from '@/lib/mdx/split';
 import readingTime from 'reading-time';
+import { normalizeResearchLog } from '@/lib/editorial/relationships/normalize';
+import { resolveRelatedPosts, resolveRelatedProjects, resolveRelatedResearch } from '@/lib/editorial/relationships/resolve-relationships';
+import { orchestrateRelationships } from '@/lib/editorial/presentation/orchestration';
 
 type Props = { params: { slug: string } };
 
+export const dynamic = "force-dynamic";
+
+/*
 export async function generateStaticParams() {
   const logs = await prisma.researchLog.findMany({
     where: { published: true },
@@ -23,6 +27,7 @@ export async function generateStaticParams() {
     slug: l.slug,
   }));
 }
+*/
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const log = await prisma.researchLog.findFirst({
@@ -44,7 +49,19 @@ export default async function ResearchLogDetailPage({ params }: Props) {
 
   const toc = nestTOC(extractTOC(log.content ?? ''));
   
-  const relatedNodes = await getRelatedNodes(`research:${log.slug}`, 4);
+  // 1. Normalize the current log
+  const sourceEntity = normalizeResearchLog(log);
+
+  // 2. Resolve candidates across all domains
+  const [relatedPosts, relatedProjects, relatedResearch] = await Promise.all([
+    resolveRelatedPosts(sourceEntity, { limit: 10 }),
+    resolveRelatedProjects(sourceEntity, { limit: 10 }),
+    resolveRelatedResearch(sourceEntity, { limit: 10 }),
+  ]);
+
+  // 3. Orchestrate into presentation buckets
+  const allCandidates = [...relatedPosts, ...relatedProjects, ...relatedResearch].sort((a, b) => b.score - a.score);
+  const groupedRelationships = orchestrateRelationships(sourceEntity, allCandidates);
 
   // Map to legacy Post structure
   const post = {
@@ -90,7 +107,7 @@ export default async function ResearchLogDetailPage({ params }: Props) {
         abstract={abstract}
         previewContent={<MDXContent source={previewMDX} />}
         remainingContent={remainingMDX ? <MDXContent source={remainingMDX} /> : null}
-        relatedContent={relatedNodes.length > 0 ? <ContentEcosystemView relatedNodes={relatedNodes} /> : null}
+        groupedRelationships={groupedRelationships}
       />
     </>
   );

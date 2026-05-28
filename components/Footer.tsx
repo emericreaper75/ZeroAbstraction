@@ -1,7 +1,5 @@
-'use client';
-
 import Link from 'next/link';
-import { useDistractionFree } from '@/components/DistractionFreeProvider';
+import { DistractionFreeHider } from '@/components/DistractionFreeHider';
 import { Separator } from '@/components/ui/separator';
 import NewsletterForm from '@/components/newsletter-form';
 
@@ -17,15 +15,12 @@ const footerLinks = [
 ];
 
 export default function Footer() {
-  const { isDistractionFree } = useDistractionFree();
-
-  if (isDistractionFree) return null;
-
   return (
-    <footer
-      className="mt-32 border-t border-neutral-800 bg-black/40 backdrop-blur-sm"
-      role="contentinfo"
-    >
+    <DistractionFreeHider>
+      <footer
+        className="mt-32 border-t border-neutral-800 bg-black/40 backdrop-blur-sm"
+        role="contentinfo"
+      >
       <div className="mx-auto max-w-screen-xl px-6 py-16">
         <div className="flex flex-col md:grid md:grid-cols-2 gap-y-10 md:gap-x-12 mb-10 md:mb-12">
           <div className="order-1">
@@ -82,6 +77,7 @@ export default function Footer() {
           </p>
         </div>
       </div>
-    </footer>
+      </footer>
+    </DistractionFreeHider>
   );
 }

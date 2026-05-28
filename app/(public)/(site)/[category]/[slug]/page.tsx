@@ -7,13 +7,18 @@ import { extractTOC, nestTOC } from '@/lib/toc';
 import ArticleLayout from '@/components/ArticleLayout';
 import MDXContent from '@/components/mdx/MDXContent';
 import { generateArticleJsonLd, generateBreadcrumbJsonLd } from '@/lib/jsonld';
-import { getRelatedNodes } from '@/lib/graph/engine';
-import ContentEcosystemView from '@/components/graph/ContentEcosystemView';
 import { contentPostToLegacyPost } from '@/lib/public/legacy-post-adapter';
 import matter from 'gray-matter';
 import { splitMDXContent } from '@/lib/mdx/split';
+import { normalizePost } from '@/lib/editorial/relationships/normalize';
+import { resolveRelatedPosts, resolveRelatedProjects, resolveRelatedResearch } from '@/lib/editorial/relationships/resolve-relationships';
+import { orchestrateRelationships } from '@/lib/editorial/presentation/orchestration';
 
 type Props = { params: { category: string; slug: string } };
+
+export const dynamic = "force-dynamic";
+
+/*
 
 export async function generateStaticParams() {
   const posts = await prisma.contentPost.findMany({
@@ -26,6 +31,8 @@ export async function generateStaticParams() {
     slug: p.slug,
   }));
 }
+
+*/
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const categoryEnum = CATEGORY_ROUTE_TO_ENUM[params.category] as ContentCategory | undefined;
@@ -52,7 +59,26 @@ export default async function ArticlePage({ params }: Props) {
   if (!post) notFound();
 
   const toc = nestTOC(extractTOC(post.content ?? ""));
-  const relatedNodes = await getRelatedNodes(`post:${post.slug}`, 4);
+
+  // 1. Normalize the current post
+  const sourceEntity = normalizePost(post);
+  // Add series data from frontmatter if available
+  const { data, content: mdxBody } = matter(post.content ?? "");
+  if (typeof data.series === 'string') {
+    sourceEntity.series = data.series;
+    sourceEntity.seriesIndex = typeof data.seriesIndex === 'number' ? data.seriesIndex : undefined;
+  }
+
+  // 2. Resolve candidates across all domains
+  const [relatedPosts, relatedProjects, relatedResearch] = await Promise.all([
+    resolveRelatedPosts(sourceEntity, { limit: 10 }),
+    resolveRelatedProjects(sourceEntity, { limit: 10 }),
+    resolveRelatedResearch(sourceEntity, { limit: 10 }),
+  ]);
+
+  // 3. Orchestrate into presentation buckets
+  const allCandidates = [...relatedPosts, ...relatedProjects, ...relatedResearch].sort((a, b) => b.score - a.score);
+  const groupedRelationships = orchestrateRelationships(sourceEntity, allCandidates);
 
   const legacyPost = contentPostToLegacyPost({
     post,
@@ -67,27 +93,8 @@ export default async function ArticlePage({ params }: Props) {
     { name: legacyPost.title },
   ]);
 
-  const { data, content: mdxBody } = matter(post.content ?? "");
   const abstract = data.abstract ?? undefined;
   const previewSections = typeof data.previewSections === 'number' ? data.previewSections : 2;
-
-  // Reading continuity — extracted from frontmatter
-  const series = typeof data.series === 'string' ? data.series : undefined;
-  const nextPost = data.nextPost && typeof data.nextPost === 'object'
-    ? (data.nextPost as { title: string; slug: string; category: string; readingTime?: string })
-    : undefined;
-
-  // Related slugs — same-category posts for the 'Also in domain' reading continuity widget
-  const sameCategoryPosts = await prisma.contentPost.findMany({
-    where: { published: true, category: categoryEnum, NOT: { slug: post.slug } },
-    orderBy: { createdAt: 'desc' },
-    take: 3,
-    select: { title: true, slug: true },
-  });
-  const relatedSlugs = sameCategoryPosts.map((p) => ({
-    title: p.title,
-    href: `/${params.category}/${p.slug}`,
-  }));
 
   const { previewMDX, remainingMDX } = splitMDXContent(mdxBody, previewSections);
 
@@ -107,10 +114,7 @@ export default async function ArticlePage({ params }: Props) {
         abstract={abstract}
         previewContent={<MDXContent source={previewMDX} />}
         remainingContent={remainingMDX ? <MDXContent source={remainingMDX} /> : null}
-        relatedContent={relatedNodes.length > 0 ? <ContentEcosystemView relatedNodes={relatedNodes} /> : null}
-        series={series}
-        nextPost={nextPost}
-        relatedSlugs={relatedSlugs}
+        groupedRelationships={groupedRelationships}
       />
     </>
   );

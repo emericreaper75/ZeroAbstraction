@@ -7,6 +7,8 @@ import PortfolioGrid from "@/components/portfolio-grid";
 
 import { generateWebSiteJsonLd } from "@/lib/jsonld";
 
+export const dynamic = "force-dynamic";
+
 export default async function HomePage() {
   const sections = await getHomepageSections();
   const featuredPosts = sections.find((s) => s.type === "featuredPosts")?.posts ?? [];

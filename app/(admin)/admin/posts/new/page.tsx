@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { useFormState } from "react-dom";
 import { createContentPost } from "@/actions/content-post-actions";
 import Link from "next/link";
+import AdminMDXPreview from "@/components/admin/admin-mdx-preview";
 
 const CATEGORIES = ["ELECTRONICS", "ASTROPHYSICS", "PHYSICS_MATH", "COMMUNICATIONS"];
 
@@ -108,25 +109,11 @@ export default function NewPostPage() {
           </div>
 
           {/* MDX Editor */}
-          <div className="flex flex-col border border-zinc-700 bg-[#0d0d0d]">
-            <div className="flex items-center justify-between border-b border-zinc-800 bg-[#111111] px-4 py-2 flex-wrap gap-2">
-              <div className="flex gap-1">
-                <button type="button" className="px-4 py-1.5 bg-[#0d0d0d] border border-zinc-700 font-label text-[9px] uppercase tracking-widest text-zinc-200">Write</button>
-                <button type="button" className="px-4 py-1.5 text-zinc-600 hover:text-zinc-400 font-label text-[9px] uppercase tracking-widest transition-colors">Preview</button>
-              </div>
-              <div className="flex items-center gap-4 text-zinc-500 overflow-x-auto scrollbar-none py-0.5">
-                <span className="material-symbols-outlined text-base cursor-pointer hover:text-zinc-300">format_bold</span>
-                <span className="material-symbols-outlined text-base cursor-pointer hover:text-zinc-300">code</span>
-                <span className="material-symbols-outlined text-base cursor-pointer hover:text-zinc-300">image</span>
-                <span className="material-symbols-outlined text-base cursor-pointer hover:text-zinc-300">table_chart</span>
-              </div>
-            </div>
-            <textarea
-              name="content"
-              className="w-full min-h-[320px] md:min-h-[520px] bg-transparent p-4 md:p-8 font-label text-sm leading-relaxed text-zinc-400 focus:outline-none resize-none"
-              placeholder="# Post Title&#10;&#10;Start writing your MDX content here..."
-            />
-          </div>
+          <AdminMDXPreview
+            name="content"
+            minHeightClass="min-h-[320px] md:min-h-[520px]"
+            placeholder="# Post Title&#10;&#10;Start writing your MDX content here..."
+          />
 
           {/* Hidden fields */}
           <input type="hidden" name="published" value="false" />

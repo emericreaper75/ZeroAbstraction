@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Fuse from "fuse.js";
 import { useDebouncedValue } from "@/components/hooks/useDebouncedValue";
 
 export type SearchResultItem = {
@@ -64,7 +63,11 @@ export function useInstantSearch(opts: {
     async function performSearch() {
       setState((s) => ({ status: "loading", items: s.items }));
       try {
-        const index = await getSearchIndex();
+        const [index, { default: Fuse }] = await Promise.all([
+          getSearchIndex(),
+          import("fuse.js")
+        ]);
+        
         if (!isSubscribed) return;
 
         const fuse = new Fuse(index, {

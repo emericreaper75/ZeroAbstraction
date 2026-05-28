@@ -4,6 +4,7 @@ import { prisma } from '@/lib/db/prisma';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://zero-abstraction.dev';
 
+export const dynamic = "force-dynamic";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts = getAllPosts();
 

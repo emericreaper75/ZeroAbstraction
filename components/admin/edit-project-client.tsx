@@ -3,6 +3,7 @@
 import { useFormState } from "react-dom";
 import { updateProject } from "@/actions/project-actions";
 import Link from "next/link";
+import AdminMDXPreview from "@/components/admin/admin-mdx-preview";
 
 interface Props {
   projectId: string;
@@ -127,16 +128,12 @@ export default function EditProjectClient({ projectId, defaultValues }: Props) {
             <div>
               <div className="flex items-center justify-between mb-2">
                 <label className="font-label text-[10px] uppercase tracking-widest text-zinc-500">MDX Content</label>
-                <div className="flex gap-4">
-                  {["format_bold", "code", "image"].map((ic) => (
-                    <span key={ic} className="material-symbols-outlined text-sm text-zinc-600 cursor-pointer hover:text-[#c9c6c5] transition-colors">{ic}</span>
-                  ))}
-                </div>
               </div>
-              <textarea
+              <AdminMDXPreview
                 name="content"
                 defaultValue={defaultValues.content}
-                className="w-full min-h-[300px] md:min-h-[420px] p-4 md:p-6 bg-[#0d0d0d] border border-outline-variant font-label text-sm leading-loose text-zinc-400 focus:outline-none focus:border-zinc-300 resize-none custom-scrollbar"
+                minHeightClass="min-h-[300px] md:min-h-[420px]"
+                placeholder="# Project Documentation&#10;&#10;Start documenting the technical architecture here..."
               />
             </div>
 

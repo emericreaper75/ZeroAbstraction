@@ -3,6 +3,7 @@
 import { useFormState } from "react-dom";
 import { createProject } from "@/actions/project-actions";
 import Link from "next/link";
+import AdminMDXPreview from "@/components/admin/admin-mdx-preview";
 
 export default function NewProjectPage() {
   const [state, formAction] = useFormState(createProject, { error: "" });
@@ -101,16 +102,10 @@ export default function NewProjectPage() {
           <div>
             <div className="flex items-center justify-between mb-2">
               <label className="block font-label text-[10px] text-zinc-500 uppercase tracking-widest">MDX Content</label>
-              <div className="flex gap-4">
-                <span className="material-symbols-outlined text-xs text-zinc-600 cursor-pointer hover:text-[#c9c6c5] transition-colors">format_bold</span>
-                <span className="material-symbols-outlined text-xs text-zinc-600 cursor-pointer hover:text-[#c9c6c5] transition-colors">format_italic</span>
-                <span className="material-symbols-outlined text-xs text-zinc-600 cursor-pointer hover:text-[#c9c6c5] transition-colors">code</span>
-                <span className="material-symbols-outlined text-xs text-zinc-600 cursor-pointer hover:text-[#c9c6c5] transition-colors">image</span>
-              </div>
             </div>
-            <textarea
+            <AdminMDXPreview
               name="content"
-              className="w-full min-h-[300px] md:min-h-[400px] p-4 md:p-6 bg-[#0d0d0d] border border-outline-variant font-label text-sm leading-relaxed text-zinc-300 custom-scrollbar overflow-y-auto focus:outline-none focus:border-zinc-300 resize-none"
+              minHeightClass="min-h-[300px] md:min-h-[400px]"
               placeholder="# Project Documentation&#10;&#10;Start documenting the technical architecture here..."
             />
           </div>

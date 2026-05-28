@@ -13,9 +13,11 @@ import { Surface } from '@/components/ui/surface';
 import { AmbientLight } from '@/components/backgrounds/ambient-light';
 import { ArrowUpRight, Code2 } from 'lucide-react';
 import TagExplorer from '@/components/tag-explorer';
-import TimelineMiniRail from '@/components/timeline-mini-rail';
+import MilestoneChain from '@/components/editorial/milestone-chain';
+import RelatedContent from '@/components/editorial/related-content';
 import { FootnoteProvider } from '@/components/mdx/footnotes';
 import type { TimelineEntry } from '@/lib/timeline';
+import type { GroupedRelationships } from '@/lib/editorial/presentation/orchestration';
 
 type Props = {
   project: {
@@ -34,6 +36,8 @@ type Props = {
   relatedContent?: React.ReactNode;
   /** Timeline entries related to this project by tag matching */
   timelineEntries?: TimelineEntry[];
+  /** Grouped relationships data from the editorial engine */
+  groupedRelationships?: GroupedRelationships;
 };
 
 /** Lightweight fade-up — avoids expensive layout recalculations */
@@ -51,6 +55,7 @@ export default function ProjectLayout({
   remainingContent,
   relatedContent,
   timelineEntries,
+  groupedRelationships,
 }: Props) {
   const { isDistractionFree } = useDistractionFree();
 
@@ -197,7 +202,7 @@ export default function ProjectLayout({
             )}
           </motion.article>
 
-          {/* Related Content */}
+          {/* Related Content (Legacy injection) */}
           {relatedContent && (
             <motion.div
               initial={{ opacity: 0, y: 15 }}
@@ -207,6 +212,17 @@ export default function ProjectLayout({
             >
               {relatedContent}
             </motion.div>
+          )}
+
+          {/* Editorial Grouped Relationships */}
+          {groupedRelationships && (
+             <motion.div
+               initial={{ opacity: 0, y: 15 }}
+               animate={{ opacity: 1, y: 0 }}
+               transition={{ duration: 0.5, delay: 0.3, ease: EASE }}
+             >
+               <RelatedContent relationships={groupedRelationships} />
+             </motion.div>
           )}
         </div>
 
@@ -220,9 +236,9 @@ export default function ProjectLayout({
           >
             <TableOfContents entries={toc} />
 
-            {/* Timeline mini-rail — project-related milestones */}
+            {/* Timeline chain — project-related milestones */}
             {timelineEntries && timelineEntries.length > 0 && (
-              <TimelineMiniRail entries={timelineEntries} heading="Related Milestones" />
+              <MilestoneChain entries={timelineEntries} heading="Related Milestones" />
             )}
           </motion.aside>
         )}

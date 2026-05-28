@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/db/prisma';
 import { timelineEntries, TimelineEntry } from '@/lib/timeline';
 import { ContentNode, ScoredNode } from './types';
-import { tagOverlapScore } from '@/lib/related/similarity';
+import { calculateStringOverlap } from '@/lib/editorial/relationships/scoring';
 
 // Singleton cache for graph nodes to ensure SSR performance
 let nodesCache: ContentNode[] | null = null;
@@ -106,7 +106,7 @@ export async function getRelatedNodes(
     const reasons: string[] = [];
 
     // 1. Tag overlap (weighted highly)
-    const overlap = tagOverlapScore(sourceNode.tags, target.tags);
+    const overlap = calculateStringOverlap(sourceNode.tags, target.tags);
     if (overlap > 0) {
       score += overlap * 2;
       reasons.push(`Shares ${overlap} tag(s)`);

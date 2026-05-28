@@ -58,6 +58,7 @@ export function getPostBySlug(
 
   return {
     ...validatedPost.data,
+    published: validatedPost.data.published ?? false,
     content,
   };
 }

@@ -3,6 +3,7 @@
 import { useFormState } from "react-dom";
 import { createResearchLog } from "@/actions/research-log-actions";
 import Link from "next/link";
+import AdminMDXPreview from "@/components/admin/admin-mdx-preview";
 
 const SERIES_OPTIONS = [
   "Signal Processing",
@@ -108,25 +109,11 @@ export default function NewResearchLogPage() {
         </div>
 
         {/* MDX Editor */}
-        <div className="flex flex-col border border-zinc-700 bg-[#0d0d0d]">
-          <div className="flex items-center justify-between border-b border-zinc-800 bg-[#111111] px-4 py-2 flex-wrap gap-2">
-            <div className="flex gap-1">
-              <button type="button" className="px-4 py-1.5 bg-[#0d0d0d] border border-zinc-700 font-label text-[9px] uppercase tracking-widest text-zinc-200">Write</button>
-              <button type="button" className="px-4 py-1.5 text-zinc-600 hover:text-zinc-400 font-label text-[9px] uppercase tracking-widest transition-colors">Preview</button>
-            </div>
-            <div className="flex items-center gap-4 text-zinc-500 overflow-x-auto scrollbar-none py-0.5">
-              <span className="material-symbols-outlined text-base cursor-pointer hover:text-zinc-300">format_bold</span>
-              <span className="material-symbols-outlined text-base cursor-pointer hover:text-zinc-300">code</span>
-              <span className="material-symbols-outlined text-base cursor-pointer hover:text-zinc-300">image</span>
-              <span className="material-symbols-outlined text-base cursor-pointer hover:text-zinc-300">table_chart</span>
-            </div>
-          </div>
-          <textarea
-            name="content"
-            className="w-full min-h-[320px] md:min-h-[480px] bg-transparent p-4 md:p-8 font-label text-sm leading-loose text-zinc-400 focus:outline-none resize-none custom-scrollbar"
-            placeholder="# Research Entry&#10;&#10;Begin documenting your findings..."
-          />
-        </div>
+        <AdminMDXPreview
+          name="content"
+          minHeightClass="min-h-[320px] md:min-h-[480px]"
+          placeholder="# Research Entry&#10;&#10;Begin documenting your findings..."
+        />
 
         <div className="flex items-center gap-6">
           <label className="flex items-center gap-2 font-label text-[10px] uppercase text-zinc-300 tracking-widest cursor-pointer">

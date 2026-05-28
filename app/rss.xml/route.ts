@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/db/prisma";
 import { getAllPosts } from "@/lib/posts";
 
+export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://zero-abstraction.dev";

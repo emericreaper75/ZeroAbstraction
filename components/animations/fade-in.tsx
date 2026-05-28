@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, HTMLMotionProps } from "framer-motion";
+import { motion, HTMLMotionProps, useReducedMotion } from "framer-motion";
 import { ReactNode } from "react";
 
 interface FadeInProps extends HTMLMotionProps<"div"> {
@@ -10,6 +10,12 @@ interface FadeInProps extends HTMLMotionProps<"div"> {
 }
 
 export function FadeIn({ children, delay = 0, duration = 0.5, ...props }: FadeInProps) {
+  const shouldReduceMotion = useReducedMotion();
+  
+  if (shouldReduceMotion) {
+    return <div {...(props as any)}>{children}</div>;
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -24,11 +30,16 @@ export function FadeIn({ children, delay = 0, duration = 0.5, ...props }: FadeIn
 }
 
 export function StaggerContainer({ children, staggerDelay = 0.1, ...props }: HTMLMotionProps<"div"> & { staggerDelay?: number }) {
+  const shouldReduceMotion = useReducedMotion();
+
+  if (shouldReduceMotion) {
+    return <div {...(props as any)}>{children}</div>;
+  }
+
   return (
     <motion.div
       initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-50px" }}
+      animate="visible"
       variants={{
         hidden: {},
         visible: {
@@ -45,6 +56,12 @@ export function StaggerContainer({ children, staggerDelay = 0.1, ...props }: HTM
 }
 
 export function StaggerItem({ children, ...props }: HTMLMotionProps<"div">) {
+  const shouldReduceMotion = useReducedMotion();
+
+  if (shouldReduceMotion) {
+    return <div {...(props as any)}>{children}</div>;
+  }
+
   return (
     <motion.div
       variants={{

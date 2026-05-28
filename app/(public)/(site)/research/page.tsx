@@ -6,6 +6,7 @@ import ComingSoonBanner from '@/components/ComingSoonBanner';
 import ArticleCard from '@/components/ArticleCard';
 import readingTime from 'reading-time';
 
+export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: 'Research Logs',
   description: 'Technical notebook: logs, reports, and academic thesis summaries.',

@@ -258,6 +258,7 @@ export async function deleteProject(
   });
 
   revalidatePath("/admin/projects");
+  redirect("/admin/projects");
 }
 
 export async function toggleProjectPublish(

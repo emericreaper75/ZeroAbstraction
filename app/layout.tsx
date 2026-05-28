@@ -1,17 +1,18 @@
 import type { Metadata } from 'next';
+/*
 import {
   Inter,
   IBM_Plex_Serif,
   JetBrains_Mono,
   IBM_Plex_Mono,
 } from 'next/font/google';
-
+*/
 
 import 'katex/dist/katex.min.css';
 import './globals.css';
 import SkeletonProvider from '@/components/SkeletonProvider';
 
-
+/*
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
@@ -40,7 +41,7 @@ const ibmPlexMono = IBM_Plex_Mono({
   variable: '--font-mono',
   display: 'swap',
 });
-
+*/
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://zero-abstraction.dev'),
@@ -74,7 +75,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`dark ${ibmPlexMono.variable} ${ibmPlexSerif.variable} ${jetbrainsMono.variable} ${inter.variable}`}
+      className={`dark scroll-smooth antialiased`}
     >
       <head>
         <script

@@ -11,7 +11,10 @@ import ProjectLayout from "@/components/ProjectLayout";
 import matter from "gray-matter";
 import { splitMDXContent } from "@/lib/mdx/split";
 import { timelineEntries } from "@/lib/timeline";
-import { tagOverlapScore } from "@/lib/related/similarity";
+import { calculateStringOverlap } from "@/lib/editorial/relationships/scoring";
+import { normalizeProject } from "@/lib/editorial/relationships/normalize";
+import { resolveRelatedPosts, resolveRelatedProjects, resolveRelatedResearch } from "@/lib/editorial/relationships/resolve-relationships";
+import { orchestrateRelationships } from "@/lib/editorial/presentation/orchestration";
 
 export const revalidate = 300;
 
@@ -48,7 +51,19 @@ export default async function ProjectPage({
 
   const toc = project.content ? nestTOC(extractTOC(project.content)) : [];
 
-  const relatedNodes = await getRelatedNodes(`project:${project.slug}`, 4);
+  // 1. Normalize the current project
+  const sourceEntity = normalizeProject(project);
+
+  // 2. Resolve candidates across all domains
+  const [relatedPosts, relatedProjects, relatedResearch] = await Promise.all([
+    resolveRelatedPosts(sourceEntity, { limit: 10 }),
+    resolveRelatedProjects(sourceEntity, { limit: 10 }),
+    resolveRelatedResearch(sourceEntity, { limit: 10 }),
+  ]);
+
+  // 3. Orchestrate into presentation buckets
+  const allCandidates = [...relatedPosts, ...relatedProjects, ...relatedResearch].sort((a, b) => b.score - a.score);
+  const groupedRelationships = orchestrateRelationships(sourceEntity, allCandidates);
 
   const { data, content: mdxBody } = matter(project.content ?? "");
   const abstract = data.abstract ?? undefined;
@@ -57,7 +72,7 @@ export default async function ProjectPage({
 
   // Filter timeline entries by tag overlap with this project
   const relatedTimeline = timelineEntries
-    .filter((e) => tagOverlapScore(e.tags ?? [], project.tags) > 0)
+    .filter((e) => calculateStringOverlap(e.tags ?? [], project.tags) > 0)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .slice(0, 3);
 
@@ -83,7 +98,7 @@ export default async function ProjectPage({
           )
         }
         remainingContent={remainingMDX ? <MDXContent source={remainingMDX} /> : null}
-        relatedContent={relatedNodes.length > 0 ? <ContentEcosystemView relatedNodes={relatedNodes} /> : null}
+        groupedRelationships={groupedRelationships}
         timelineEntries={relatedTimeline}
       />
     </div>

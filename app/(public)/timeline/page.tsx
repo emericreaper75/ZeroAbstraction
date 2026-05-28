@@ -3,8 +3,9 @@ import TimelineFilter from '@/components/TimelineFilter';
 import TimelineBg from '@/components/backgrounds/timeline-bg';
 import PageHeader from '@/components/page-header';
 import { FadeIn } from '@/components/animations/fade-in';
-import { getTimelineEntriesWithValidation } from '@/lib/timeline';
+import { getTimelineEntriesWithValidation } from '@/lib/timeline-server';
 
+export const dynamic = "force-dynamic";
 export const revalidate = 300;
 
 export const metadata: Metadata = {
