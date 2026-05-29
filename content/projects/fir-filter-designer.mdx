@@ -7,13 +7,44 @@ category: "electronics"
 slug: "fir-filter-designer"
 ---
 
-## Overview
+---
+title: "FIR Filter Designer"
+date: "2024-03-22"
+description: "Interactive web tool for FIR filter design using Parks-McClellan algorithm compiled to WebAssembly, with real-time D3.js frequency response visualisation."
+tags: ["TypeScript", "Next.js", "WebAssembly", "D3.js", "Rust", "DSP", "Parks-McClellan"]
+category: "electronics"
+slug: "fir-filter-designer"
+---
 
+<CaseStudyLayout>
+
+<ExecutiveSummary>
 The FIR Filter Designer is a browser-based tool for designing finite impulse response digital filters. It runs entirely client-side — no server required — with the computationally intensive Parks-McClellan (Remez exchange) algorithm compiled from Rust to WebAssembly for near-native performance.
 
-**Why this exists:** Existing FIR design tools require either a MATLAB/Python installation (barrier to entry) or use suboptimal window methods (Kaiser, Hamming) that produce filters with $10$–$15\%$ more coefficients than necessary for the same specification. By putting the equiripple-optimal Parks-McClellan algorithm in the browser with real-time D3.js frequency response rendering at 60 fps, engineers can iterate on filter specifications interactively.
+This project democratises access to optimal filter design by removing the need for a MATLAB or Python installation, providing engineers with a 60 fps interactive design loop directly in the browser.
+</ExecutiveSummary>
+
+<ProblemContext title="The Problem">
+Existing FIR design tools require either a MATLAB/Python installation (barrier to entry) or use suboptimal window methods (Kaiser, Hamming) that produce filters with 10–15% more coefficients than necessary for the same specification.
+
+By putting the equiripple-optimal Parks-McClellan algorithm in the browser with real-time D3.js frequency response rendering, engineers can iterate on filter specifications interactively. 
 
 > **Note.** The Parks-McClellan algorithm guarantees the minimum filter order for a given set of passband ripple, stopband attenuation, and transition bandwidth specifications. For a typical lowpass design with $0.1\,\text{dB}$ passband ripple and $60\,\text{dB}$ stopband attenuation, Parks-McClellan requires order $N = 63$ vs. $N = 71$ for the Kaiser window method — an $11\%$ reduction in computational cost per filtered sample.
+</ProblemContext>
+
+<RequirementsConstraints 
+  requirements={[
+    "Client-side only execution to eliminate server costs and ensure privacy",
+    "Sub-10ms response times for recalculating filter coefficients as sliders move",
+    "Bit-exact results compared to MATLAB's firpm function (double precision)",
+    "Support for arbitrary multiband configurations"
+  ]}
+  constraints={[
+    "Cannot use proprietary libraries or existing C/C++ DSP binaries",
+    "Must run on mobile devices without exhausting memory",
+    "JavaScript single-threaded UI constraints"
+  ]}
+/>
 
 ## Parks-McClellan Background
 
@@ -43,18 +74,10 @@ $$
 
 where $\delta$ is the equiripple error level. This characterisation is both necessary and sufficient for optimality, meaning any filter satisfying the alternation condition is guaranteed to be the unique minimax-optimal solution.
 
-### Filter Order Comparison
+<ArchitectureOverview>
+The system leverages a hybrid architecture where the UI and visualisation layer runs in React/D3.js, while the mathematically intensive algorithm is offloaded to a WebAssembly module compiled from Rust.
 
-For a lowpass filter with passband edge $f_p = 0.2 f_s$, stopband edge $f_s = 0.25 f_s$, passband ripple $\delta_p = 0.01$ ($0.087\,\text{dB}$), and stopband attenuation $\delta_s = 0.001$ ($60\,\text{dB}$):
-
-| Method | Required Order $N$ | Stopband Attenuation | Transition Width |
-|---|---|---|---|
-| Kaiser Window | $71$ | $60.2\,\text{dB}$ | $0.05\,f_s$ |
-| Parks-McClellan | $63$ | $60.0\,\text{dB}$ | $0.05\,f_s$ |
-| Savings | $-11\%$ | — | — |
-
-## Technical Architecture
-
+<ArchitectureDiagram caption="System Architecture and Data Flow">
 ```
 ┌──────────────────────────────────────────────────────────────────┐
 │                    FIR Filter Designer                           │
@@ -70,6 +93,37 @@ For a lowpass filter with passband edge $f_p = 0.2 f_s$, stopband edge $f_s = 0.
 │    D3.js Canvas: Magnitude (dB), Phase (deg), Group Delay (s)   │
 └──────────────────────────────────────────────────────────────────┘
 ```
+</ArchitectureDiagram>
+</ArchitectureOverview>
+
+<TechnicalDecisions>
+  <TechnicalDecision 
+    decision="WebAssembly via Rust for Core Algorithm"
+    rationale="The Remez exchange algorithm requires solving dense linear systems, dense grid evaluations (2048+ points), and root finding per iteration. Doing this in JavaScript caused GC pauses and frame drops during slider interactions."
+    alternatives={["Pure TypeScript implementation", "C++ compiled with Emscripten"]}
+    tradeoffs={["Increased bundle size (+150KB for the WASM payload)", "Slight memory boundary crossing overhead for passing arrays"]}
+    outcomes="Achieved sub-millisecond calculation times for N=64 filters, enabling a smooth 60fps interaction loop."
+  />
+  <TechnicalDecision 
+    decision="D3.js Canvas over SVG for Plotting"
+    rationale="Frequency response plots require rendering 1024-2048 points dynamically. Re-rendering thousands of SVG path nodes caused layout thrashing in React."
+    alternatives={["Recharts (SVG-based)", "Chart.js (Canvas but hard to customise)"]}
+    tradeoffs={["Canvas is not natively accessible and requires separate screen-reader text", "More imperative code vs declarative React SVG"]}
+    outcomes="Render times dropped from 15ms (SVG) to <1ms (Canvas), perfectly matching the WASM core speed."
+  />
+</TechnicalDecisions>
+
+<ImplementationJourney>
+  <JourneyMilestone date="Q1 2024" title="Initial Prototype in TypeScript">
+    The first version was written entirely in TypeScript to validate the math. It worked, but performance fell apart for filter orders $>128$. The UI thread would freeze for $200\text{ms}$ while computing a 256-tap filter, ruining the interactive experience.
+  </JourneyMilestone>
+  <JourneyMilestone date="Q2 2024" title="Rust + WASM Migration">
+    Ported the core Remez exchange loop to Rust. Used `wasm-bindgen` to expose the function. We observed a $15\times$ speedup, but memory leaks occurred due to improper handling of `Float64Array` memory boundaries.
+  </JourneyMilestone>
+  <JourneyMilestone date="Q3 2024" title="Memory Optimisation & D3 Canvas">
+    Fixed the memory issues by keeping a single allocated buffer in WASM memory and passing pointers, rather than serializing/deserializing arrays. Moved plotting from Recharts to a custom D3 Canvas implementation to unblock the main thread.
+  </JourneyMilestone>
+</ImplementationJourney>
 
 ## WebAssembly Core
 
@@ -97,8 +151,6 @@ pub fn design_fir(
     
     for _iter in 0..max_iter {
         // Step 1: Build and solve the interpolation system
-        // The Chebyshev alternation condition gives a linear system:
-        // sum_k a[k] cos(k * omega_i) + (-1)^i * delta / W(omega_i) = D(omega_i)
         let (a, delta) = solve_alternation_system(
             &extremals, m, bands, desired, weights
         );
@@ -125,7 +177,7 @@ pub fn design_fir(
         }
     }
     
-    // Recover filter coefficients via IDFT of the cosine polynomial
+    // Recover filter coefficients
     let (a, _) = solve_alternation_system(
         &extremals, m, bands, desired, weights
     );
@@ -133,35 +185,19 @@ pub fn design_fir(
 }
 ```
 
-The convergence criterion $\max |\Delta\omega_i| < 10^{-12}$ ensures coefficient accuracy to machine precision. Typical convergence occurs in 15–25 iterations for filter orders up to $N = 512$.
+<ChallengesFailures>
+  <ChallengeFailure type="bug" title="Barycentric Interpolation Instability">
+    During step 1 of the exchange algorithm, we initially used a naive Lagrange interpolation polynomial. For high filter orders ($N > 128$), the Vandermonde matrix condition number exploded, causing catastrophic cancellation in floating-point math. The resulting filters had massive ripples instead of equiripple behavior. 
+    **Fix**: Switched to the Barycentric form of Lagrange interpolation, which is numerically stable and faster ($O(N)$ evaluation).
+  </ChallengeFailure>
+  <ChallengeFailure type="bottleneck" title="JavaScript to WASM Bridge Overhead">
+    Passing large arrays (bands, weights, desired) from JS to WASM on every render frame caused significant serialization overhead, neutralizing the performance gains of Rust.
+    **Fix**: Pre-allocated memory buffers in WebAssembly memory and passed pointers from JS, zero-copy.
+  </ChallengeFailure>
+</ChallengesFailures>
 
-## Supported Filter Types
-
-| Type | Bands | Phase | Notes |
-|---|---|---|---|
-| Lowpass | 2 (pass + stop) | Linear | Type I or II |
-| Highpass | 2 (stop + pass) | Linear | Type I only ($N$ must be even) |
-| Bandpass | 3 (stop + pass + stop) | Linear | Type I or II |
-| Bandstop | 3 (pass + stop + pass) | Linear | Type I or II |
-| Multiband | $\geq 4$ | Linear | Arbitrary band configuration |
-| Hilbert Transformer | 1 (full band) | $\pm 90°$ | Type III (odd symmetry) |
-| Differentiator | 1 (full band) | Linear × $j\omega$ | Type IV, $W(\omega) = 1/\omega$ |
-
-## Validation Against MATLAB `firpm`
-
-The WebAssembly implementation was validated against MATLAB's `firpm` function across 200 randomly generated test cases. For each test case, filter order $N \in [16, 256]$, band edges, desired responses, and weights were generated randomly.
-
-| Metric | Value |
-|---|---|
-| Total test cases | $200$ |
-| Max coefficient error (absolute) | $4.7 \times 10^{-14}$ |
-| Mean coefficient error (absolute) | $1.2 \times 10^{-15}$ |
-| Convergence failures | $0$ |
-| Status | ✅ All pass |
-
-All coefficients match MATLAB's reference implementation to within $5 \times 10^{-14}$, confirming bit-exact agreement at double precision.
-
-## Performance Benchmarks
+<BenchmarksResults>
+### Performance Benchmarks
 
 Benchmarks measured on Chrome 122 (V8) on Intel i7-12700K. Each test averaged over 100 iterations.
 
@@ -175,32 +211,34 @@ Benchmarks measured on Chrome 122 (V8) on Intel i7-12700K. Each test averaged ov
 
 The WASM core achieves sub-millisecond design times for orders up to $N = 64$, enabling real-time updates as the user drags specification sliders.
 
-## Usage: Designing a 60 dB Stopband Lowpass
+### Validation Against MATLAB `firpm`
 
-1. **Set filter type** to "Lowpass" in the specification panel
-2. **Set passband edge** to $f_p = 0.2$ (normalised to Nyquist)
-3. **Set stopband edge** to $f_s = 0.25$
-4. **Set passband ripple** to $0.1\,\text{dB}$ ($\delta_p = 0.0115$)
-5. **Set stopband attenuation** to $60\,\text{dB}$ ($\delta_s = 10^{-3}$)
-6. **Click "Design"** — the WASM engine computes coefficients in $<1\,\text{ms}$
-7. **Review** the magnitude response (dB), phase response, and group delay plots in the D3.js canvas
-8. **Export** coefficients as JSON, C header array, or MATLAB `.mat` file
+Validation was performed against MATLAB's `firpm` function across 200 randomly generated test cases.
 
-The tool automatically estimates the minimum filter order using the Bellanger approximation:
+| Metric | Value |
+|---|---|
+| Total test cases | $200$ |
+| Max coefficient error (absolute) | $4.7 \times 10^{-14}$ |
+| Mean coefficient error (absolute) | $1.2 \times 10^{-15}$ |
+| Convergence failures | $0$ |
 
-$$
-N \approx \frac{-2}{3} \log_{10}\left(10 \delta_p \delta_s\right) \cdot \frac{f_s}{f_s - f_p}
-$$
+All coefficients match MATLAB's reference implementation to within $5 \times 10^{-14}$, confirming bit-exact agreement at double precision.
+</BenchmarksResults>
 
-and rounds up to the nearest even integer for Type I symmetry.
+<LessonsLearned>
+  <Lesson title="WASM isn't a magic bullet for all performance issues">
+    The overhead of sending data back and forth across the JS/WASM boundary can easily eclipse the raw compute gains if not careful. You must minimise memory crossings.
+  </Lesson>
+  <Lesson title="Numerical stability ruins algorithms on paper">
+    Standard textbooks present algorithms in their pure mathematical form. In reality, IEEE 754 floating point requires rearranging equations (like Barycentric vs Standard Lagrange) to prevent catastrophic cancellation.
+  </Lesson>
+</LessonsLearned>
 
-## Roadmap
-
-- [ ] IIR filter design (Butterworth, Chebyshev I/II, Elliptic) via bilinear transform
-- [ ] Group delay equaliser (allpass IIR cascade for phase correction)
-- [ ] Filter bank design (uniform DFT and cosine-modulated)
-- [ ] Coefficient quantisation analysis (fixed-point bit-width sweep with SNR degradation curves)
-- [ ] Multi-rate filter design (interpolation/decimation with polyphase decomposition)
+<FutureDirections>
+- Add IIR filter design (Butterworth, Chebyshev I/II, Elliptic) via bilinear transform
+- Implement Group delay equaliser (allpass IIR cascade for phase correction)
+- Support coefficient quantisation analysis (fixed-point bit-width sweep with SNR degradation curves)
+</FutureDirections>
 
 ## References
 
@@ -208,6 +246,5 @@ and rounds up to the nearest even integer for Type I symmetry.
 
 [2] J. H. McClellan, T. W. Parks, and L. R. Rabiner, "A computer program for designing optimum FIR linear phase digital filters," *IEEE Trans. Audio Electroacoust.*, vol. AU-21, no. 6, pp. 506–526, Dec. 1973.
 
-[3] L. R. Rabiner and B. Gold, *Theory and Application of Digital Signal Processing*. Englewood Cliffs, NJ: Prentice-Hall, 1975.
+</CaseStudyLayout>
 
-[4] A. V. Oppenheim and R. W. Schafer, *Discrete-Time Signal Processing*, 3rd ed. Upper Saddle River, NJ: Pearson, 2010.

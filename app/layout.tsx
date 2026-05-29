@@ -1,18 +1,16 @@
 import type { Metadata } from 'next';
-/*
+
 import {
   Inter,
   IBM_Plex_Serif,
-  JetBrains_Mono,
-  IBM_Plex_Mono,
+  
 } from 'next/font/google';
-*/
 
 import 'katex/dist/katex.min.css';
 import './globals.css';
 import SkeletonProvider from '@/components/SkeletonProvider';
 
-/*
+
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
@@ -27,7 +25,7 @@ const ibmPlexSerif = IBM_Plex_Serif({
   display: 'swap',
 });
 
-
+/*
 const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
   variable: '--font-jetbrains-mono',
@@ -75,7 +73,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`dark scroll-smooth antialiased`}
+      className={`dark scroll-smooth antialiased ${inter.variable} ${ibmPlexSerif.variable}`}
     >
       <head>
         <script

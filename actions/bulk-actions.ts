@@ -7,6 +7,7 @@ import { prisma } from "@/lib/db/prisma";
 import { requireRole } from "@/lib/authz/require-role";
 import { updateProjectWithRevision } from "@/lib/editorial/projects/project-service";
 import { updateContentPostWithRevision } from "@/lib/editorial/posts/content-post-service";
+import { invalidateHomepageCache } from "@/lib/homepage/invalidate-homepage";
 
 const BulkOpSchema = z.object({
   entity: z.enum(["post", "project"]),
@@ -58,6 +59,9 @@ export async function bulkOperate(input: z.infer<typeof BulkOpSchema>) {
       }
     }
     revalidatePath("/admin/projects");
+    revalidatePath("/projects");
+    revalidatePath("/");
+    await invalidateHomepageCache();
     return { ok: true as const };
   }
 
@@ -97,6 +101,9 @@ export async function bulkOperate(input: z.infer<typeof BulkOpSchema>) {
     }
   }
   revalidatePath("/admin/posts");
+  revalidatePath("/blog");
+  revalidatePath("/");
+  await invalidateHomepageCache();
   return { ok: true as const };
 }
 

@@ -21,3 +21,11 @@ export async function optionalCacheSet<T>(key: string, value: T, ttlSeconds: num
   }
 }
 
+export async function optionalCacheDel(key: string) {
+  try {
+    const redis = getRedis();
+    await redis.del(key);
+  } catch {
+    // best-effort — if Redis is down, cache will expire via TTL anyway
+  }
+}

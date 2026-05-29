@@ -3,12 +3,18 @@ import { timelineEntries, TimelineEntry } from '@/lib/timeline';
 import { ContentNode, ScoredNode } from './types';
 import { calculateStringOverlap } from '@/lib/editorial/relationships/scoring';
 
-// Singleton cache for graph nodes to ensure SSR performance
-let nodesCache: ContentNode[] | null = null;
+/**
+ * TTL-based cache for graph nodes.
+ * Refreshes every 5 minutes to ensure relationship updates appear
+ * while keeping SSR performance high and memory growth bounded.
+ */
+const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
+
+let nodesCache: { nodes: ContentNode[]; cachedAt: number } | null = null;
 
 export async function getGraphNodes(): Promise<ContentNode[]> {
-  if (nodesCache) {
-    return nodesCache;
+  if (nodesCache && Date.now() - nodesCache.cachedAt < CACHE_TTL_MS) {
+    return nodesCache.nodes;
   }
 
   const nodes: ContentNode[] = [];
@@ -83,7 +89,7 @@ export async function getGraphNodes(): Promise<ContentNode[]> {
     });
   }
 
-  nodesCache = nodes;
+  nodesCache = { nodes, cachedAt: Date.now() };
   return nodes;
 }
 

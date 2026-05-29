@@ -15,6 +15,20 @@ import { Challenge, Tradeoff, OptimizationOutcome } from '@/components/mdx/case-
 import { SystemArchitecture, ArchitectureContent, ArchitectureSidebar, InfrastructureOverview } from '@/components/mdx/case-study/architecture-section';
 import { MetricsGrid, MetricCard } from '@/components/mdx/case-study/metrics-grid';
 
+// New Case Study Architecture Components
+import { CaseStudyLayout } from '@/components/case-study/case-study-layout';
+import { ExecutiveSummary } from '@/components/case-study/executive-summary';
+import { ProblemContext } from '@/components/case-study/problem-context';
+import { RequirementsConstraints } from '@/components/case-study/requirements-constraints';
+import { ArchitectureOverview } from '@/components/case-study/architecture-overview';
+import { TechnicalDecisions, TechnicalDecision } from '@/components/case-study/technical-decisions';
+import { ImplementationJourney, JourneyMilestone } from '@/components/case-study/implementation-journey';
+import { ChallengesFailures, ChallengeFailure } from '@/components/case-study/challenges-failures';
+import { BenchmarksResults } from '@/components/case-study/benchmarks-results';
+import { LessonsLearned, Lesson } from '@/components/case-study/lessons-learned';
+import { FutureDirections } from '@/components/case-study/future-directions';
+import { ArchitectureDiagram } from '@/components/case-study/architecture-diagram';
+
 /** Extract language label from className like "language-typescript" → "TS" */
 function getLangLabel(className?: string): string | null {
   if (!className) return null;
@@ -151,4 +165,22 @@ export const mdxComponents = {
   InfrastructureOverview,
   MetricsGrid,
   MetricCard,
+
+  // ─── New Case Study Architecture ─────────────────────────────────────────────
+  CaseStudyLayout,
+  ExecutiveSummary,
+  ProblemContext,
+  RequirementsConstraints,
+  ArchitectureOverview,
+  TechnicalDecisions,
+  TechnicalDecision,
+  ImplementationJourney,
+  JourneyMilestone,
+  ChallengesFailures,
+  ChallengeFailure,
+  BenchmarksResults,
+  LessonsLearned,
+  Lesson,
+  FutureDirections,
+  ArchitectureDiagram,
 };

@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/db/prisma";
-import { getAllPosts } from "@/lib/posts";
+import { CATEGORY_ENUM_TO_ROUTE } from "@/lib/editorial/categories";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -17,9 +17,19 @@ function xmlEscape(s: string) {
 }
 
 export async function GET() {
-  const posts = getAllPosts()
-    .filter((p) => p.published !== false)
-    .slice(0, 50);
+  // Use Prisma as single source of truth (replaces legacy MDX filesystem reads)
+  const posts = await prisma.contentPost.findMany({
+    where: { published: true },
+    orderBy: { createdAt: "desc" },
+    take: 50,
+    select: {
+      slug: true,
+      title: true,
+      description: true,
+      category: true,
+      createdAt: true,
+    },
+  });
 
   const projects = await prisma.project.findMany({
     where: { published: true },
@@ -37,12 +47,13 @@ export async function GET() {
   }> = [];
 
   for (const p of posts) {
-    const link = `${siteUrl}/${p.category}/${p.slug}`;
+    const routeCategory = CATEGORY_ENUM_TO_ROUTE[p.category];
+    const link = `${siteUrl}/${routeCategory}/${p.slug}`;
     items.push({
       title: p.title,
       link,
       guid: link,
-      pubDate: p.date ? new Date(p.date).toUTCString() : new Date().toUTCString(),
+      pubDate: p.createdAt.toUTCString(),
       description: p.description,
     });
   }
@@ -91,4 +102,3 @@ ${items
     },
   });
 }
-

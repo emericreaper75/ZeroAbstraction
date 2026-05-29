@@ -7,6 +7,9 @@ import { prisma } from "@/lib/db/prisma";
 import { requireRole } from "@/lib/authz/require-role";
 import { slugify } from "@/lib/editorial/slug";
 import { researchLogSchema } from "@/lib/validations/research-log";
+import { createRevision } from "@/lib/editorial/revisions/revision-service";
+import { updateResearchLogWithRevision } from "@/lib/editorial/research-logs/research-log-service";
+import { invalidateHomepageCache } from "@/lib/homepage/invalidate-homepage";
 
 // ── Create ─────────────────────────────────────────────────────────────────
 
@@ -45,8 +48,9 @@ export async function createResearchLog(
   const { title, series, abstract, content, tags, entryNumber, published, featured } = validated.data;
   const slug = slugify(title);
 
+  let researchLog;
   try {
-    await prisma.researchLog.create({
+    researchLog = await prisma.researchLog.create({
       data: {
         title,
         slug,
@@ -69,11 +73,26 @@ export async function createResearchLog(
     return { error: "Failed to create research log." };
   }
 
+  // Capture initial version-1 snapshot for revision rollback capability
+  await createRevision({
+    entityType: "RESEARCH_LOG",
+    entityId: researchLog.id,
+    entityVersion: 1,
+    reason: "UPDATE",
+    snapshot: researchLog,
+    clientMutationId: null,
+  });
+
   revalidatePath("/admin/research-logs");
+  revalidatePath("/research");
+  revalidatePath(`/research/${slug}`);
+  revalidatePath("/");
+  await invalidateHomepageCache();
+
   redirect("/admin/research-logs");
 }
 
-// ── Update ─────────────────────────────────────────────────────────────────
+// ── Update (revision-tracked) ──────────────────────────────────────────────
 
 export async function updateResearchLog(
   id: string,
@@ -109,9 +128,10 @@ export async function updateResearchLog(
 
   const { title, series, abstract, content, tags, published, featured } = validated.data;
 
+  let updated;
   try {
-    await prisma.researchLog.update({
-      where: { id },
+    updated = await updateResearchLogWithRevision({
+      id,
       data: {
         title,
         series,
@@ -120,7 +140,7 @@ export async function updateResearchLog(
         tags,
         published,
         featured,
-        updatedAt: new Date(),
+        reason: "UPDATE",
       },
     });
   } catch {
@@ -129,6 +149,11 @@ export async function updateResearchLog(
 
   revalidatePath("/admin/research-logs");
   revalidatePath(`/admin/research-logs/${id}/edit`);
+  revalidatePath("/research");
+  revalidatePath(`/research/${updated.slug}`);
+  revalidatePath("/");
+  await invalidateHomepageCache();
+
   redirect("/admin/research-logs");
 }
 
@@ -140,13 +165,26 @@ export async function deleteResearchLog(formData: FormData) {
   const id = formData.get("id")?.toString();
   if (!id) return;
 
+  // Look up slug before deletion for path invalidation
+  const existing = await prisma.researchLog.findUnique({
+    where: { id },
+    select: { slug: true },
+  });
+
   await prisma.researchLog.delete({ where: { id } });
 
   revalidatePath("/admin/research-logs");
+  revalidatePath("/research");
+  if (existing) {
+    revalidatePath(`/research/${existing.slug}`);
+  }
+  revalidatePath("/");
+  await invalidateHomepageCache();
+
   redirect("/admin/research-logs");
 }
 
-// ── Toggle Publish ──────────────────────────────────────────────────────────
+// ── Toggle Publish (revision-tracked) ───────────────────────────────────────
 
 export async function toggleResearchLogPublish(formData: FormData) {
   await requireRole("EDITOR");
@@ -157,10 +195,24 @@ export async function toggleResearchLogPublish(formData: FormData) {
   const existing = await prisma.researchLog.findUnique({ where: { id } });
   if (!existing) return;
 
-  await prisma.researchLog.update({
-    where: { id },
-    data: { published: !existing.published, updatedAt: new Date() },
+  await updateResearchLogWithRevision({
+    id,
+    data: {
+      title: existing.title,
+      series: existing.series,
+      abstract: existing.abstract,
+      content: existing.content,
+      tags: existing.tags,
+      featured: existing.featured,
+      published: !existing.published,
+      reason: existing.published ? "UNPUBLISH" : "PUBLISH",
+      clientMutationId: `${Date.now()}-${id}`,
+    },
   });
 
   revalidatePath("/admin/research-logs");
+  revalidatePath("/research");
+  revalidatePath(`/research/${existing.slug}`);
+  revalidatePath("/");
+  await invalidateHomepageCache();
 }

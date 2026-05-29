@@ -1,4 +1,4 @@
-import type { ContentPost, Project } from "@prisma/client";
+import type { ContentPost, Project, ResearchLog } from "@prisma/client";
 
 export type RevisionSnapshot =
   | {
@@ -8,5 +8,8 @@ export type RevisionSnapshot =
   | {
       entityType: "PROJECT";
       entity: Project;
+    }
+  | {
+      entityType: "RESEARCH_LOG";
+      entity: ResearchLog;
     };
-

@@ -7,7 +7,8 @@ import { prisma } from "@/lib/db/prisma";
 import { projectSchema } from "@/lib/validations/project";
 import { updateProjectWithRevision } from "@/lib/editorial/projects/project-service";
 import { requireRole } from "@/lib/authz/require-role";
-import { error } from "console";
+import { createRevision } from "@/lib/editorial/revisions/revision-service";
+import { invalidateHomepageCache } from "@/lib/homepage/invalidate-homepage";
 
 export async function createProject(
   prevState: {
@@ -80,7 +81,7 @@ export async function createProject(
     .trim()
     .replace(/\s+/g, "-");
 
-  await prisma.project.create({
+  const project = await prisma.project.create({
     data: {
         title,
         slug,
@@ -94,7 +95,21 @@ export async function createProject(
     },
     });
 
+  // Capture initial version-1 snapshot for revision rollback capability
+  await createRevision({
+    entityType: "PROJECT",
+    entityId: project.id,
+    entityVersion: 1,
+    reason: "UPDATE",
+    snapshot: project,
+    clientMutationId: null,
+  });
+
   revalidatePath("/admin/projects");
+  revalidatePath("/projects");
+  revalidatePath(`/projects/${slug}`);
+  revalidatePath("/");
+  await invalidateHomepageCache();
 
   return {
     error: "",
@@ -186,7 +201,10 @@ export async function updateProject(
   });
 
   revalidatePath("/admin/projects");
+  revalidatePath("/projects");
   revalidatePath(`/projects/${updated.slug}`);
+  revalidatePath("/");
+  await invalidateHomepageCache();
 
   return {
     error: "",
@@ -232,7 +250,10 @@ export async function autosaveProjectDraft(input: {
   });
 
   revalidatePath("/admin/projects");
+  revalidatePath("/projects");
   revalidatePath(`/projects/${updated.slug}`);
+  revalidatePath("/");
+  await invalidateHomepageCache();
 
   return {
     ok: true as const,
@@ -251,6 +272,12 @@ export async function deleteProject(
     return;
   }
 
+  // Look up slug before deletion for path invalidation
+  const existing = await prisma.project.findUnique({
+    where: { id },
+    select: { slug: true },
+  });
+
   await prisma.project.deleteMany({
     where: {
       id,
@@ -258,6 +285,13 @@ export async function deleteProject(
   });
 
   revalidatePath("/admin/projects");
+  revalidatePath("/projects");
+  if (existing) {
+    revalidatePath(`/projects/${existing.slug}`);
+  }
+  revalidatePath("/");
+  await invalidateHomepageCache();
+
   redirect("/admin/projects");
 }
 
@@ -274,7 +308,7 @@ export async function toggleProjectPublish(
     return;
   }
 
-  await prisma.project.update({
+  const updated = await prisma.project.update({
     where: {
       id,
     },
@@ -284,4 +318,8 @@ export async function toggleProjectPublish(
   });
 
   revalidatePath("/admin/projects");
+  revalidatePath("/projects");
+  revalidatePath(`/projects/${updated.slug}`);
+  revalidatePath("/");
+  await invalidateHomepageCache();
 }

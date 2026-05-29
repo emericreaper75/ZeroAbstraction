@@ -24,6 +24,7 @@ enum UserRole {
 enum RevisionEntityType {
   POST
   PROJECT
+  RESEARCH_LOG
 }
 
 enum RevisionReason {

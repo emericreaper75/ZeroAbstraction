@@ -9,6 +9,19 @@ import { contentPostSchema } from "@/lib/validations/content-post";
 import { slugify } from "@/lib/editorial/slug";
 import { updateContentPostWithRevision } from "@/lib/editorial/posts/content-post-service";
 import { requireRole } from "@/lib/authz/require-role";
+import { createRevision } from "@/lib/editorial/revisions/revision-service";
+import { CATEGORY_ENUM_TO_ROUTE } from "@/lib/editorial/categories";
+import { invalidateHomepageCache } from "@/lib/homepage/invalidate-homepage";
+
+/** Revalidate all public paths affected by a content post mutation. */
+function revalidatePostPaths(category: ContentCategory, slug: string) {
+  const routeCategory = CATEGORY_ENUM_TO_ROUTE[category];
+  revalidatePath("/admin/posts");
+  revalidatePath(`/${routeCategory}`);
+  revalidatePath(`/${routeCategory}/${slug}`);
+  revalidatePath("/blog");
+  revalidatePath("/");
+}
 
 export async function createContentPost(
   prevState: { error: string },
@@ -45,7 +58,7 @@ export async function createContentPost(
 
   const slug = slugify(validated.data.title);
 
-  await prisma.contentPost.create({
+  const post = await prisma.contentPost.create({
     data: {
       title: validated.data.title,
       slug,
@@ -60,7 +73,19 @@ export async function createContentPost(
     },
   });
 
-  revalidatePath("/admin/posts");
+  // Capture initial version-1 snapshot for revision rollback capability
+  await createRevision({
+    entityType: "POST",
+    entityId: post.id,
+    entityVersion: 1,
+    reason: "UPDATE",
+    snapshot: post,
+    clientMutationId: null,
+  });
+
+  revalidatePostPaths(validated.data.category, slug);
+  await invalidateHomepageCache();
+
   redirect("/admin/posts");
 }
 
@@ -107,8 +132,10 @@ export async function updateContentPost(
     },
   });
 
-  revalidatePath("/admin/posts");
+  revalidatePostPaths(updated.category, updated.slug);
   revalidatePath(`/admin/posts/${updated.id}/edit`);
+  await invalidateHomepageCache();
+
   redirect("/admin/posts");
 }
 
@@ -151,7 +178,9 @@ export async function autosaveContentPostDraft(input: {
     },
   });
 
-  revalidatePath("/admin/posts");
+  revalidatePostPaths(updated.category, updated.slug);
+  await invalidateHomepageCache();
+
   return {
     ok: true as const,
     updatedAt: updated.updatedAt.toISOString(),
@@ -164,11 +193,23 @@ export async function deleteContentPost(formData: FormData) {
   const id = formData.get("id")?.toString();
   if (!id) return;
 
+  // Look up before deletion for path invalidation
+  const existing = await prisma.contentPost.findUnique({
+    where: { id },
+    select: { category: true, slug: true },
+  });
+
   await prisma.contentPost.deleteMany({
     where: { id },
   });
 
-  revalidatePath("/admin/posts");
+  if (existing) {
+    revalidatePostPaths(existing.category, existing.slug);
+  } else {
+    revalidatePath("/admin/posts");
+  }
+  await invalidateHomepageCache();
+
   redirect("/admin/posts");
 }
 
@@ -182,7 +223,7 @@ export async function toggleContentPostPublish(formData: FormData) {
   });
   if (!existing) return;
 
-  await updateContentPostWithRevision({
+  const updated = await updateContentPostWithRevision({
     id,
     data: {
       title: existing.title,
@@ -199,6 +240,6 @@ export async function toggleContentPostPublish(formData: FormData) {
     },
   });
 
-  revalidatePath("/admin/posts");
+  revalidatePostPaths(updated.category, updated.slug);
+  await invalidateHomepageCache();
 }
-

@@ -1,5 +1,15 @@
+/**
+ * MDX → Prisma Content Indexing Script (Migration Utility)
+ *
+ * Reads MDX files from the content/ directory and upserts them into
+ * the ContentPost and ResearchLog Prisma tables. This is a one-time
+ * or periodic sync tool, NOT a runtime dependency.
+ *
+ * The canonical data source for the public site is Prisma (admin CRUD).
+ * This script exists to bootstrap the DB from existing MDX content.
+ */
+
 import { prisma } from "@/lib/db/prisma";
-import { getAllPosts } from "@/lib/posts";
 import { extractTOC } from "@/lib/toc";
 import { ContentCategory } from "@/lib/editorial/categories";
 import fs from "fs";
@@ -7,6 +17,70 @@ import path from "path";
 import matter from "gray-matter";
 
 import readingTime from "reading-time";
+
+const VALID_CATEGORIES = [
+  "electronics",
+  "astrophysics",
+  "physics-math",
+  "communications",
+] as const;
+
+type Post = {
+  title: string;
+  date: string;
+  description: string;
+  tags: string[];
+  category: string;
+  slug: string;
+  readingTime: string;
+  content: string;
+  thumbnail?: string;
+  thumbnailAlt?: string;
+  featured?: boolean;
+  published?: boolean;
+};
+
+const contentDir = path.join(process.cwd(), "content");
+
+function getMDXFiles(dir: string): string[] {
+  if (!fs.existsSync(dir)) return [];
+  return fs.readdirSync(dir).filter((f: string) => f.endsWith(".mdx"));
+}
+
+function parsePost(filePath: string): Post {
+  const raw = fs.readFileSync(filePath, "utf-8");
+  const { data, content } = matter(raw);
+  const stats = readingTime(content);
+  return {
+    title: data.title ?? "Untitled",
+    date: data.date ?? "",
+    description: data.description ?? "",
+    tags: data.tags ?? [],
+    category: data.category ?? "",
+    slug: data.slug ?? path.basename(filePath, ".mdx"),
+    readingTime: stats.text,
+    content,
+    thumbnail: data.thumbnail,
+    thumbnailAlt: data.thumbnailAlt,
+    featured: data.featured ?? false,
+    published: data.published ?? true,
+  };
+}
+
+function getAllPosts(): Post[] {
+  const posts: Post[] = [];
+  for (const category of VALID_CATEGORIES) {
+    const dir = path.join(contentDir, category);
+    const files = getMDXFiles(dir);
+    for (const file of files) {
+      const filePath = path.join(dir, file);
+      posts.push(parsePost(filePath));
+    }
+  }
+  return posts.sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
+}
 
 function mapCategoryToEnum(category: string): ContentCategory {
   switch (category) {

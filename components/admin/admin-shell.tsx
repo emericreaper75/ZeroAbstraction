@@ -156,7 +156,7 @@ export default function AdminShell({
       </aside>
 
       {/* ── Main Content Area ── */}
-      <main className="flex-1 flex flex-col min-w-0 overflow-hidden relative">
+      <main id="main-content" className="flex-1 flex flex-col min-w-0 overflow-hidden relative">
         {/* Mobile Header */}
         <div className="lg:hidden flex items-center justify-between p-4 border-b border-zinc-800 bg-[#0d0d0d] z-30 shrink-0">
            <div className="flex items-center gap-2">
