@@ -44,6 +44,8 @@ CLAUDE.local.md
 checklistfile.md
 design.md
 tree-to-be-implemented.md
+scratch.js
+mistakes observed.md
 
 # agents
 .agents/
@@ -58,16 +60,22 @@ tree-to-be-implemented.md
 tsc_errors.txt
 .eslintcache
 *.log
+lint_output.txt
 
 # local documentation, reports, and prompts
 *_report.md
 *report.md
 *_REPORT.md
 *REPORT.md
+*_audit.md
+*audit.md
 agent_handoff_*.md
 focus_mode_transition.md
 improvement and implementation.md
 ZeroAbstraction_GoogleStitch_Prompts.md
+
+# generated search index
+public/search-index.json
 
 # Scripts
 scripts/expand-content.js
