@@ -65,7 +65,10 @@ export default function RelatedContent({ relationships }: Props) {
 
         {/* Articles Column */}
         {relatedArticles.length > 0 && (
-          <div className="space-y-6">
+          <div className="relative z-0 space-y-6">
+            {/* Ambient Background Glow */}
+            <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 w-full aspect-square -translate-x-1/2 -translate-y-1/2 bg-violet-500/5 blur-[100px] rounded-full" />
+            
             <h3 className="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-500 flex items-center gap-2">
               <BookOpen className="w-3 h-3" />
               Further Reading
