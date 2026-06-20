@@ -67,6 +67,28 @@
     --color-error: #ef4444;
     --shadow-brand: 0 0 20px rgba(0,201,224,0.15);
 
+    /* ── Surface Hierarchy ──────────────────────────────────────────── */
+    --surface-elevated: #0c0c16;
+    --surface-floating: #10101e;
+    --surface-glass: rgba(12, 12, 22, 0.6);
+
+    /* ── Border Hierarchy ──────────────────────────────────────────── */
+    --border-hairline: rgba(255, 255, 255, 0.04);
+    --border-elevated: rgba(255, 255, 255, 0.08);
+    --border-glass: rgba(255, 255, 255, 0.06);
+
+    /* ── Shadow Hierarchy ──────────────────────────────────────────── */
+    --shadow-elevated: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.2);
+    --shadow-floating: 0 2px 4px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.25);
+
+    /* ── Glow System ───────────────────────────────────────────────── */
+    --glow-soft: 0 0 30px rgba(0, 201, 224, 0.06);
+    --glow-ambient: 0 0 60px rgba(0, 201, 224, 0.04);
+
+    /* ── Inner Highlight (top-edge light simulation) ───────────────── */
+    --highlight-inner: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    --highlight-inner-elevated: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
     /* Editorial Layout & Typography Tokens */
     --content-width-optimal: 70ch;
     --content-width-max: 90ch;
@@ -77,6 +99,30 @@
     --font-size-h3: clamp(1.5rem, 3vw, 2rem);
     --line-height-prose: 1.8;
     --letter-spacing-heading: -0.02em;
+
+    /* ── Typography Scale ─────────────────────────────────────────── */
+    --text-display: clamp(2.5rem, 6vw, 4.5rem);
+    --text-heading: clamp(1.75rem, 4vw, 3rem);
+    --text-subheading: clamp(1.25rem, 2.5vw, 1.75rem);
+    --text-body: 1rem;
+    --text-caption: 0.8125rem;
+    --text-overline: 0.6875rem;
+
+    /* ── Letter Spacing ───────────────────────────────────────────── */
+    --tracking-display: -0.03em;
+    --tracking-heading: -0.02em;
+    --tracking-body: -0.006em;
+    --tracking-overline: 0.12em;
+
+    /* ── Line Height ──────────────────────────────────────────────── */
+    --leading-display: 1.1;
+    --leading-heading: 1.2;
+    --leading-body: 1.75;
+    --leading-caption: 1.5;
+
+    /* ── Metadata Typography ──────────────────────────────────────── */
+    --text-meta: 0.75rem;
+    --tracking-meta: 0.06em;
 
     /* Chart colors */
     --chart-1: 195 80% 55%;
@@ -134,6 +180,8 @@
 
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    letter-spacing: var(--tracking-body);
 
     position: relative;
   }
@@ -228,6 +276,39 @@ pre::-webkit-scrollbar-thumb {
 
 .bg-surface {
   background-color: var(--bg-surface);
+}
+
+/* ── Surface Hierarchy Utilities ────────────────────────────────── */
+
+.surface-base {
+  background-color: var(--surface-base);
+  border: 1px solid var(--border-hairline);
+}
+
+.surface-elevated {
+  background-color: var(--surface-elevated);
+  border: 1px solid var(--border-elevated);
+  box-shadow: var(--shadow-elevated), var(--highlight-inner);
+}
+
+.surface-floating {
+  background-color: var(--surface-floating);
+  border: 1px solid var(--border-elevated);
+  box-shadow: var(--shadow-floating), var(--highlight-inner-elevated);
+}
+
+.surface-glass {
+  background-color: var(--surface-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-glass);
+  box-shadow: var(--highlight-inner);
+}
+
+/* ── Premium Border Utility ─────────────────────────────────────── */
+.border-premium {
+  border: 1px solid var(--border-elevated);
+  box-shadow: var(--highlight-inner);
 }
 
 /* Grid Background */

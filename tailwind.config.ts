@@ -148,6 +148,19 @@ const config: Config = {
           from: { height: 'var(--radix-accordion-content-height)' },
           to: { height: '0' },
         },
+        // Premium motion keyframes
+        floatGentle: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-6px)' },
+        },
+        glowPulse: {
+          '0%, 100%': { opacity: '0.4' },
+          '50%': { opacity: '0.8' },
+        },
+        slideInFromBottom: {
+          from: { opacity: '0', transform: 'translateY(12px)' },
+          to: { opacity: '1', transform: 'translateY(0)' },
+        },
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',
@@ -156,6 +169,10 @@ const config: Config = {
         'fade-in-right': 'fadeInRight 0.5s ease forwards',
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        // Premium motion animations
+        'float-gentle': 'floatGentle 8s ease-in-out infinite',
+        'glow-pulse': 'glowPulse 4s ease-in-out infinite',
+        'slide-in-bottom': 'slideInFromBottom 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards',
       },
       maxWidth: {
         prose: '720px',

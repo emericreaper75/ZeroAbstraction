@@ -32,14 +32,33 @@ export const OPACITY = {
   surfaceHighlight: 0.12, // 12%
 };
 
+// ── Surface Hierarchy Opacity Constants ──────────────────────────
+export const SURFACE_OPACITY = {
+  base: 1.0,
+  elevated: 1.0,
+  floating: 0.85,
+  glass: 0.6,
+};
+
+// ── Border Opacity Constants ─────────────────────────────────────
+export const BORDER_OPACITY = {
+  hairline: 0.04,
+  elevated: 0.08,
+  glass: 0.06,
+  interactive: 0.12,
+  active: 0.20,
+};
+
 // Framer Motion Springs
 export const SPRING = {
   // Snappy, subtle bounce
   bouncy: { type: "spring" as const, stiffness: 400, damping: 25 },
-  // Smooth, premium feel (Apple-like)
-  smooth: { type: "spring" as const, stiffness: 100, damping: 20 },
+  // Smooth, premium feel (Apple-like) — slower for expensive motion
+  smooth: { type: "spring" as const, stiffness: 80, damping: 22 },
   // Heavy, slow (for large layouts)
   heavy: { type: "spring" as const, stiffness: 50, damping: 15 },
+  // Gentle — for subtle hover elevation shifts
+  gentle: { type: "spring" as const, stiffness: 120, damping: 18 },
 };
 
 // Spacing (px) - used for JS calculations
@@ -67,4 +86,21 @@ export const BLUR = {
   subtle: "8px",
   medium: "16px",
   strong: "24px",
+};
+
+// ── Typography Constants (for JS-side calculations) ──────────────
+export const TYPOGRAPHY = {
+  lineHeight: {
+    display: 1.1,
+    heading: 1.2,
+    body: 1.75,
+    caption: 1.5,
+  },
+  letterSpacing: {
+    display: "-0.03em",
+    heading: "-0.02em",
+    body: "-0.006em",
+    overline: "0.12em",
+    meta: "0.06em",
+  },
 };

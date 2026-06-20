@@ -14,6 +14,8 @@ export const EASING = {
   cinematic: [0.25, 0.1, 0.25, 1.0] as [number, number, number, number], // Smooth, classic curve
   restrained: [0.4, 0.0, 0.2, 1.0] as [number, number, number, number], // Material standard
   linear: [0.0, 0.0, 1.0, 1.0] as [number, number, number, number],
+  // Premium easeOut — used for reveals, inspired by Linear
+  premium: [0.16, 1, 0.3, 1] as [number, number, number, number],
 };
 
 /**
@@ -72,14 +74,59 @@ export const staggerContainer: Variants = {
 
 /**
  * Ambient floating motion for backgrounds/atmospheres
+ * Slowed to 8s cycle for a more premium, expensive feel
  */
 export const floatingVariant: Variants = {
   animate: {
-    y: [0, -10, 0],
+    y: [0, -8, 0],
     transition: {
-      duration: 6,
+      duration: 8,
       ease: "easeInOut",
       repeat: Infinity,
+    },
+  },
+};
+
+// ── New Motion Variants ──────────────────────────────────────────────
+
+/**
+ * Viewport-triggered reveal
+ * Used by homepage sections, cards, and content blocks.
+ * Restrained: 12px translateY, cinematic ease.
+ */
+export const revealVariant: Variants = {
+  initial: { opacity: 0, y: 12 },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: EASING.premium,
+    },
+  },
+};
+
+/**
+ * Hover elevation for interactive surfaces
+ * Subtle translateY shift + scale. Used via whileHover.
+ */
+export const hoverElevation = {
+  y: -2,
+  scale: 1.005,
+  transition: SPRING.gentle,
+};
+
+/**
+ * Navbar slide-down on initial page load
+ */
+export const navSlideDown: Variants = {
+  initial: { opacity: 0, y: -8 },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.4,
+      ease: EASING.premium,
     },
   },
 };

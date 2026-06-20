@@ -8,16 +8,18 @@ import { getSpring } from "@/lib/design/motion";
 
 const surfaceVariants = cva(
   // Base classes: positioning, transitions, and border box
-  "relative overflow-hidden rounded-xl border transition-colors",
+  "relative overflow-hidden rounded-xl transition-all duration-200",
   {
     variants: {
       variant: {
+        base:
+          "bg-[var(--surface-base)] border border-[var(--border-hairline)]",
         glass:
-          "bg-white/5 dark:bg-black/20 backdrop-blur-md border-white/10 dark:border-white/5",
+          "bg-[var(--surface-glass)] backdrop-blur-md border border-[var(--border-glass)] shadow-[var(--highlight-inner)]",
         elevated:
-          "bg-white dark:bg-[#0f0f1a] border-neutral-200 dark:border-white/10 shadow-sm",
+          "bg-[var(--surface-elevated)] border border-[var(--border-elevated)] shadow-[var(--shadow-elevated),var(--highlight-inner)]",
         floating:
-          "bg-white/80 dark:bg-[#161624]/80 backdrop-blur-sm border-neutral-200 dark:border-white/10 shadow-lg",
+          "bg-[var(--surface-floating)] backdrop-blur-sm border border-[var(--border-elevated)] shadow-[var(--shadow-floating),var(--highlight-inner-elevated)]",
       },
       padding: {
         none: "",
@@ -27,7 +29,7 @@ const surfaceVariants = cva(
         xl: "p-12",
       },
       interactive: {
-        true: "cursor-pointer hover:border-brand/40 dark:hover:border-cyan-500/40",
+        true: "cursor-pointer hover:border-[rgba(255,255,255,0.12)]",
         false: "",
       },
     },
@@ -45,30 +47,39 @@ export interface SurfaceProps
   className?: string;
   asChild?: boolean;
   children?: React.ReactNode;
+  /** Enable subtle ambient glow on the surface */
+  glow?: boolean;
 }
 
 /**
  * Surface Foundation
  * Used to wrap content in premium dark-mode safe containers.
- * Maintains consistency in border opacities, backgrounds, and hover interpolations.
+ * Provides a 4-tier elevation hierarchy:
+ *   base → elevated → floating → glass
+ * Maintains consistency in border opacities, backgrounds, inner highlights,
+ * and hover interpolations across the entire public UI.
  */
 export const Surface = React.forwardRef<HTMLDivElement, SurfaceProps>(
-  ({ className, variant, padding, interactive, children, ...props }, ref) => {
+  ({ className, variant, padding, interactive, glow, children, ...props }, ref) => {
     return (
       <motion.div
         ref={ref}
-        className={cn(surfaceVariants({ variant, padding, interactive }), className)}
+        className={cn(
+          surfaceVariants({ variant, padding, interactive }),
+          glow && "shadow-[var(--glow-soft)]",
+          className
+        )}
         whileHover={
           interactive
             ? {
-                y: variant === "floating" ? -4 : 0,
-                transition: getSpring("bouncy"),
+                y: variant === "floating" ? -3 : -1,
+                transition: getSpring("gentle"),
               }
             : undefined
         }
         {...props}
       >
-        {/* Content container relative to stay above spotlight */}
+        {/* Content container relative to stay above inner highlights */}
         <div className="relative z-10">{children}</div>
       </motion.div>
     );
